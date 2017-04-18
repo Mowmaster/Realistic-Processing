@@ -1,8 +1,10 @@
 package com.mowmaster.rprocessing;
 
 
+import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import com.mowmaster.rprocessing.proxies.CommonProxy;
 import com.mowmaster.rprocessing.reference.References;
+import com.mowmaster.rprocessing.tiles.TileRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -22,7 +24,10 @@ public class RealisticProcessing
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
-
+        BlockRegistry.init();
+        BlockRegistry.register();
+        proxy.preInit();
+        TileRegistry.registerTile();
     }
 
     @Mod.EventHandler

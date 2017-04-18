@@ -49,7 +49,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                 TileClayBloomery clayBloomery = (TileClayBloomery) tileEntity;
                 if (playerIn.isSneaking()) {
                     playerIn.sendStatusMessage(new TextComponentTranslation("You are sneaking"), true);
-                    playerIn.sendMessage(new TextComponentString("Test Test Test"));
+                    playerIn.sendMessage(new TextComponentString("You are sneaking"));
                 }
                 else
                 {

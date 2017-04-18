@@ -16,6 +16,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -45,21 +47,31 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if (tileEntity instanceof TileClayBloomery) {
                 TileClayBloomery clayBloomery = (TileClayBloomery) tileEntity;
-                if (!playerIn.isSneaking()) {
-                    if (playerIn.getHeldItemMainhand() == new ItemStack(Items.COAL,1))
-                    {
-                        clayBloomery.addCarbon();
-                    }
+                if (playerIn.isSneaking()) {
+                    playerIn.sendStatusMessage(new TextComponentTranslation("You are sneaking"), true);
+                    playerIn.sendMessage(new TextComponentString("Test Test Test"));
                 }
                 else
                 {
-                    //remove statement
-                    clayBloomery.removeCarbon();
-                    spawnAsEntity(worldIn,pos,new ItemStack(Items.COAL,1));
+                    if (playerIn.getHeldItem(EnumHand.MAIN_HAND) == new ItemStack(Items.COAL))
+                    {
+                        clayBloomery.addCarbon();
+                        playerIn.sendMessage(new TextComponentString("Added Carbon to Bloomery"));
+                    }
+                    else
+                    {
+                        if(playerIn.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
+                        {
+                            clayBloomery.removeCarbon();
+                            spawnAsEntity(worldIn,pos,new ItemStack(Items.COAL));
+                            playerIn.sendMessage(new TextComponentString("Removed Carbon from Bloomery"));
+                        }
+
+                    }
                 }
             }
         }
-        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, facing, hitX, hitY, hitZ);
+        return true;
     }
 
 

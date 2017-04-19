@@ -45,35 +45,19 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
     {
         if(!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
-            if (tileEntity instanceof TileClayBloomery) {
-                TileClayBloomery clayBloomery = (TileClayBloomery) tileEntity;
-                if (playerIn.isSneaking()) {
-                    playerIn.sendStatusMessage(new TextComponentTranslation("You are sneaking"), true);
-                    playerIn.sendMessage(new TextComponentString("You are sneaking"));
+            if(tileEntity instanceof TileClayBloomery) {
+                TileClayBloomery bloom = (TileClayBloomery) tileEntity;
+                if(playerIn.isCreative()) {
+                    playerIn.sendMessage(new TextComponentString("You are in Creative"));
                 }
                 else
                 {
-                    if (playerIn.getHeldItem(EnumHand.MAIN_HAND) == new ItemStack(Items.COAL))
-                    {
-                        clayBloomery.addCarbon();
-                        playerIn.sendMessage(new TextComponentString("Added Carbon to Bloomery"));
-                    }
-                    else
-                    {
-                        if(playerIn.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
-                        {
-                            clayBloomery.removeCarbon();
-                            spawnAsEntity(worldIn,pos,new ItemStack(Items.COAL));
-                            playerIn.sendMessage(new TextComponentString("Removed Carbon from Bloomery"));
-                        }
-
-                    }
+                    playerIn.sendMessage(new TextComponentString("You are NOT in Creative"));
                 }
             }
         }
         return true;
     }
-
 
     @Nullable
     @Override

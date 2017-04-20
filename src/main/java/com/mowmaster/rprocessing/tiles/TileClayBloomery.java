@@ -1,5 +1,7 @@
 package com.mowmaster.rprocessing.tiles;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.item.EntityItem;
@@ -7,6 +9,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
@@ -19,15 +24,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-/**
- * Created by KingMowmaster on 4/18/2017.
- */
+
 public class TileClayBloomery extends TileEntity implements ITickable
 {
     public static int oxygencount=0;
-    public static int maxoxygen=250; //because if 95 it can go up to 100
+    public static int maxoxygen=1000; //because if 95 it can go up to 100
     public static int needsoxygen = 0;
-    public static int maxneedsoxygen = 100;
+    public static int maxneedsoxygen = 200;
     public static int carboncount=0;
     public static int maxcarbon=8;
     public static int maxore=8;
@@ -35,7 +38,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public static int oreiron=0;
     public static int oregold=0;
     public static int processtimer = 0;
-    public static int maxprocessedtime = 200;
+    public static int maxprocessedtime = 6000;
 
     public static boolean activated = false;
     public static boolean processed = false;
@@ -47,21 +50,30 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if(carboncount<maxcarbon)
         {
             carboncount++;
-            System.out.println("You are adding Carbon");
-            System.out.println("Carbon Count :" + carboncount);
+            markDirty();
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos,state,state,3);
             return true;
         }
         return false;
     }
     public boolean removeCarbon()
     {
-        if(carboncount>0)
+        if (activated == false)
         {
-            world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL)));
-            carboncount--;
-            System.out.println("You are removing Carbon");
-            System.out.println("Carbon Count :" + carboncount);
-            return true;
+            if(oreiron ==0 && oregold ==0)
+            {
+                if(carboncount>0)
+                {
+                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL)));
+                    carboncount--;
+                    markDirty();
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos,state,state,3);
+                    return true;
+                }
+            }
+
         }
         return false;
     }
@@ -76,7 +88,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 {
                     activated = true;
                     needsoxygen = 0;
-                    System.out.println("Activation :" + activated);
+                    markDirty();
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos,state,state,3);
                     return true;
                 }
             }
@@ -89,7 +103,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if(activated == true)
         {
             activated = false;
-            System.out.println("Activation :" + activated);
+            markDirty();
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos,state,state,3);
             return true;
         }
         return false;
@@ -99,8 +115,10 @@ public class TileClayBloomery extends TileEntity implements ITickable
     {
             if(oxygencount<maxoxygen)
             {
-                oxygencount += 50;
-                System.out.println("You are adding Oxygen");
+                oxygencount += 200;
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
                 return true;
             }
         return false;
@@ -119,7 +137,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
         {
             oreiron++;
             orecount++;
-            System.out.println("Iron Count :" + oreiron);
+            markDirty();
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos,state,state,3);
             return true;
         }
     }
@@ -133,7 +153,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
             {
                 oregold++;
                 orecount++;
-                System.out.println("Gold Count :" + oregold);
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
                 return true;
             }
         }
@@ -149,7 +171,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.IRON_ORE)));
                 oreiron--;
                 orecount--;
-                System.out.println("Iron Count :" + oreiron);
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
                 return true;
             }
         }
@@ -164,7 +188,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.GOLD_ORE)));
                 oregold--;
                 orecount--;
-                System.out.println("Gold Count :" + oregold);
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
                 return true;
             }
         }
@@ -174,33 +200,60 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void update()
     {
+        if (activated == true)
+        {
+                if (oxygencount >= 750) {
+                    world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+                }
+                if (oxygencount < 750 && oxygencount >= 400) {
+                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+
+                }
+                if (oxygencount < 400 && oxygencount >= 100) {
+                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                }
+                if (oxygencount < 100) {
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                }
+        }
+
         if(!world.isRemote) {
 
             if (activated == true) {
 
+                if(carboncount>0)
+                {
+                    if(processtimer==1500)
+                    {
+                        carboncount--;
+                    }
+                    if(processtimer==3000)
+                    {
+                        carboncount--;
+                    }
+                    if(processtimer==4500)
+                    {
+                        carboncount--;
+                    }
+                }
+
                 if (oxygencount > 0) {
                     oxygencount--;
-                    System.out.println("Oxygen Count :" + oxygencount);
+                    //System.out.println("Oxygen Count :" + oxygencount);
 
                 }
 
                 if (oxygencount == 0) {
                     if (needsoxygen < maxneedsoxygen) {
                         needsoxygen++;
-                        System.out.println("Oxygen Timer Count :" + needsoxygen);
+                        //System.out.println("Oxygen Timer Count :" + needsoxygen);
                     }
-                }
-
-                if (oxygencount > 100) {
-                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 1, 0.5, 0.5, 0.5, new int[0]);
-                }
-
-                if (oxygencount < 100) {
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 1, 0.5, 0.5, 0.5, new int[0]);
-                }
-
-                if (oxygencount < 50) {
-                    world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 1, 0.5, 0.5, 0.5, new int[0]);
                 }
 
                 if (needsoxygen == maxneedsoxygen) {
@@ -252,17 +305,11 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        compound.setInteger("carboncount",carboncount);
-        compound.setBoolean("activated",activated);
-        compound.setInteger("oxygencount",oxygencount);
-        compound.setInteger("needsoxygen", needsoxygen);
+        this.writeUpdateTag(compound);
         compound.setInteger("orecount",orecount);
-        compound.setInteger("iron", oreiron);
-        compound.setInteger("gold",oregold);
+        compound.setInteger("needsoxygen", needsoxygen);
         compound.setInteger("timer",processtimer);
         compound.setBoolean("processed",processed);
-
-
         return compound;
 
     }
@@ -270,16 +317,49 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        carboncount = compound.getInteger("carboncount");
-        activated = compound.getBoolean("activated");
-        oxygencount = compound.getInteger("oxygencount");
-        needsoxygen = compound.getInteger("needsoxygen");
-        orecount = compound.getInteger("orecount");
-        oreiron = compound.getInteger("iron");
-        oregold = compound.getInteger("gold");
-        processtimer = compound.getInteger("timer");
-        processed = compound.getBoolean("processed");
+        this.readUpdateTag(compound);
+        this.orecount = compound.getInteger("orecount");
+        this.needsoxygen = compound.getInteger("needsoxygen");
+        this.processtimer = compound.getInteger("timer");
+        this.processed = compound.getBoolean("processed");
+    }
 
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        NBTTagCompound tagCompound = pkt.getNbtCompound();
+        this.readUpdateTag(tagCompound);
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        this.writeUpdateTag(tagCompound);
+        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
 
     }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tagCompound = super.getUpdateTag();
+        writeUpdateTag(tagCompound);
+        return tagCompound;
+    }
+
+    public void writeUpdateTag(NBTTagCompound tagCompound)
+    {
+        tagCompound.setInteger("carboncount",carboncount);
+        tagCompound.setBoolean("activated",activated);
+        tagCompound.setInteger("oxygencount",oxygencount);
+        tagCompound.setInteger("iron", oreiron);
+        tagCompound.setInteger("gold",oregold);
+    }
+    public void readUpdateTag(NBTTagCompound tagCompound)
+    {
+        this.carboncount = tagCompound.getInteger("carboncount");
+        this.activated = tagCompound.getBoolean("activated");
+        this.oxygencount = tagCompound.getInteger("oxygencount");
+        this.oreiron = tagCompound.getInteger("iron");
+        this.oregold = tagCompound.getInteger("gold");
+    }
+
 }

@@ -149,7 +149,15 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
         return true;
     }
 
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return true;
+    }
 
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return true;
+    }
 
     @Nullable
     @Override

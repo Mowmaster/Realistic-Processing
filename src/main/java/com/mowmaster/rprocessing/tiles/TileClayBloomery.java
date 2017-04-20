@@ -174,98 +174,79 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void update()
     {
+        if(!world.isRemote) {
 
-        if(activated == true)
-        {
+            if (activated == true) {
 
-            if(oxygencount>0)
-            {
-                oxygencount--;
-                System.out.println("Oxygen Count :" + oxygencount);
+                if (oxygencount > 0) {
+                    oxygencount--;
+                    System.out.println("Oxygen Count :" + oxygencount);
 
-            }
-
-            if(oxygencount == 0)
-            {
-                if(needsoxygen<maxneedsoxygen)
-                {
-                    needsoxygen++;
-                    System.out.println("Oxygen Timer Count :" + needsoxygen);
-                }
-            }
-
-            if(oxygencount > 100)
-            {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE,pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 1, 0.5,0.5,0.5,new int[0]);
-            }
-
-            if(oxygencount < 100)
-            {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL,pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 1, 0.5,0.5,0.5,new int[0]);
-            }
-
-            if(oxygencount < 50)
-            {
-                world.spawnParticle(EnumParticleTypes.LAVA,pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 1, 0.5,0.5,0.5,new int[0]);
-            }
-
-            if(needsoxygen == maxneedsoxygen)
-            {
-                activated = false;
-                processtimer = 0;
-                System.out.println("Bloomery Off and Reset");
-
-            }
-
-            if(processtimer<maxprocessedtime)
-            {
-                processtimer++;
-            }
-
-            if(processtimer == maxprocessedtime)
-            {
-                processed = true;
-                System.out.println("Bloomery COMPLETED");
-            }
-
-            if(processed == true)
-            {
-                if(oreiron >0)
-                {
-                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.IRON_INGOT,oreiron)));
-                    oreiron = 0;
-                    orecount = 0;
-                }
-                if(oregold >0)
-                {
-                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.GOLD_INGOT,oregold)));
-                    oregold = 0;
-                    orecount = 0;
                 }
 
-                if(oreiron == 0 && oregold == 0)
-                {
+                if (oxygencount == 0) {
+                    if (needsoxygen < maxneedsoxygen) {
+                        needsoxygen++;
+                        System.out.println("Oxygen Timer Count :" + needsoxygen);
+                    }
+                }
+
+                if (oxygencount > 100) {
+                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 1, 0.5, 0.5, 0.5, new int[0]);
+                }
+
+                if (oxygencount < 100) {
+                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 1, 0.5, 0.5, 0.5, new int[0]);
+                }
+
+                if (oxygencount < 50) {
+                    world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 1, 0.5, 0.5, 0.5, new int[0]);
+                }
+
+                if (needsoxygen == maxneedsoxygen) {
                     activated = false;
-                    oreiron = 0;
-                    oregold = 0;
-                    orecount = 0;
-                    carboncount = 0;
-                    oxygencount = 0;
                     processtimer = 0;
-                    needsoxygen = 0;
-                    processed = false;
-                    System.out.println("Bloomery Reset");
+                    System.out.println("Bloomery Off and Reset");
+
                 }
 
+                if (processtimer < maxprocessedtime) {
+                    processtimer++;
+                }
+
+                if (processtimer == maxprocessedtime) {
+                    processed = true;
+                    System.out.println("Bloomery COMPLETED");
+                }
+
+
+                if (processed == true) {
+                    if (oreiron > 0) {
+                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.IRON_INGOT, oreiron * 2)));
+                        oreiron = 0;
+                        orecount = 0;
+                    }
+                    if (oregold > 0) {
+                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.GOLD_INGOT, oregold * 2)));
+                        oregold = 0;
+                        orecount = 0;
+                    }
+
+                    if (oreiron == 0 && oregold == 0) {
+                        activated = false;
+                        oreiron = 0;
+                        oregold = 0;
+                        orecount = 0;
+                        carboncount = 0;
+                        oxygencount = 0;
+                        processtimer = 0;
+                        needsoxygen = 0;
+                        processed = false;
+                        System.out.println("Bloomery Reset");
+                    }
+                }
             }
-
-
         }
-
-
-
-
-
     }
 
     @Override
@@ -289,15 +270,15 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        compound.getInteger("carboncount");
-        compound.getBoolean("activated");
-        compound.getInteger("oxygencount");
-        compound.getInteger("needsoxygen");
-        compound.getInteger("orecount");
-        compound.getInteger("iron");
-        compound.getInteger("gold");
-        compound.getInteger("timer");
-        compound.getBoolean("processed");
+        carboncount = compound.getInteger("carboncount");
+        activated = compound.getBoolean("activated");
+        oxygencount = compound.getInteger("oxygencount");
+        needsoxygen = compound.getInteger("needsoxygen");
+        orecount = compound.getInteger("orecount");
+        oreiron = compound.getInteger("iron");
+        oregold = compound.getInteger("gold");
+        processtimer = compound.getInteger("timer");
+        processed = compound.getBoolean("processed");
 
 
     }

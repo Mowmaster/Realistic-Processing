@@ -164,36 +164,44 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
     public boolean removeIron()
     {
-        if(oregold == 0)
+        if (activated == false)
         {
-            if(oreiron>0)
+            if(oregold == 0)
             {
-                world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.IRON_ORE)));
-                oreiron--;
-                orecount--;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-                return true;
+                if(oreiron>0)
+                {
+                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.IRON_ORE)));
+                    oreiron--;
+                    orecount--;
+                    markDirty();
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos,state,state,3);
+                    return true;
+                }
             }
         }
+
         return false;
     }
     public boolean removeGold()
     {
-        if(oreiron == 0)
+        if (activated == false)
         {
-            if(oregold>0)
+            if(oreiron == 0)
             {
-                world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.GOLD_ORE)));
-                oregold--;
-                orecount--;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-                return true;
+                if(oregold>0)
+                {
+                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.GOLD_ORE)));
+                    oregold--;
+                    orecount--;
+                    markDirty();
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos,state,state,3);
+                    return true;
+                }
             }
         }
+
         return false;
     }
 
@@ -226,6 +234,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if(!world.isRemote) {
 
             if (activated == true) {
+
+                System.out.println("Progress Timer Count :" + processtimer);
 
                 if(carboncount>0)
                 {
@@ -308,7 +318,6 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.writeUpdateTag(compound);
         compound.setInteger("orecount",orecount);
         compound.setInteger("needsoxygen", needsoxygen);
-        compound.setInteger("timer",processtimer);
         compound.setBoolean("processed",processed);
         return compound;
 
@@ -320,7 +329,6 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.readUpdateTag(compound);
         this.orecount = compound.getInteger("orecount");
         this.needsoxygen = compound.getInteger("needsoxygen");
-        this.processtimer = compound.getInteger("timer");
         this.processed = compound.getBoolean("processed");
     }
 
@@ -352,6 +360,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         tagCompound.setInteger("oxygencount",oxygencount);
         tagCompound.setInteger("iron", oreiron);
         tagCompound.setInteger("gold",oregold);
+        tagCompound.setInteger("timer",processtimer);
     }
     public void readUpdateTag(NBTTagCompound tagCompound)
     {
@@ -360,6 +369,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.oxygencount = tagCompound.getInteger("oxygencount");
         this.oreiron = tagCompound.getInteger("iron");
         this.oregold = tagCompound.getInteger("gold");
+        this.processtimer = tagCompound.getInteger("timer");
     }
 
 }

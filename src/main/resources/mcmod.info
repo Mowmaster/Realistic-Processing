@@ -1,14 +1,14 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "modid": "realisticprocessing",
+  "name": "Realistic Processing",
+  "description": "Process Ores in a Bloomery",
+  "version": "0.0.0.1",
+  "mcversion": "1.11.2",
   "url": "",
   "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
+  "authorList": ["Mowmaster"],
+  "credits": "#ModOff",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

@@ -1,5 +1,6 @@
 package com.mowmaster.rprocessing.configs;
 
+import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -13,12 +14,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
  */
 public class RealTab
 {
-    public static final CreativeTabs REAL_TAB = new CreativeTabs(0, "realTab")
+    public static final CreativeTabs REAL_TAB = new CreativeTabs("realTab")
     {
-        @SideOnly(Side.CLIENT)
+        @Override
         public ItemStack getTabIconItem()
         {
-            return new ItemStack(Items.IRON_INGOT);
+            return new ItemStack(BlockRegistry.clayBloomery);
         }
     };
 }

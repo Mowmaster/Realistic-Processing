@@ -3,6 +3,7 @@ package com.mowmaster.rprocessing;
 
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import com.mowmaster.rprocessing.proxies.CommonProxy;
+import com.mowmaster.rprocessing.recipes.VanillaCrafting;
 import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -33,7 +34,7 @@ public class RealisticProcessing
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-
+        VanillaCrafting.ICraftingRecipes();
     }
 
     @Mod.EventHandler

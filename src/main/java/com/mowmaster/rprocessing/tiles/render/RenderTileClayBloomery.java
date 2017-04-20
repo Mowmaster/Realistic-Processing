@@ -3,6 +3,7 @@ package com.mowmaster.rprocessing.tiles.render;
 import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -38,7 +39,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             }
         }
         GlStateManager.popMatrix();
-
+        {}
 
 
         GlStateManager.pushMatrix();
@@ -53,11 +54,11 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=0;j<te.oreiron && j<4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.1,0);
+                GlStateManager.translate(0,0.09,0);
             }
         }
         GlStateManager.popMatrix();
-
+        {}
         GlStateManager.pushMatrix();
         {
             GlStateManager.translate(x,y,z);
@@ -70,11 +71,11 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=4;j<te.oreiron && j>=4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.1,0);
+                GlStateManager.translate(0,0.09,0);
             }
         }
         GlStateManager.popMatrix();
-
+        {}
 
 
         GlStateManager.pushMatrix();
@@ -89,11 +90,11 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=0;j<te.oregold && j<4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.1,0);
+                GlStateManager.translate(0,0.09,0);
             }
         }
         GlStateManager.popMatrix();
-
+        {}
         GlStateManager.pushMatrix();
         {
             GlStateManager.translate(x,y,z);
@@ -106,27 +107,28 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=4;j<te.oregold && j>=4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.1,0);
+                GlStateManager.translate(0,0.09,0);
             }
         }
         GlStateManager.popMatrix();
-
+        {}
 
 
         GlStateManager.pushMatrix();
         {
             GlStateManager.translate(x,y,z);
             GlStateManager.translate(0,0,0);
-            GlStateManager.rotate(22.5f,0,1,0);
+            //GlStateManager.rotate(45f,0,1,0);
+            GlStateManager.translate(0.5,0,0.5);
             GlStateManager.translate(0,0,0);
-            GlStateManager.translate(0,0,0);
-            GlStateManager.scale(3.75,0.75,3.75);
+            GlStateManager.scale(3.75,0.25,3.75);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
             for(int j=0;j<te.processtimer;j++)
             {
-                Minecraft.getMinecraft().getRenderManager().doRenderEntity(LAVA,0,0,0,0f,0f,false);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Blocks.MAGMA), ItemCameraTransforms.TransformType.GROUND);
+                //Minecraft.getMinecraft().getRenderManager().doRenderEntity(LAVA,0,0,0,0f,0f,false);
                 GlStateManager.translate(0,0.00050,0);
             }
         }

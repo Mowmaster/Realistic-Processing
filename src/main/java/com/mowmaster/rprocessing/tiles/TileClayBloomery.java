@@ -1,28 +1,16 @@
 package com.mowmaster.rprocessing.tiles;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
-import net.minecraft.block.BlockFire;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Random;
 
 
 public class TileClayBloomery extends TileEntity implements ITickable
@@ -234,8 +222,6 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if(!world.isRemote) {
 
             if (activated == true) {
-
-                System.out.println("Progress Timer Count :" + processtimer);
 
                 if(carboncount>0)
                 {

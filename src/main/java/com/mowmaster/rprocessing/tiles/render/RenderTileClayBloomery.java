@@ -9,15 +9,15 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.Fluid;
+
 
 
 public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBloomery>
 {
     private static final EntityItem IRON = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.IRON_ORE));
     private static final EntityItem GOLD = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.GOLD_ORE));
-    private static final EntityItem COAL = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Items.COAL));
-    private static final EntityItem LAVA = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.MAGMA));
+    //private static final EntityItem COAL = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Items.COAL));
+    //private static final EntityItem LAVA = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.MAGMA));
 
     @Override
     public void renderTileEntityAt(TileClayBloomery te, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -28,14 +28,14 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             GlStateManager.translate(x,y,z);
             GlStateManager.translate(0,0,0);
             GlStateManager.rotate(90f,1,0,0);
-            GlStateManager.translate(0.3,-0.1,-0.2);
+            GlStateManager.translate(0.3,0.4,-0.2);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
             for(int j=0;j<te.carboncount;j++)
             {
-                Minecraft.getMinecraft().getRenderManager().doRenderEntity(COAL,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0,-0.1);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Items.COAL), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0,-0.075);
             }
         }
         GlStateManager.popMatrix();
@@ -54,7 +54,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=0;j<te.oreiron && j<4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.09,0);
+                GlStateManager.translate(0,0.095,0);
             }
         }
         GlStateManager.popMatrix();
@@ -71,7 +71,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=4;j<te.oreiron && j>=4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.09,0);
+                GlStateManager.translate(0,0.095,0);
             }
         }
         GlStateManager.popMatrix();
@@ -90,7 +90,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=0;j<te.oregold && j<4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.09,0);
+                GlStateManager.translate(0,0.095,0);
             }
         }
         GlStateManager.popMatrix();
@@ -107,7 +107,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=4;j<te.oregold && j>=4;j++)
             {
                 Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.09,0);
+                GlStateManager.translate(0,0.095,0);
             }
         }
         GlStateManager.popMatrix();

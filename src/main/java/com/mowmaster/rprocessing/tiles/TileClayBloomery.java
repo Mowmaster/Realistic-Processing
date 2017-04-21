@@ -15,21 +15,23 @@ import net.minecraft.util.ITickable;
 
 public class TileClayBloomery extends TileEntity implements ITickable
 {
-    public static int oxygencount=0;
-    public static int maxoxygen=1000; //because if 95 it can go up to 100
-    public static int needsoxygen = 0;
-    public static int maxneedsoxygen = 200;
-    public static int carboncount=0;
-    public static int maxcarbon=8;
-    public static int maxore=8;
-    public static int orecount=0;
-    public static int oreiron=0;
-    public static int oregold=0;
-    public static int processtimer = 0;
-    public static int maxprocessedtime = 6000;
+    public int oxygencount=0;
+    public int maxoxygen=1000; //because if 95 it can go up to 100
+    public int needsoxygen = 0;
+    public int maxneedsoxygen = 200;
+    public int carboncount=0;
+    public int maxcarbon=8;
+    public int maxore=8;
+    public int orecount=0;
+    public int oreiron=0;
+    public int oregold=0;
+    public int processtimer = 0;
+    public int maxprocessedtime = 6000;
 
-    public static boolean activated = false;
-    public static boolean processed = false;
+    public int activated = 0;
+	public int maxactivated =1;
+    public int processed = 0;
+	public int maxprocessed =1;
 
 
 
@@ -47,7 +49,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean removeCarbon()
     {
-        if (activated == false)
+        if (activated == 0)
         {
             if(oreiron ==0 && oregold ==0)
             {
@@ -72,9 +74,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
         {
             if(carboncount>=orecount)
             {
-                if(activated == false)
+                if(activated == 0)
                 {
-                    activated = true;
+                    activated = 1;
                     needsoxygen = 0;
                     markDirty();
                     IBlockState state = world.getBlockState(pos);
@@ -88,13 +90,16 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean deactivate()
     {
-        if(activated == true)
+        if(activated == 1)
         {
-            activated = false;
+			if(activated<maxactivated)
+			{
+            activated = 0;
             markDirty();
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos,state,state,3);
             return true;
+			}
         }
         return false;
     }
@@ -173,7 +178,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean removeGold()
     {
-        if (activated == false)
+        if (activated == 1)
         {
             if(oreiron == 0)
             {
@@ -196,7 +201,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (activated == true)
+        if (activated == 1)
         {
                 if (oxygencount >= 750) {
                     world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
@@ -221,7 +226,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
         if(!world.isRemote) {
 
-            if (activated == true) {
+            if (activated == 1) {
 
                 if(carboncount>0)
                 {
@@ -253,7 +258,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 }
 
                 if (needsoxygen == maxneedsoxygen) {
-                    activated = false;
+                    activated = 0;
                     processtimer = 0;
                     System.out.println("Bloomery Off and Reset");
 
@@ -264,12 +269,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 }
 
                 if (processtimer == maxprocessedtime) {
-                    processed = true;
+                    processed = 1;
                     System.out.println("Bloomery COMPLETED");
                 }
 
 
-                if (processed == true) {
+                if (processed == 1) {
                     if (oreiron > 0) {
                         world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.IRON_INGOT, oreiron * 2)));
                         oreiron = 0;
@@ -282,7 +287,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     }
 
                     if (oreiron == 0 && oregold == 0) {
-                        activated = false;
+                        activated = 1;
                         oreiron = 0;
                         oregold = 0;
                         orecount = 0;
@@ -290,7 +295,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         oxygencount = 0;
                         processtimer = 0;
                         needsoxygen = 0;
-                        processed = false;
+                        processed = 0;
                         System.out.println("Bloomery Reset");
                     }
                 }

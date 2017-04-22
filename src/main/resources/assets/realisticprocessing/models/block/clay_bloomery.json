@@ -1,4 +1,5 @@
 {
+    "parent": "block/cube_all",
 "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
 "textures": {
     "1": "realisticprocessing:blocks/bloomery_southwestcorner",

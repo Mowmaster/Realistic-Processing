@@ -16,8 +16,6 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
 {
     private static final EntityItem IRON = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.IRON_ORE));
     private static final EntityItem GOLD = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.GOLD_ORE));
-    //private static final EntityItem COAL = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Items.COAL));
-    //private static final EntityItem LAVA = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.MAGMA));
 
     @Override
     public void renderTileEntityAt(TileClayBloomery te, double x, double y, double z, float partialTicks, int destroyStage) {

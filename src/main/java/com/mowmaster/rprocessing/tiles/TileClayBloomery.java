@@ -11,6 +11,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 
 
 public class TileClayBloomery extends TileEntity implements ITickable
@@ -203,7 +204,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        System.out.println("Activated :" + activated);
+        //System.out.println("Activated :" + activated);
 
         if (activated == 1)
         {
@@ -250,6 +251,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
                 if (oxygencount > 0) {
                     oxygencount--;
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos,state,state,3);
                     //System.out.println("Oxygen Count :" + oxygencount);
 
                 }
@@ -262,19 +265,23 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 }
 
                 if (needsoxygen == maxneedsoxygen) {
-                    activated = 0;
+                    deactivate();
                     processtimer = 0;
-                    System.out.println("Bloomery Off and Reset");
+                    //System.out.println("Bloomery Off and Reset");
 
                 }
 
                 if (processtimer < maxprocessedtime) {
                     processtimer++;
+
+
                 }
 
                 if (processtimer == maxprocessedtime) {
                     processed = 1;
-                    System.out.println("Bloomery COMPLETED");
+                    IBlockState state = world.getBlockState(pos);
+                    world.notifyBlockUpdate(pos,state,state,3);
+                    //System.out.println("Bloomery COMPLETED");
                 }
 
 
@@ -291,7 +298,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     }
 
                     if (oreiron == 0 && oregold == 0) {
-                        activated = 0;
+                        deactivate();
                         oreiron = 0;
                         oregold = 0;
                         orecount = 0;
@@ -300,7 +307,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         processtimer = 0;
                         needsoxygen = 0;
                         processed = 0;
-                        System.out.println("Bloomery Reset");
+                        //System.out.println("Bloomery Reset");
                     }
                 }
             }
@@ -328,17 +335,17 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tagCompound = pkt.getNbtCompound();
-        this.readUpdateTag(tagCompound);
-    }
-
-    @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
         NBTTagCompound tagCompound = new NBTTagCompound();
         this.writeUpdateTag(tagCompound);
         return new SPacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
 
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+        NBTTagCompound tagCompound = pkt.getNbtCompound();
+        this.readUpdateTag(tagCompound);
     }
 
     @Override
@@ -357,6 +364,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         tagCompound.setInteger("gold",oregold);
         tagCompound.setInteger("timer",processtimer);
     }
+
     public void readUpdateTag(NBTTagCompound tagCompound)
     {
         this.carboncount = tagCompound.getInteger("carboncount");
@@ -366,5 +374,6 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.oregold = tagCompound.getInteger("gold");
         this.processtimer = tagCompound.getInteger("timer");
     }
+
 
 }

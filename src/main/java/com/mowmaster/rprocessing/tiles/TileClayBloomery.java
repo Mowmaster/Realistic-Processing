@@ -181,7 +181,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean removeGold()
     {
-        if (activated == 1)
+        if (activated == 0)
         {
             if(oreiron == 0)
             {

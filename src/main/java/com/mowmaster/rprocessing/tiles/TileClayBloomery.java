@@ -28,8 +28,14 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public int processtimer = 0;
     public int maxprocessedtime = 6000;
 
-    public boolean activated = false;
-    public boolean processed = false;
+    public int activated = 0;
+    public int maxactivated = 1;
+    public int processed = 0;
+    public int maxprocessed = 1;
+
+
+    //public static boolean activated = false;
+    //public static boolean processed = false;
 
 
 
@@ -48,7 +54,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean removeCarbon()
     {
-        if (activated == false)
+        if (activated == 0)
         {
             if(oreiron ==0 && oregold ==0)
             {
@@ -73,9 +79,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
         {
             if(carboncount>=orecount)
             {
-                if(activated == false)
+                if(activated == 0)
                 {
-                    activated = true;
+                    activated = 1;
                     needsoxygen = 0;
                     markDirty();
                     IBlockState state = world.getBlockState(pos);
@@ -89,9 +95,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean deactivate()
     {
-        if(activated == true)
+        if(activated == 1)
         {
-            activated = false;
+            activated = 0;
             markDirty();
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos,state,state,3);
@@ -153,7 +159,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
     public boolean removeIron()
     {
-        if (activated == false)
+        if (activated == 0)
         {
             if(oregold == 0)
             {
@@ -174,7 +180,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean removeGold()
     {
-        if (activated == true)
+        if (activated == 1)
         {
             if(oreiron == 0)
             {
@@ -197,7 +203,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (activated == true)
+        System.out.println("Activated :" + activated);
+
+        if (activated == 1)
         {
                 if (oxygencount >= 750) {
                     world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
@@ -222,7 +230,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
         if(!world.isRemote) {
 
-            if (activated == true) {
+            if (activated == 1) {
 
                 if(carboncount>0)
                 {
@@ -254,7 +262,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 }
 
                 if (needsoxygen == maxneedsoxygen) {
-                    activated = false;
+                    activated = 0;
                     processtimer = 0;
                     System.out.println("Bloomery Off and Reset");
 
@@ -265,12 +273,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 }
 
                 if (processtimer == maxprocessedtime) {
-                    processed = true;
+                    processed = 1;
                     System.out.println("Bloomery COMPLETED");
                 }
 
 
-                if (processed == true) {
+                if (processed == 1) {
                     if (oreiron > 0) {
                         world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.IRON_INGOT, oreiron * 2)));
                         oreiron = 0;
@@ -283,7 +291,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     }
 
                     if (oreiron == 0 && oregold == 0) {
-                        activated = false;
+                        activated = 0;
                         oreiron = 0;
                         oregold = 0;
                         orecount = 0;
@@ -291,7 +299,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         oxygencount = 0;
                         processtimer = 0;
                         needsoxygen = 0;
-                        processed = false;
+                        processed = 0;
                         System.out.println("Bloomery Reset");
                     }
                 }
@@ -305,7 +313,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.writeUpdateTag(compound);
         compound.setInteger("orecount",orecount);
         compound.setInteger("needsoxygen", needsoxygen);
-        compound.setBoolean("processed",processed);
+        compound.setInteger("processed",processed);
         return compound;
 
     }
@@ -316,7 +324,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.readUpdateTag(compound);
         this.orecount = compound.getInteger("orecount");
         this.needsoxygen = compound.getInteger("needsoxygen");
-        this.processed = compound.getBoolean("processed");
+        this.processed = compound.getInteger("processed");
     }
 
     @Override
@@ -343,7 +351,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public void writeUpdateTag(NBTTagCompound tagCompound)
     {
         tagCompound.setInteger("carboncount",carboncount);
-        tagCompound.setBoolean("activated",activated);
+        tagCompound.setInteger("activated",activated);
         tagCompound.setInteger("oxygencount",oxygencount);
         tagCompound.setInteger("iron", oreiron);
         tagCompound.setInteger("gold",oregold);
@@ -352,7 +360,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public void readUpdateTag(NBTTagCompound tagCompound)
     {
         this.carboncount = tagCompound.getInteger("carboncount");
-        this.activated = tagCompound.getBoolean("activated");
+        this.activated = tagCompound.getInteger("activated");
         this.oxygencount = tagCompound.getInteger("oxygencount");
         this.oreiron = tagCompound.getInteger("iron");
         this.oregold = tagCompound.getInteger("gold");

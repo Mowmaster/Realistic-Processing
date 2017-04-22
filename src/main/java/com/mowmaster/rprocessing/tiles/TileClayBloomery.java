@@ -28,10 +28,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public int processtimer = 0;
     public int maxprocessedtime = 6000;
 
-    public int activated = 0;
-	public int maxactivated =1;
-    public int processed = 0;
-	public int maxprocessed =1;
+    public boolean activated = false;
+    public boolean processed = false;
+
 
 
 
@@ -49,7 +48,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean removeCarbon()
     {
-        if (activated == 0)
+        if (activated == false)
         {
             if(oreiron ==0 && oregold ==0)
             {
@@ -74,9 +73,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
         {
             if(carboncount>=orecount)
             {
-                if(activated == 0)
+                if(activated == false)
                 {
-                    activated = 1;
+                    activated = true;
                     needsoxygen = 0;
                     markDirty();
                     IBlockState state = world.getBlockState(pos);
@@ -90,16 +89,13 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean deactivate()
     {
-        if(activated == 1)
+        if(activated == true)
         {
-			if(activated<maxactivated)
-			{
-            activated = 0;
+            activated = false;
             markDirty();
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos,state,state,3);
             return true;
-			}
         }
         return false;
     }
@@ -178,7 +174,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     }
     public boolean removeGold()
     {
-        if (activated == 1)
+        if (activated == true)
         {
             if(oreiron == 0)
             {
@@ -201,7 +197,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        if (activated == 1)
+        if (activated == true)
         {
                 if (oxygencount >= 750) {
                     world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
@@ -226,7 +222,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
         if(!world.isRemote) {
 
-            if (activated == 1) {
+            if (activated == true) {
 
                 if(carboncount>0)
                 {
@@ -258,7 +254,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 }
 
                 if (needsoxygen == maxneedsoxygen) {
-                    activated = 0;
+                    activated = false;
                     processtimer = 0;
                     System.out.println("Bloomery Off and Reset");
 
@@ -269,12 +265,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 }
 
                 if (processtimer == maxprocessedtime) {
-                    processed = 1;
+                    processed = true;
                     System.out.println("Bloomery COMPLETED");
                 }
 
 
-                if (processed == 1) {
+                if (processed == true) {
                     if (oreiron > 0) {
                         world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.IRON_INGOT, oreiron * 2)));
                         oreiron = 0;
@@ -287,7 +283,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     }
 
                     if (oreiron == 0 && oregold == 0) {
-                        activated = 1;
+                        activated = false;
                         oreiron = 0;
                         oregold = 0;
                         orecount = 0;
@@ -295,7 +291,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         oxygencount = 0;
                         processtimer = 0;
                         needsoxygen = 0;
-                        processed = 0;
+                        processed = false;
                         System.out.println("Bloomery Reset");
                     }
                 }

@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -39,6 +40,16 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
         this.setResistance(5);
 
 
+
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+        tooltip.add("Smelts Iron or Gold, fuel with Coal");
+        tooltip.add("Ignite with Flint and Steel");
+        tooltip.add("Blow air into it with a sugarcane after ignition");
     }
 
     @Override

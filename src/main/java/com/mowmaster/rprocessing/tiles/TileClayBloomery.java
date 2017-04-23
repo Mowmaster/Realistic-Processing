@@ -109,14 +109,14 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
     public boolean addOxygen()
     {
-            if(oxygencount<maxoxygen)
-            {
-                oxygencount += 200;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-                return true;
-            }
+        if(oxygencount<maxoxygen)
+        {
+            oxygencount += 200;
+            markDirty();
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos,state,state,3);
+            return true;
+        }
         return false;
     }
 
@@ -127,19 +127,19 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
     public boolean addIron()
     {
-    if(oregold == 0)
-    {
-        if(oreiron<maxore)
+        if(oregold == 0)
         {
-            oreiron++;
-            orecount++;
-            markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos,state,state,3);
-            return true;
+            if(oreiron<maxore)
+            {
+                oreiron++;
+                orecount++;
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
+                return true;
+            }
         }
-    }
-    return false;
+        return false;
     }
     public boolean addGold()
     {
@@ -208,25 +208,25 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
         if (activated == 1)
         {
-                if (oxygencount >= 750) {
-                    world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
-                }
-                if (oxygencount < 750 && oxygencount >= 400) {
-                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
-                    world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+            if (oxygencount >= 750) {
+                world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+            }
+            if (oxygencount < 750 && oxygencount >= 400) {
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
 
-                }
-                if (oxygencount < 400 && oxygencount >= 100) {
-                    world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                }
-                if (oxygencount < 100) {
-                    world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                }
+            }
+            if (oxygencount < 400 && oxygencount >= 100) {
+                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+            }
+            if (oxygencount < 100) {
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+            }
         }
 
         if(!world.isRemote) {

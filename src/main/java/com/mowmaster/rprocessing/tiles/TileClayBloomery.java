@@ -28,6 +28,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public int oregold=0;
     public int processtimer = 0;
     public int maxprocessedtime = 6000;
+    public int burntimer = 0;
+    public int tickercoal = 0;
 
     public int activated = 0;
     public int maxactivated = 1;
@@ -78,8 +80,6 @@ public class TileClayBloomery extends TileEntity implements ITickable
     {
         if(carboncount>0)
         {
-            if(carboncount>=orecount)
-            {
                 if(activated == 0)
                 {
                     activated = 1;
@@ -89,7 +89,6 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     world.notifyBlockUpdate(pos,state,state,3);
                     return true;
                 }
-            }
 
         }
         return false;
@@ -99,6 +98,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if(activated == 1)
         {
             activated = 0;
+            oxygencount = 0;
             markDirty();
             IBlockState state = world.getBlockState(pos);
             world.notifyBlockUpdate(pos,state,state,3);
@@ -109,14 +109,18 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
     public boolean addOxygen()
     {
-        if(oxygencount<maxoxygen)
+        if(activated == 1)
         {
-            oxygencount += 200;
-            markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos,state,state,3);
-            return true;
+            if(oxygencount<maxoxygen)
+            {
+                oxygencount += 200;
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -127,34 +131,48 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
     public boolean addIron()
     {
-        if(oregold == 0)
+        if(activated == 0)
         {
-            if(oreiron<maxore)
+            if(processtimer == 0)
             {
-                oreiron++;
-                orecount++;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-                return true;
+                if(oregold == 0)
+                {
+                    if(oreiron<maxore)
+                    {
+                        oreiron++;
+                        orecount++;
+                        markDirty();
+                        IBlockState state = world.getBlockState(pos);
+                        world.notifyBlockUpdate(pos,state,state,3);
+                        return true;
+                    }
+                }
             }
         }
+
         return false;
     }
     public boolean addGold()
     {
-        if(oreiron == 0)
+        if(activated == 0)
         {
-            if(oregold<maxore)
+            if(processtimer == 0)
             {
-                oregold++;
-                orecount++;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-                return true;
+                if(oreiron == 0)
+                {
+                    if(oregold<maxore)
+                    {
+                        oregold++;
+                        orecount++;
+                        markDirty();
+                        IBlockState state = world.getBlockState(pos);
+                        world.notifyBlockUpdate(pos,state,state,3);
+                        return true;
+                    }
+                }
             }
         }
+
         return false;
     }
 
@@ -162,17 +180,20 @@ public class TileClayBloomery extends TileEntity implements ITickable
     {
         if (activated == 0)
         {
-            if(oregold == 0)
+            if(processtimer == 0)
             {
-                if(oreiron>0)
+                if(oregold == 0)
                 {
-                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.IRON_ORE)));
-                    oreiron--;
-                    orecount--;
-                    markDirty();
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos,state,state,3);
-                    return true;
+                    if(oreiron>0)
+                    {
+                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.IRON_ORE)));
+                        oreiron--;
+                        orecount--;
+                        markDirty();
+                        IBlockState state = world.getBlockState(pos);
+                        world.notifyBlockUpdate(pos,state,state,3);
+                        return true;
+                    }
                 }
             }
         }
@@ -183,17 +204,20 @@ public class TileClayBloomery extends TileEntity implements ITickable
     {
         if (activated == 0)
         {
-            if(oreiron == 0)
+            if(processtimer == 0)
             {
-                if(oregold>0)
+                if(oreiron == 0)
                 {
-                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.GOLD_ORE)));
-                    oregold--;
-                    orecount--;
-                    markDirty();
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos,state,state,3);
-                    return true;
+                    if(oregold>0)
+                    {
+                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.GOLD_ORE)));
+                        oregold--;
+                        orecount--;
+                        markDirty();
+                        IBlockState state = world.getBlockState(pos);
+                        world.notifyBlockUpdate(pos,state,state,3);
+                        return true;
+                    }
                 }
             }
         }
@@ -201,11 +225,26 @@ public class TileClayBloomery extends TileEntity implements ITickable
         return false;
     }
 
+    public boolean finishedProcessing()
+    {
+        deactivate();
+        oreiron = 0;
+        oregold = 0;
+        orecount = 0;
+        carboncount = 0;
+        oxygencount = 0;
+        processtimer = 0;
+        needsoxygen = 0;
+        processed = 0;
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos,state,state,3);
+        return true;
+    }
+
     @Override
     public void update()
     {
         //System.out.println("Activated :" + activated);
-
         if (activated == 1)
         {
             if (oxygencount >= 750) {
@@ -232,58 +271,55 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if(!world.isRemote) {
 
             if (activated == 1) {
-
+                //uses carbon up as it works
                 if(carboncount>0)
                 {
-                    if(processtimer==1500)
+                    tickercoal++;
+                    if(orecount > 0)
                     {
-                        carboncount--;
+                        if(tickercoal>750)
+                        {
+                            tickercoal = 0;
+                            carboncount--;
+                        }
                     }
-                    if(processtimer==3000)
+
+                    if(orecount ==0)
                     {
-                        carboncount--;
-                    }
-                    if(processtimer==4500)
-                    {
-                        carboncount--;
-                    }
-                }
-
-                if (oxygencount > 0) {
-                    oxygencount--;
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos,state,state,3);
-                    //System.out.println("Oxygen Count :" + oxygencount);
-
-                }
-
-                if (oxygencount == 0) {
-                    if (needsoxygen < maxneedsoxygen) {
-                        needsoxygen++;
-                        //System.out.println("Oxygen Timer Count :" + needsoxygen);
+                        if(tickercoal>1500)
+                        {
+                            tickercoal = 0;
+                            carboncount--;
+                        }
                     }
                 }
 
-                if (needsoxygen == maxneedsoxygen) {
-                    deactivate();
-                    processtimer = 0;
-                    //System.out.println("Bloomery Off and Reset");
+                //if it runs out of Carbon
+                if(carboncount == 0) {deactivate();}
 
+                if(orecount > 0)
+                {
+                    if (oxygencount > 0) {
+                        oxygencount--;
+                        IBlockState state = world.getBlockState(pos);
+                        world.notifyBlockUpdate(pos,state,state,3);
+                        //System.out.println("Oxygen Count :" + oxygencount);
+
+                    }
+
+                    if (oxygencount == 0) {
+                        if (needsoxygen < maxneedsoxygen) {
+                            needsoxygen++;
+                            //System.out.println("Oxygen Timer Count :" + needsoxygen);
+                        }
+                    }
+                    // If it runs out of Oxygen
+                    if (needsoxygen == maxneedsoxygen) {deactivate();}
+                    //processing
+                    if (processtimer < maxprocessedtime) {processtimer++;}
+                    //finished processing
+                    if (processtimer == maxprocessedtime) {processed = 1;}
                 }
-
-                if (processtimer < maxprocessedtime) {
-                    processtimer++;
-
-
-                }
-
-                if (processtimer == maxprocessedtime) {
-                    processed = 1;
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos,state,state,3);
-                    //System.out.println("Bloomery COMPLETED");
-                }
-
 
                 if (processed == 1) {
                     if (oreiron > 0) {
@@ -298,19 +334,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     }
 
                     if (oreiron == 0 && oregold == 0) {
-                        deactivate();
-                        oreiron = 0;
-                        oregold = 0;
-                        orecount = 0;
-                        carboncount = 0;
-                        oxygencount = 0;
-                        processtimer = 0;
-                        needsoxygen = 0;
-                        processed = 0;
+                        finishedProcessing();
                         //System.out.println("Bloomery Reset");
                     }
                 }
             }
+
         }
     }
 
@@ -363,6 +392,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
         tagCompound.setInteger("iron", oreiron);
         tagCompound.setInteger("gold",oregold);
         tagCompound.setInteger("timer",processtimer);
+        tagCompound.setInteger("burntimer",burntimer);
+        tagCompound.setInteger("tickercoal",tickercoal);
     }
 
     public void readUpdateTag(NBTTagCompound tagCompound)
@@ -373,6 +404,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.oreiron = tagCompound.getInteger("iron");
         this.oregold = tagCompound.getInteger("gold");
         this.processtimer = tagCompound.getInteger("timer");
+        this.burntimer = tagCompound.getInteger("burntimer");
+        this.tickercoal = tagCompound.getInteger("tickercoal");
     }
 
 

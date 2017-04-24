@@ -26,7 +26,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             GlStateManager.translate(x,y,z);
             GlStateManager.translate(0,0,0);
             GlStateManager.rotate(90f,1,0,0);
-            GlStateManager.translate(0.3,0.4,-0.2);
+            GlStateManager.translate(0.3,0.5,-0.2);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
@@ -45,14 +45,15 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             GlStateManager.translate(x,y,z);
             GlStateManager.translate(0,0,0);
             GlStateManager.rotate(45f,0,1,0);
-            GlStateManager.translate(0,0,0.90);
+            GlStateManager.translate(0,0,1.0);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
             for(int j=0;j<te.oreiron && j<4;j++)
             {
-                Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.095,0);
+                //Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Blocks.IRON_ORE), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0.2,0);
             }
         }
         GlStateManager.popMatrix();
@@ -62,14 +63,15 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             GlStateManager.translate(x,y,z);
             GlStateManager.translate(0,0,0);
             GlStateManager.rotate(45f,0,1,0);
-            GlStateManager.translate(0.25,0,0.65);
+            GlStateManager.translate(0.25,0,0.75);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
             for(int j=4;j<te.oreiron && j>=4;j++)
             {
-                Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.095,0);
+                //Minecraft.getMinecraft().getRenderManager().doRenderEntity(IRON,0,0,0,0f,0f,false);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Blocks.IRON_ORE), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0.2,0);
             }
         }
         GlStateManager.popMatrix();
@@ -81,14 +83,15 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             GlStateManager.translate(x,y,z);
             GlStateManager.translate(0,0,0);
             GlStateManager.rotate(45f,0,1,0);
-            GlStateManager.translate(0,0,0.90);
+            GlStateManager.translate(0,0,1.0);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
             for(int j=0;j<te.oregold && j<4;j++)
             {
-                Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.095,0);
+                //Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Blocks.GOLD_ORE), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0.2,0);
             }
         }
         GlStateManager.popMatrix();
@@ -98,14 +101,15 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             GlStateManager.translate(x,y,z);
             GlStateManager.translate(0,0,0);
             GlStateManager.rotate(45f,0,1,0);
-            GlStateManager.translate(0.25,0,0.65);
+            GlStateManager.translate(0.25,0,0.75);
             GlStateManager.enableAlpha();
             GlStateManager.enableBlend();
             GlStateManager.enableLighting();
             for(int j=4;j<te.oregold && j>=4;j++)
             {
-                Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.095,0);
+                //Minecraft.getMinecraft().getRenderManager().doRenderEntity(GOLD,0,0,0,0f,0f,false);
+                Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Blocks.GOLD_ORE), ItemCameraTransforms.TransformType.GROUND);
+                GlStateManager.translate(0,0.2,0);
             }
         }
         GlStateManager.popMatrix();
@@ -126,8 +130,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             for(int j=0;j<te.processtimer;j++)
             {
                 Minecraft.getMinecraft().getRenderItem().renderItem(new ItemStack(Blocks.MAGMA), ItemCameraTransforms.TransformType.GROUND);
-                //Minecraft.getMinecraft().getRenderManager().doRenderEntity(LAVA,0,0,0,0f,0f,false);
-                GlStateManager.translate(0,0.00050,0);
+                GlStateManager.translate(0,0.0113,0);
             }
         }
         GlStateManager.popMatrix();

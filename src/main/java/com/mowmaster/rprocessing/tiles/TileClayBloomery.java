@@ -27,9 +27,10 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public int oreiron=0;
     public int oregold=0;
     public int processtimer = 0;
-    public int maxprocessedtime = 6000;
+    public int maxprocessedtime = 300;
     public int burntimer = 0;
     public int tickercoal = 0;
+    public int ticker20 = 0;
 
     public int activated = 0;
     public int maxactivated = 1;
@@ -277,7 +278,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     tickercoal++;
                     if(orecount > 0)
                     {
-                        if(tickercoal>750)
+                        if(tickercoal>800)
                         {
                             tickercoal = 0;
                             carboncount--;
@@ -286,7 +287,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
                     if(orecount ==0)
                     {
-                        if(tickercoal>1500)
+                        if(tickercoal>1600)
                         {
                             tickercoal = 0;
                             carboncount--;
@@ -316,7 +317,16 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     // If it runs out of Oxygen
                     if (needsoxygen == maxneedsoxygen) {deactivate();}
                     //processing
-                    if (processtimer < maxprocessedtime) {processtimer++;}
+                    if (processtimer < maxprocessedtime)
+                    {
+                        ticker20++;
+                        if(ticker20 > 20)
+                        {
+                            ticker20 = 0;
+                            processtimer++;
+                            //System.out.println(processtimer);
+                        }
+                    }
                     //finished processing
                     if (processtimer == maxprocessedtime) {processed = 1;}
                 }
@@ -392,6 +402,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         tagCompound.setInteger("iron", oreiron);
         tagCompound.setInteger("gold",oregold);
         tagCompound.setInteger("timer",processtimer);
+        tagCompound.setInteger("timer20",ticker20);
         tagCompound.setInteger("burntimer",burntimer);
         tagCompound.setInteger("tickercoal",tickercoal);
     }
@@ -404,6 +415,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.oreiron = tagCompound.getInteger("iron");
         this.oregold = tagCompound.getInteger("gold");
         this.processtimer = tagCompound.getInteger("timer");
+        this.ticker20 = tagCompound.getInteger("timer20");
         this.burntimer = tagCompound.getInteger("burntimer");
         this.tickercoal = tagCompound.getInteger("tickercoal");
     }

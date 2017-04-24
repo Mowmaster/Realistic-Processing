@@ -81,15 +81,15 @@ public class TileClayBloomery extends TileEntity implements ITickable
     {
         if(carboncount>0)
         {
-                if(activated == 0)
-                {
-                    activated = 1;
-                    needsoxygen = 0;
-                    markDirty();
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos,state,state,3);
-                    return true;
-                }
+            if(activated == 0)
+            {
+                activated = 1;
+                needsoxygen = 0;
+                markDirty();
+                IBlockState state = world.getBlockState(pos);
+                world.notifyBlockUpdate(pos,state,state,3);
+                return true;
+            }
 
         }
         return false;

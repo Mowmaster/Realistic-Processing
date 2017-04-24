@@ -7,7 +7,7 @@ public class References
 {
     public static final String MODID = "realisticprocessing";
     public static final String MODNAME = "Realistic Processing";
-    public static final String VERSION = "0.0.0.4";
+    public static final String VERSION = "0.0.0.5";
 
     public static final String CLIENT_SIDE = "com.mowmaster.rprocessing.proxies.ClientProxy";
     public static final String SERVER_SIDE = "com.mowmaster.rprocessing.proxies.CommonProxy";

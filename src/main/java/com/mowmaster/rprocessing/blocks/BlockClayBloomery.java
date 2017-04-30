@@ -84,7 +84,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                 if((playerIn.getHeldItem(hand) != null))
                 {
                     if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Blocks.IRON_ORE))) {
-                        if(bloom.addIron())
+                        if(bloom.addOre(new ItemStack(Blocks.IRON_ORE)))
                         {
                             //playerIn.sendMessage(new TextComponentString("You are adding Iron Ore"));
                             playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are adding Iron Ore"),true);
@@ -94,30 +94,22 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                 }
                 if(playerIn.isSneaking())
                 {
-                    if(bloom.removeIron())
+                    if(bloom.removeOre())
                     {
                         //playerIn.sendMessage(new TextComponentString("You are removing Iron Ore"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are removing Iron Ore"),true);
+                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are removing Ore"),true);
                     }
                 }
 
                 if((playerIn.getHeldItem(hand) != null))
                 {
                     if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Blocks.GOLD_ORE))) {
-                        if(bloom.addGold())
+                        if(bloom.addOre(new ItemStack(Blocks.GOLD_ORE)))
                         {
                             //playerIn.sendMessage(new TextComponentString("You are adding Gold Ore"));
                             playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GOLD +"You are adding Gold Ore"),true);
                             playerIn.getHeldItem(hand).shrink(1);
                         }
-                    }
-                }
-                if(playerIn.isSneaking())
-                {
-                    if(bloom.removeGold())
-                    {
-                        //playerIn.sendMessage(new TextComponentString("You are removing Gold Ore"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GOLD +"You are removing Gold Ore"),true);
                     }
                 }
 

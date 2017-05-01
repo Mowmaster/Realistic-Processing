@@ -2,6 +2,7 @@ package com.mowmaster.rprocessing;
 
 
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
+import com.mowmaster.rprocessing.configs.RealConfig;
 import com.mowmaster.rprocessing.proxies.CommonProxy;
 import com.mowmaster.rprocessing.recipes.VanillaCrafting;
 import com.mowmaster.rprocessing.reference.References;
@@ -11,6 +12,8 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+
+import java.io.File;
 
 @Mod(modid = References.MODID, name = References.MODNAME, version = References.VERSION)
 public class RealisticProcessing
@@ -22,9 +25,16 @@ public class RealisticProcessing
     public static CommonProxy proxy;
 
 
+    public static File configFile;
+    public static File getConfigFile(){return configFile;}
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        configFile = new File(event.getModConfigurationDirectory() + "/" + References.MODID);
+        configFile.mkdirs();
+        RealConfig.InitConfig(new File(configFile.getPath(), References.MODID + ".cfg"));
+
         BlockRegistry.init();
         BlockRegistry.register();
         proxy.preInit();

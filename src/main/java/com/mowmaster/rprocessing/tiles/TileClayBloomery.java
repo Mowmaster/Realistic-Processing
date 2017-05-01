@@ -12,6 +12,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
+
+import static com.mowmaster.rprocessing.configs.RealConfig.*;
 
 
 public class TileClayBloomery extends TileEntity implements ITickable
@@ -27,10 +30,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public int oreiron=0;
     public int oregold=0;
     public int processtimer = 0;
-    public int maxprocessedtime = 300;
+    public int maxprocessedtime = 300;//seconds
     public int burntimer = 0;
     public int tickercoal = 0;
     public int ticker20 = 0;
+    public int tickerO2 = 0;
+
 
     public int activated = 0;
     public int maxactivated = 1;
@@ -269,44 +274,27 @@ public class TileClayBloomery extends TileEntity implements ITickable
             }
         }
 
+
         if(!world.isRemote) {
 
             if (activated == 1) {
-                //uses carbon up as it works
-                if(carboncount>0)
-                {
-                    tickercoal++;
-                    if(orecount > 0)
-                    {
-                        if(tickercoal>800)
-                        {
-                            tickercoal = 0;
-                            carboncount--;
-                        }
-                    }
-
-                    if(orecount ==0)
-                    {
-                        if(tickercoal>1600)
-                        {
-                            tickercoal = 0;
-                            carboncount--;
-                        }
-                    }
-                }
-
                 //if it runs out of Carbon
                 if(carboncount == 0) {deactivate();}
 
                 if(orecount > 0)
                 {
-                    if (oxygencount > 0) {
-                        oxygencount--;
-                        IBlockState state = world.getBlockState(pos);
-                        world.notifyBlockUpdate(pos,state,state,3);
-                        //System.out.println("Oxygen Count :" + oxygencount);
-
+                    tickerO2++;
+                    if(tickerO2 > bloomeryOxygenTR)
+                    {
+                        tickerO2 = 0;
+                        if (oxygencount > 0) {
+                            oxygencount--;
+                            IBlockState state = world.getBlockState(pos);
+                            world.notifyBlockUpdate(pos,state,state,3);
+                            //System.out.println("Oxygen Count :" + oxygencount);
+                        }
                     }
+
 
                     if (oxygencount == 0) {
                         if (needsoxygen < maxneedsoxygen) {
@@ -324,6 +312,34 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         {
                             ticker20 = 0;
                             processtimer++;
+
+                            //uses carbon up as it works
+                            if(carboncount>0)
+                            {
+                                tickercoal++;
+                                if(orecount > 0)
+                                {
+                                    if(bloomeryCoalCR > maxprocessedtime)
+                                        throw new RuntimeException(this.getClass() + "Coal Consumption Rate Cannot be more then Processing Time");
+                                    else
+                                    {
+                                        if(tickercoal>bloomeryCoalCR)
+                                        {
+                                            tickercoal = 0;
+                                            carboncount--;
+                                        }
+                                    }
+                                }
+
+                                if(orecount ==0)
+                                {
+                                    if(tickercoal>bloomeryCoalAstheticCR)
+                                    {
+                                        tickercoal = 0;
+                                        carboncount--;
+                                    }
+                                }
+                            }
                             //System.out.println(processtimer);
                         }
                     }
@@ -403,6 +419,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         tagCompound.setInteger("gold",oregold);
         tagCompound.setInteger("timer",processtimer);
         tagCompound.setInteger("timer20",ticker20);
+        tagCompound.setInteger("timerO2",tickerO2);
         tagCompound.setInteger("burntimer",burntimer);
         tagCompound.setInteger("tickercoal",tickercoal);
     }
@@ -416,6 +433,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.oregold = tagCompound.getInteger("gold");
         this.processtimer = tagCompound.getInteger("timer");
         this.ticker20 = tagCompound.getInteger("timer20");
+        this.tickerO2 = tagCompound.getInteger("timerO2");
         this.burntimer = tagCompound.getInteger("burntimer");
         this.tickercoal = tagCompound.getInteger("tickercoal");
     }

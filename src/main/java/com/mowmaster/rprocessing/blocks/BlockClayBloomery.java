@@ -10,6 +10,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -54,7 +55,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ)
     {
         if(!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -67,8 +68,8 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                         if(bloom.addCarbon())
                         {
                             //playerIn.sendMessage(new TextComponentString("You are adding Carbon"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"You are adding Carbon"),true);
-                            playerIn.getHeldItem(hand).shrink(1);
+                            playerIn.addChatMessage(new TextComponentString(TextFormatting.WHITE +"You are adding Carbon"));
+                            playerIn.getHeldItem(hand).stackSize--;
                         }
                     }
                 }
@@ -77,7 +78,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                     if(bloom.removeCarbon())
                     {
                         //playerIn.sendMessage(new TextComponentString("You are removing Carbon"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"You are removing Carbon"),true);
+                        playerIn.addChatMessage(new TextComponentString(TextFormatting.WHITE +"You are removing Carbon"));
                     }
                 }
 
@@ -87,8 +88,8 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                         if(bloom.addIron())
                         {
                             //playerIn.sendMessage(new TextComponentString("You are adding Iron Ore"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are adding Iron Ore"),true);
-                            playerIn.getHeldItem(hand).shrink(1);
+                            playerIn.addChatMessage(new TextComponentString(TextFormatting.GRAY +"You are adding Iron Ore"));
+                            playerIn.getHeldItem(hand).stackSize--;
                         }
                     }
                 }
@@ -97,7 +98,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                     if(bloom.removeIron())
                     {
                         //playerIn.sendMessage(new TextComponentString("You are removing Iron Ore"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are removing Iron Ore"),true);
+                        playerIn.addChatMessage(new TextComponentString(TextFormatting.GRAY +"You are removing Iron Ore"));
                     }
                 }
 
@@ -107,8 +108,8 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                         if(bloom.addGold())
                         {
                             //playerIn.sendMessage(new TextComponentString("You are adding Gold Ore"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GOLD +"You are adding Gold Ore"),true);
-                            playerIn.getHeldItem(hand).shrink(1);
+                            playerIn.addChatMessage(new TextComponentString(TextFormatting.GOLD +"You are adding Gold Ore"));
+                            playerIn.getHeldItem(hand).stackSize--;
                         }
                     }
                 }
@@ -117,7 +118,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                     if(bloom.removeGold())
                     {
                         //playerIn.sendMessage(new TextComponentString("You are removing Gold Ore"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GOLD +"You are removing Gold Ore"),true);
+                        playerIn.addChatMessage(new TextComponentString(TextFormatting.GOLD +"You are removing Gold Ore"));
                     }
                 }
 
@@ -125,24 +126,27 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
 
                 if((playerIn.getHeldItem(hand) != null))
                 {
-                    if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.FLINT_AND_STEEL)))
-                    {
-                        //ItemStack itemstack = playerIn.getHeldItem(hand);
-                        if(bloom.activate())
-                        {
-                            //playerIn.sendMessage(new TextComponentString("You have Lit the Bloomery"));
-                            //itemstack.damageItem(1, playerIn);
-                            playerIn.sendStatusMessage(new TextComponentSelector(TextFormatting.YELLOW + "You have Lit the Bloomery"),true);
-                            worldIn.playSound(playerIn,pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 0.8F);
-                        }
-                    }
+                 if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.FLINT_AND_STEEL)))
+                 {
+                     if(bloom.activate())
+                     {
+                         //Item takes damage in survival
+                         playerIn.getHeldItem(hand).damageItem(1,playerIn);
+                         playerIn.addChatMessage(new TextComponentSelector(TextFormatting.YELLOW + "You have Lit the Bloomery"));
+                         //worldIn.playSound(playerIn,pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 0.8F);
+                     }
+                 }
 
                     if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.WATER_BUCKET)))
                     {
                         if(bloom.deactivate())
                         {
                             //playerIn.sendMessage(new TextComponentString("You have put out the Bloomery"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.BLUE + "You have put out the Bloomery"),true);
+                            if (!playerIn.capabilities.isCreativeMode)
+                            {
+                                playerIn.setHeldItem(hand, new ItemStack(Items.BUCKET));
+                            }
+                            playerIn.addChatMessage(new TextComponentString(TextFormatting.BLUE + "You have put out the Bloomery"));
                         }
                     }
                 }
@@ -155,7 +159,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                         {
                             bloom.resetNeedsOxygen();
                             //playerIn.sendMessage(new TextComponentString("You have added Oxygen to the Bloomery"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.AQUA + "You have added Oxygen to the Bloomery"),true);
+                            playerIn.addChatMessage(new TextComponentString(TextFormatting.AQUA + "You have added Oxygen to the Bloomery"));
                         }
                     }
                 }

@@ -14,8 +14,8 @@ import net.minecraft.item.ItemStack;
 
 public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBloomery>
 {
-    private static final EntityItem IRON = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.IRON_ORE));
-    private static final EntityItem GOLD = new EntityItem(Minecraft.getMinecraft().world,0,0,0,new ItemStack(Blocks.GOLD_ORE));
+    private static final EntityItem IRON = new EntityItem(Minecraft.getMinecraft().theWorld,0,0,0,new ItemStack(Blocks.IRON_ORE));
+    private static final EntityItem GOLD = new EntityItem(Minecraft.getMinecraft().theWorld,0,0,0,new ItemStack(Blocks.GOLD_ORE));
 
     @Override
     public void renderTileEntityAt(TileClayBloomery te, double x, double y, double z, float partialTicks, int destroyStage) {

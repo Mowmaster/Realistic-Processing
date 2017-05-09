@@ -11,8 +11,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 
 import static com.mowmaster.rprocessing.configs.RealConfig.*;
 
@@ -55,8 +53,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
         {
             carboncount++;
             markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos,state,state,3);
+            IBlockState state = worldObj.getBlockState(pos);
+            worldObj.notifyBlockUpdate(pos,state,state,3);
             return true;
         }
         return false;
@@ -69,11 +67,11 @@ public class TileClayBloomery extends TileEntity implements ITickable
             {
                 if(carboncount>0)
                 {
-                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL)));
+                    worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL)));
                     carboncount--;
                     markDirty();
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos,state,state,3);
+                    IBlockState state = worldObj.getBlockState(pos);
+                    worldObj.notifyBlockUpdate(pos,state,state,3);
                     return true;
                 }
             }
@@ -91,8 +89,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 activated = 1;
                 needsoxygen = 0;
                 markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
+                IBlockState state = worldObj.getBlockState(pos);
+                worldObj.notifyBlockUpdate(pos,state,state,3);
                 return true;
             }
 
@@ -106,8 +104,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
             activated = 0;
             oxygencount = 0;
             markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos,state,state,3);
+            IBlockState state = worldObj.getBlockState(pos);
+            worldObj.notifyBlockUpdate(pos,state,state,3);
             return true;
         }
         return false;
@@ -121,8 +119,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
             {
                 oxygencount += 200;
                 markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
+                IBlockState state = worldObj.getBlockState(pos);
+                worldObj.notifyBlockUpdate(pos,state,state,3);
                 return true;
             }
         }
@@ -148,8 +146,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         oreiron++;
                         orecount++;
                         markDirty();
-                        IBlockState state = world.getBlockState(pos);
-                        world.notifyBlockUpdate(pos,state,state,3);
+                        IBlockState state = worldObj.getBlockState(pos);
+                        worldObj.notifyBlockUpdate(pos,state,state,3);
                         return true;
                     }
                 }
@@ -171,8 +169,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         oregold++;
                         orecount++;
                         markDirty();
-                        IBlockState state = world.getBlockState(pos);
-                        world.notifyBlockUpdate(pos,state,state,3);
+                        IBlockState state = worldObj.getBlockState(pos);
+                        worldObj.notifyBlockUpdate(pos,state,state,3);
                         return true;
                     }
                 }
@@ -192,12 +190,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 {
                     if(oreiron>0)
                     {
-                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.IRON_ORE)));
+                        worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.IRON_ORE)));
                         oreiron--;
                         orecount--;
                         markDirty();
-                        IBlockState state = world.getBlockState(pos);
-                        world.notifyBlockUpdate(pos,state,state,3);
+                        IBlockState state = worldObj.getBlockState(pos);
+                        worldObj.notifyBlockUpdate(pos,state,state,3);
                         return true;
                     }
                 }
@@ -216,12 +214,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
                 {
                     if(oregold>0)
                     {
-                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.GOLD_ORE)));
+                        worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Blocks.GOLD_ORE)));
                         oregold--;
                         orecount--;
                         markDirty();
-                        IBlockState state = world.getBlockState(pos);
-                        world.notifyBlockUpdate(pos,state,state,3);
+                        IBlockState state = worldObj.getBlockState(pos);
+                        worldObj.notifyBlockUpdate(pos,state,state,3);
                         return true;
                     }
                 }
@@ -242,8 +240,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
         processtimer = 0;
         needsoxygen = 0;
         processed = 0;
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos,state,state,3);
+        IBlockState state = worldObj.getBlockState(pos);
+        worldObj.notifyBlockUpdate(pos,state,state,3);
         return true;
     }
 
@@ -254,28 +252,28 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if (activated == 1)
         {
             if (oxygencount >= 750) {
-                world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
             }
             if (oxygencount < 750 && oxygencount >= 400) {
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
 
             }
             if (oxygencount < 400 && oxygencount >= 100) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
             }
             if (oxygencount < 100) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                worldObj.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
             }
         }
 
 
-        if(!world.isRemote) {
+        if(!worldObj.isRemote) {
 
             if (activated == 1) {
                 //if it runs out of Carbon
@@ -289,8 +287,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
                         tickerO2 = 0;
                         if (oxygencount > 0) {
                             oxygencount--;
-                            IBlockState state = world.getBlockState(pos);
-                            world.notifyBlockUpdate(pos,state,state,3);
+                            IBlockState state = worldObj.getBlockState(pos);
+                            worldObj.notifyBlockUpdate(pos,state,state,3);
                             //System.out.println("Oxygen Count :" + oxygencount);
                         }
                     }
@@ -349,12 +347,12 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
                 if (processed == 1) {
                     if (oreiron > 0) {
-                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.IRON_INGOT, oreiron * 2)));
+                        worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.IRON_INGOT, oreiron * 2)));
                         oreiron = 0;
                         orecount = 0;
                     }
                     if (oregold > 0) {
-                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.GOLD_INGOT, oregold * 2)));
+                        worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, new ItemStack(Items.GOLD_INGOT, oregold * 2)));
                         oregold = 0;
                         orecount = 0;
                     }

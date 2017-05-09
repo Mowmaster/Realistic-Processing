@@ -2,6 +2,8 @@ package com.mowmaster.rprocessing.configs;
 
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
@@ -12,9 +14,9 @@ public class RealTab
     public static final CreativeTabs REAL_TAB = new CreativeTabs("realTab")
     {
         @Override
-        public ItemStack getTabIconItem()
+        public Item getTabIconItem()
         {
-            return new ItemStack(BlockRegistry.clayBloomery);
+            return Item.getItemFromBlock(BlockRegistry.clayBloomery);
         }
     };
 }

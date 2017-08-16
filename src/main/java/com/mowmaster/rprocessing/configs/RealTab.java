@@ -14,7 +14,7 @@ public class RealTab
         @Override
         public ItemStack getTabIconItem()
         {
-            return new ItemStack(BlockRegistry.clayBloomery);
+            return new ItemStack(BlockRegistry.claybloomery);
         }
     };
 }

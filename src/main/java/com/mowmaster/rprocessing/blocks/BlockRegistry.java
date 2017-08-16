@@ -1,5 +1,7 @@
 package com.mowmaster.rprocessing.blocks;
 
+import com.mowmaster.rprocessing.blocks.item.ItemBlockOre;
+import com.mowmaster.rprocessing.enums.EnumBlock;
 import com.mowmaster.rprocessing.reference.References;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -7,40 +9,61 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
-/**
- * Created by KingMowmaster on 4/18/2017.
- */
+
 public class BlockRegistry
 {
-    public static Block clayBloomery;
+    public static Block claybloomery;
+    public static Block formedunfiredbloomery;
+    public static Block claymorterblock;
+    public static Block unfiredbloomery;
 
-    public static void init()
-    {
-        clayBloomery = new BlockClayBloomery("clayBloomery","clayBloomery");
+
+    public static void init() {
+
+        claybloomery = new BlockClayBloomery("claybloomery", "claybloomery");
+        formedunfiredbloomery = new BlockBasic("formedunfiredbloomery","formedunfiredbloomery");
+        claymorterblock = new BlockClayMorter("claymorterblock");
+        unfiredbloomery = new BlockUnfiredBloomery("unfiredbloomery");
+
     }
 
     public static void register()
     {
-        registerBlock(clayBloomery);
+
+        registerBlock(claybloomery);
+        registerBlock(formedunfiredbloomery);
+        registerBlock(claymorterblock, new ItemBlockOre(claymorterblock));
+        registerBlock(unfiredbloomery,new ItemBlockOre(unfiredbloomery));
     }
 
     public static void registerRenders()
     {
-        registerRender(clayBloomery);
+        registerRender(claybloomery);
+        registerRender(formedunfiredbloomery);
+        for (int i = 0; i < EnumBlock.ClayMorterBlock.values().length; i++)
+        {
+            registerRender(claymorterblock,i,"claymorterblock_" + EnumBlock.ClayMorterBlock.values()[i].getName());
+        }
+
+        for (int i = 0; i < EnumBlock.UnfiredBloomeryBlock.values().length; i++)
+        {
+            registerRender(unfiredbloomery,i,"unfiredbloomery_" + EnumBlock.UnfiredBloomeryBlock.values()[i].getName());
+        }
     }
 
     public static void registerBlock(Block block)
     {
-        GameRegistry.register(block);
-        GameRegistry.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
+        ForgeRegistries.BLOCKS.register(block);
+        ForgeRegistries.ITEMS.register(new ItemBlock(block).setRegistryName(block.getRegistryName()));
     }
 
     public static void registerBlock(Block block, ItemBlock itemBlock)
     {
-        GameRegistry.register(block);
-        GameRegistry.register(itemBlock.setRegistryName(block.getRegistryName()));
+
+        ForgeRegistries.BLOCKS.register(block);
+        ForgeRegistries.ITEMS.register(itemBlock.setRegistryName(block.getRegistryName()));
     }
 
     //Regular Block regRender
@@ -50,8 +73,28 @@ public class BlockRegistry
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(References.MODID, block.getUnlocalizedName().substring(5)), "inventory"));
     }
 
+    //Special Package for Crystal Item Renders
+    public static void registerRenderCrystal(Block block)
+    {
+        //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID, block.getUnlocalizedName().substring(5),"inventory")));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(References.MODID,"crystals/" + block.getUnlocalizedName().substring(5)), "inventory"));
+    }
+    //Special Package for Crystal Item Renders
+    public static void registerRenderLog(Block block)
+    {
+        //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID, block.getUnlocalizedName().substring(5),"inventory")));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(References.MODID,"logs/" + block.getUnlocalizedName().substring(5)), "inventory"));
+    }
+    //Special Package for Ancient Item Renders
+    public static void registerRenderAncient(Block block)
+    {
+        //ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(Reference.MODID, block.getUnlocalizedName().substring(5),"inventory")));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0, new ModelResourceLocation(new ResourceLocation(References.MODID,"ancient/" + block.getUnlocalizedName().substring(5)), "inventory"));
+    }
+
     public static void registerRender(Block block, int meta, String fileName)
     {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), meta, new ModelResourceLocation(new ResourceLocation(References.MODID, fileName), "inventory"));
     }
+
 }

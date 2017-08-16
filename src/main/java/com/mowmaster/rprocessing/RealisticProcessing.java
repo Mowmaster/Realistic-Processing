@@ -4,9 +4,9 @@ package com.mowmaster.rprocessing;
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import com.mowmaster.rprocessing.configs.RealConfig;
 import com.mowmaster.rprocessing.proxies.CommonProxy;
-import com.mowmaster.rprocessing.recipes.VanillaCrafting;
 import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileRegistry;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -35,7 +35,7 @@ public class RealisticProcessing
         configFile.mkdirs();
         RealConfig.InitConfig(new File(configFile.getPath(), References.MODID + ".cfg"));
 
-
+        BlockRegistry.init();
         BlockRegistry.register();
         proxy.preInit();
         TileRegistry.init();
@@ -45,7 +45,8 @@ public class RealisticProcessing
     @Mod.EventHandler
     public void init(FMLInitializationEvent event)
     {
-        VanillaCrafting.ICraftingRecipes();
+        proxy.init();
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     @Mod.EventHandler

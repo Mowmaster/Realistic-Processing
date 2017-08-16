@@ -1,5 +1,6 @@
 package com.mowmaster.rprocessing.tiles;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
@@ -50,6 +51,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public int maxprocessed = 1;
 
     public List<ItemStack> orelist = new ArrayList<>();
+    public int oreiron = 0;
+    public int oregold = 0;
 
 
     //public static boolean activated = false;
@@ -88,6 +91,13 @@ public class TileClayBloomery extends TileEntity implements ITickable
             }
         }
         return false;
+    }
+
+    public boolean addIron(){
+        return true;
+    }
+    public boolean removeIron(){
+        return true;
     }
 
     public boolean activate()

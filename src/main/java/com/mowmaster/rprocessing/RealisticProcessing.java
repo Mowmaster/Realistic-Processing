@@ -35,9 +35,10 @@ public class RealisticProcessing
         configFile.mkdirs();
         RealConfig.InitConfig(new File(configFile.getPath(), References.MODID + ".cfg"));
 
-        BlockRegistry.init();
+
         BlockRegistry.register();
         proxy.preInit();
+        TileRegistry.init();
         TileRegistry.registerTile();
     }
 

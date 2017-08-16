@@ -21,6 +21,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
     public void renderTileEntityAt(TileClayBloomery te, double x, double y, double z, float partialTicks, int destroyStage) {
         super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
 
+
         GlStateManager.pushMatrix();
         {
             GlStateManager.translate(x,y,z);

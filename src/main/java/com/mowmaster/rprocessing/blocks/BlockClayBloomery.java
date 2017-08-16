@@ -103,28 +103,6 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
 
                 if((playerIn.getHeldItem(hand) != null))
                 {
-                    if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Blocks.GOLD_ORE))) {
-                        if(bloom.addGold())
-                        {
-                            //playerIn.sendMessage(new TextComponentString("You are adding Gold Ore"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GOLD +"You are adding Gold Ore"),true);
-                            playerIn.getHeldItem(hand).shrink(1);
-                        }
-                    }
-                }
-                if(playerIn.isSneaking())
-                {
-                    if(bloom.removeGold())
-                    {
-                        //playerIn.sendMessage(new TextComponentString("You are removing Gold Ore"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GOLD +"You are removing Gold Ore"),true);
-                    }
-                }
-
-
-
-                if((playerIn.getHeldItem(hand) != null))
-                {
                     if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.FLINT_AND_STEEL)))
                     {
                         //ItemStack itemstack = playerIn.getHeldItem(hand);

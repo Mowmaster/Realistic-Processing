@@ -216,12 +216,17 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
                         if (!playerIn.isCreative()) {
                             playerIn.getHeldItem(hand).shrink(1);
                         }
-                        worldIn.setBlockState(pos, BlockRegistry.formedunfiredbloomery.getDefaultState());
+                        worldIn.setBlockState(pos, BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB16));
                     }
                 }
 
 
-            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.IRON_BARS)))
+            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.ACACIA_FENCE)) ||
+                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.BIRCH_FENCE)) ||
+                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.DARK_OAK_FENCE)) ||
+                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.JUNGLE_FENCE)) ||
+                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.OAK_FENCE)) ||
+                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.SPRUCE_FENCE)))
             {
                 if (state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB10))) {
                     if (!playerIn.isCreative()) {

@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 public class BlockRegistry
 {
     public static Block claybloomery;
-    public static Block formedunfiredbloomery;
+    //public static Block formedunfiredbloomery;
     public static Block claymorterblock;
     public static Block unfiredbloomery;
 
@@ -23,7 +23,7 @@ public class BlockRegistry
     public static void init() {
 
         claybloomery = new BlockClayBloomery("claybloomery", "claybloomery");
-        formedunfiredbloomery = new BlockBasic("formedunfiredbloomery","formedunfiredbloomery");
+        //formedunfiredbloomery = new BlockBasic("formedunfiredbloomery","formedunfiredbloomery");
         claymorterblock = new BlockClayMorter("claymorterblock");
         unfiredbloomery = new BlockUnfiredBloomery("unfiredbloomery");
 
@@ -33,7 +33,7 @@ public class BlockRegistry
     {
 
         registerBlock(claybloomery);
-        registerBlock(formedunfiredbloomery);
+        //registerBlock(formedunfiredbloomery);
         registerBlock(claymorterblock, new ItemBlockOre(claymorterblock));
         registerBlock(unfiredbloomery,new ItemBlockOre(unfiredbloomery));
     }
@@ -41,15 +41,15 @@ public class BlockRegistry
     public static void registerRenders()
     {
         registerRender(claybloomery);
-        registerRender(formedunfiredbloomery);
+        //registerRender(formedunfiredbloomery);
         for (int i = 0; i < EnumBlock.ClayMorterBlock.values().length; i++)
         {
-            registerRender(claymorterblock,i,"claymorterblock_" + EnumBlock.ClayMorterBlock.values()[i].getName());
+            registerRender(claymorterblock,i,EnumBlock.ClayMorterBlock.values()[i].getName());
         }
 
         for (int i = 0; i < EnumBlock.UnfiredBloomeryBlock.values().length; i++)
         {
-            registerRender(unfiredbloomery,i,"unfiredbloomery_" + EnumBlock.UnfiredBloomeryBlock.values()[i].getName());
+            registerRender(unfiredbloomery,i, EnumBlock.UnfiredBloomeryBlock.values()[i].getName());
         }
     }
 

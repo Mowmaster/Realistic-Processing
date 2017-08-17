@@ -1,0 +1,20 @@
+{
+  "variants":{
+    "stage=ubb1": {"model": "realisticprocessing:unfiredbloomery/ubb1"},
+    "stage=ubb2": {"model": "realisticprocessing:unfiredbloomery/ubb2"},
+    "stage=ubb3": {"model": "realisticprocessing:unfiredbloomery/ubb3"},
+    "stage=ubb4": {"model": "realisticprocessing:unfiredbloomery/ubb4"},
+    "stage=ubb5": {"model": "realisticprocessing:unfiredbloomery/ubb5"},
+    "stage=ubb6": {"model": "realisticprocessing:unfiredbloomery/ubb6"},
+    "stage=ubb7": {"model": "realisticprocessing:unfiredbloomery/ubb7"},
+    "stage=ubb8": {"model": "realisticprocessing:unfiredbloomery/ubb8"},
+    "stage=ubb9": {"model": "realisticprocessing:unfiredbloomery/ubb9"},
+    "stage=ubb10": {"model": "realisticprocessing:unfiredbloomery/ubb10"},
+    "stage=ubb11": {"model": "realisticprocessing:unfiredbloomery/ubb11"},
+    "stage=ubb12": {"model": "realisticprocessing:unfiredbloomery/ubb12"},
+    "stage=ubb13": {"model": "realisticprocessing:unfiredbloomery/ubb13"},
+    "stage=ubb14": {"model": "realisticprocessing:unfiredbloomery/ubb14"},
+    "stage=ubb15": {"model": "realisticprocessing:unfiredbloomery/ubb15"},
+    "stage=ubb16": {"model": "realisticprocessing:unfiredbloomery/ubb16"}
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants":{
+    "claytype=mix1": {"model": "realisticprocessing:morter/mix1"},
+    "claytype=mix2": {"model": "realisticprocessing:morter/mix2"},
+    "claytype=mix3": {"model": "realisticprocessing:morter/mix3"},
+    "claytype=mix4": {"model": "realisticprocessing:morter/mix4"},
+    "claytype=mix5": {"model": "realisticprocessing:morter/mix5"},
+    "claytype=mix6": {"model": "realisticprocessing:morter/mix6"}
+  }
+}

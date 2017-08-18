@@ -31,7 +31,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 
-import static com.mowmaster.rprocessing.enums.EnumBlock.ClayMorterBlock.MIX1;
+import static com.mowmaster.rprocessing.enums.EnumBlock.ClayMorterBlock.MIX2;
 
 
 //Maybe try extending Block leaves sometime?
@@ -47,10 +47,11 @@ public class BlockClayMorter extends Block implements IMetaBlockName
         super(Material.WOOD);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(References.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(CLAYTYPE, MIX1));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(CLAYTYPE, MIX2));
         this.setHardness(0.2F);
         this.setLightOpacity(1);
         this.setSoundType(SoundType.WOOD);
+
     }
 
     @Override
@@ -122,47 +123,35 @@ public class BlockClayMorter extends Block implements IMetaBlockName
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-        int meta = this.getMetaFromState(state);
-        Random rn = new Random();
-        int drop = rn.nextInt(10);
-        if(!worldIn.isRemote)
+    public int damageDropped(IBlockState state) {
+        switch (((EnumBlock.ClayMorterBlock)state.getValue(CLAYTYPE)))
         {
-            worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1, meta)));
+            case MIX2:
+            case MIX3:
+            case MIX4:
+            case MIX5:
+            case MIX6:
+            case MIX7:
+            case MIX8:
+            case MIX9:
+            case MIX10:
+            case MIX11:
+                default:
+                    return 0;
+            case MIX12:
+                return 10;
+
         }
     }
-    /*
-        @Override
-        public int damageDropped(IBlockState state) {
-            return super.damageDropped(state);
-        }
 
 
-            @Override
-            public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-                Block drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX2).getBlock();
-                if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12)))
-                {
-                    drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12).getBlock();
-                }
-                return Item.getItemFromBlock(drop);
-            }
-        */
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack bonemeal = new ItemStack(Items.DYE,1,15);
 
         if(!worldIn.isRemote)
         {
-            if((playerIn.getHeldItem(hand).getItem() instanceof ItemAxe))
-            {
-                if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, MIX1))) {
-                    playerIn.getHeldItem(hand).damageItem(1,playerIn);
-                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Items.STICK,1)));
-                    worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX2));
-                }
-            }
-            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.SAND))) {
+            if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.SAND))) {
                 if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX2))) {
                     if (!playerIn.isCreative()) {
                         playerIn.getHeldItem(hand).shrink(1);
@@ -243,7 +232,7 @@ public class BlockClayMorter extends Block implements IMetaBlockName
                 }
             }
             else if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX11))) {
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1, 11)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1, 10)));
                 worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX2));
             }
         }
@@ -256,27 +245,17 @@ public class BlockClayMorter extends Block implements IMetaBlockName
     {
         switch (((EnumBlock.ClayMorterBlock)state.getValue(CLAYTYPE)))
         {
-            case MIX1:
+            case MIX2:
             default:
                 return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.5D, 0.9D);
-            case MIX2:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.5D, 0.9D);
             case MIX3:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX4:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX5:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX6:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX7:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX8:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX9:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX10:
-                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX11:
                 return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
             case MIX12:

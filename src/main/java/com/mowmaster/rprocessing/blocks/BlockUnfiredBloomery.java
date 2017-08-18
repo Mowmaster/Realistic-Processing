@@ -4,6 +4,7 @@ import com.mowmaster.rprocessing.blocks.item.IMetaBlockName;
 import com.mowmaster.rprocessing.enums.EnumBlock;
 import com.mowmaster.rprocessing.reference.References;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -17,13 +18,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemSaddle;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 
@@ -113,7 +118,7 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer()
     {
-        return BlockRenderLayer.SOLID;
+        return BlockRenderLayer.CUTOUT;
     }
 
 
@@ -127,10 +132,37 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
      */
 
     @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        switch (((EnumBlock.UnfiredBloomeryBlock)state.getValue(STAGE)))
+        {
+            case UBB1:
+            case UBB2:
+            case UBB3:
+            case UBB4:
+            case UBB5:
+                return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.2D, 1.0D);
+            case UBB6:
+            case UBB7:
+            case UBB8:
+            case UBB9:
+            case UBB10:
+                return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.4D, 1.0D);
+            case UBB11:
+            case UBB12:
+            case UBB13:
+            case UBB14:
+            case UBB15:
+            case UBB16:
+            default:
+                return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+        }
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         
         ItemStack brick = new ItemStack(Items.BRICK);
-        ItemStack morter = new ItemStack(BlockRegistry.claymorterblock,1,11);
+        ItemStack morter = new ItemStack(BlockRegistry.claymorterblock,1,10);
 
             if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),brick))
             {
@@ -216,7 +248,7 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
                         if (!playerIn.isCreative()) {
                             playerIn.getHeldItem(hand).shrink(1);
                         }
-                        worldIn.setBlockState(pos, BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB16));
+                        worldIn.setBlockState(pos, BlockRegistry.formedunfiredbloomery.getDefaultState());
                     }
                 }
 

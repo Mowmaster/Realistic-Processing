@@ -1,5 +1,5 @@
 {
-  "parent" : "realisticprocessing:block/morter/mix1",
+  "parent" : "realisticprocessing:block/choppingblock",
   "display" : {
     "thirdperson" : {
       "rotation" : [10, -45, 170],

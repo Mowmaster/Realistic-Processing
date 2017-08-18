@@ -27,12 +27,18 @@ public class ClientProxy extends CommonProxy
     public void registerModelBakeryVarients()
     {
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.claymorterblock),
-                new ResourceLocation(References.MODID, "mix1"),
+                //new ResourceLocation(References.MODID, "mix1"),
                 new ResourceLocation(References.MODID, "mix2"),
                 new ResourceLocation(References.MODID, "mix3"),
                 new ResourceLocation(References.MODID, "mix4"),
                 new ResourceLocation(References.MODID, "mix5"),
-                new ResourceLocation(References.MODID, "mix6")
+                new ResourceLocation(References.MODID, "mix6"),
+                new ResourceLocation(References.MODID, "mix7"),
+                new ResourceLocation(References.MODID, "mix8"),
+                new ResourceLocation(References.MODID, "mix9"),
+                new ResourceLocation(References.MODID, "mix10"),
+                new ResourceLocation(References.MODID, "mix11"),
+                new ResourceLocation(References.MODID, "mix12")
         );
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.unfiredbloomery),

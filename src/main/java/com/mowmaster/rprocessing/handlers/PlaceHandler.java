@@ -1,5 +1,6 @@
 package com.mowmaster.rprocessing.handlers;
 
+import com.mowmaster.rprocessing.blocks.BlockChoppingBlock;
 import com.mowmaster.rprocessing.blocks.BlockClayMorter;
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import com.mowmaster.rprocessing.blocks.BlockUnfiredBloomery;
@@ -42,22 +43,30 @@ public class PlaceHandler
                 if (state.getBlock() instanceof BlockPlanks) {
                     if(!worldIn.isRemote)
                     {
-                        worldIn.setBlockState(pos.add(0, 0, 0), BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX1));
+                        worldIn.setBlockState(pos.add(0, 0, 0), BlockRegistry.choppingblock.getDefaultState());
                         worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Items.STICK, 2)));
                         playerIn.getHeldItem(hand).damageItem(1, playerIn);
                     }
                 }
             }
 
-            else if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.BRICK))))
+            if (playerIn.getHeldItem(hand).getItem() instanceof ItemAxe) {
+                if (state.getBlock() instanceof BlockChoppingBlock) {
+                    if(!worldIn.isRemote)
+                    {
+                        worldIn.setBlockState(pos.add(0, 0, 0), BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX2));
+                        worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Items.STICK, 1)));
+                        playerIn.getHeldItem(hand).damageItem(1, playerIn);
+                    }
+                }
+            }
+
+            if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.BRICK))))
             {
                 if (!(state.getBlock()instanceof BlockUnfiredBloomery))
                 {
-                    //if(worldIn.getBlockState(pos.add(0,1,0)).equals(Blocks.AIR))
-                    //{
                     worldIn.setBlockState(pos.add(0,1,0), BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB1));
                     playerIn.getHeldItem(hand).shrink(1);
-                    //}
                 }
 
 

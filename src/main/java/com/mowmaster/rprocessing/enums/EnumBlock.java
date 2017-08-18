@@ -7,18 +7,18 @@ public class EnumBlock
 {
     public static enum ClayMorterBlock implements IStringSerializable
     {
-        MIX1("mix1",0),//woodplank-->woodbase
-        MIX2("mix2",1),//woodbase-->woodmixingbowl
-        MIX3("mix3",2),//mixingbown+sand
-        MIX4("mix4",3),//mix+clay1
-        MIX5("mix5",4),//mix+clay2
-        MIX6("mix6",5),//mix+clay3
-        MIX7("mix7",6),//claymix+bonem1
-        MIX8("mix8",7),//claymix+bonem2
-        MIX9("mix9",8),//claymix+bonem3
-        MIX10("mix10",9),//claybonemix+wheat
-        MIX11("mix11",10),//mixture+water
-        MIX12("mix12",11);//Final Block Itsself
+        //MIX1("mix1",0),//woodplank-->woodbase
+        MIX2("mix2",0),//woodbase-->woodmixingbowl
+        MIX3("mix3",1),//mixingbown+sand
+        MIX4("mix4",2),//mix+clay1
+        MIX5("mix5",3),//mix+clay2
+        MIX6("mix6",4),//mix+clay3
+        MIX7("mix7",5),//claymix+bonem1
+        MIX8("mix8",6),//claymix+bonem2
+        MIX9("mix9",7),//claymix+bonem3
+        MIX10("mix10",8),//claybonemix+wheat
+        MIX11("mix11",9),//mixture+water
+        MIX12("mix12",10);//Final Block Itsself
         //reverts back to MIX2 or meta 1 on right click of MIX11 or meta 10
 
         private int ID;

@@ -16,16 +16,22 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
+
+import static com.mowmaster.rprocessing.enums.EnumBlock.ClayMorterBlock.MIX1;
 
 
 //Maybe try extending Block leaves sometime?
@@ -38,13 +44,13 @@ public class BlockClayMorter extends Block implements IMetaBlockName
 
     public BlockClayMorter(String unloc)
     {
-        super(Material.CLAY);
+        super(Material.WOOD);
         this.setUnlocalizedName(unloc);
         this.setRegistryName(new ResourceLocation(References.MODID, unloc));
-        this.setDefaultState(this.blockState.getBaseState().withProperty(CLAYTYPE, EnumBlock.ClayMorterBlock.MIX1));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(CLAYTYPE, MIX1));
         this.setHardness(0.2F);
         this.setLightOpacity(1);
-        this.setSoundType(SoundType.SAND);
+        this.setSoundType(SoundType.WOOD);
     }
 
     @Override
@@ -125,35 +131,42 @@ public class BlockClayMorter extends Block implements IMetaBlockName
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1, meta)));
         }
     }
-
+/*
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return null;
+        Block drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX2).getBlock();
+        if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12)))
+        {
+            drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12).getBlock();
+        }
+        return Item.getItemFromBlock(drop);
     }
-
+*/
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack bonemeal = new ItemStack(Items.DYE,1,15);
 
-            if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),bonemeal))
+        if(!worldIn.isRemote)
+        {
+            if((playerIn.getHeldItem(hand).getItem() instanceof ItemAxe))
             {
-                if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX1)))
-                {
-                    if(!playerIn.isCreative())
-                    {
+                if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, MIX1))) {
+                    playerIn.getHeldItem(hand).damageItem(1,playerIn);
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Items.STICK,1)));
+                    worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX2));
+                }
+            }
+            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.SAND))) {
+                if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX2))) {
+                    if (!playerIn.isCreative()) {
                         playerIn.getHeldItem(hand).shrink(1);
                     }
-                    worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX2));
+                    worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX3));
                 }
-                else if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX2)))
-                {
-                    if(!playerIn.isCreative())
-                    {
-                        playerIn.getHeldItem(hand).shrink(1);
-                    }
-                    worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX3));
-                }
-                else if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX3)))
+            }
+            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Items.CLAY_BALL)))
+            {
+                if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX3)))
                 {
                     if(!playerIn.isCreative())
                     {
@@ -161,26 +174,118 @@ public class BlockClayMorter extends Block implements IMetaBlockName
                     }
                     worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX4));
                 }
+                else if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX4)))
+                {
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                    worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX5));
+                }
+                else if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX5)))
+                {
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                    worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX6));
+                }
+            }
+            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),bonemeal))
+            {
+                if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX6)))
+                {
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                    worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX7));
+                }
+                else if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX7)))
+                {
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                    worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX8));
+                }
+                else if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX8)))
+                {
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
+                    worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX9));
+                }
             }
             else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Items.WHEAT)) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.VINE)) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.REEDS)))
-                {
-                    if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX4))) {
-                        if (!playerIn.isCreative()) {
+            {
+                if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX9))) {
+                    if (!playerIn.isCreative()) {
                         playerIn.getHeldItem(hand).shrink(1);
-                        }
-                        worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX5));
                     }
+                    worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX10));
                 }
+            }
             else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Items.WATER_BUCKET)))
             {
-                if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX5))) {
+                if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX10))) {
                     if (!playerIn.isCreative()) {
                         playerIn.setHeldItem(hand, new ItemStack(Items.BUCKET));
                     }
-                    worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX6));
+                    worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX11));
                 }
             }
+            else if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX11))) {
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1, 11)));
+                worldIn.setBlockState(pos, BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX2));
+            }
+        }
+
 
         return true;
     }
+
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
+    {
+        switch (((EnumBlock.ClayMorterBlock)state.getValue(CLAYTYPE)))
+        {
+            case MIX1:
+            default:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.5D, 0.9D);
+            case MIX2:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.5D, 0.9D);
+            case MIX3:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX4:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX5:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX6:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX7:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX8:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX9:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX10:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX11:
+                return new AxisAlignedBB(0.1D, 0.0D, 0.1D, 0.9D, 0.9D, 0.9D);
+            case MIX12:
+                return new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 1.0D, 1.0D);
+        }
+    }
+
+    public boolean isFullCube(IBlockState state)
+    {
+        return false;
+    }
+
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
+    {
+        return true;
+    }
+
 }

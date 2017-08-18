@@ -1,7 +1,8 @@
 {
-    "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "0": "realisticprocessing:blocks/stickblock"
+        "particle": "realisticprocessing:blocks/stickblock",
+        "0": "realisticprocessing:blocks/stickblock",
+        "1": "#block"
     },
     "elements": [
         {
@@ -67,6 +68,19 @@
                 "west": { "texture": "#0", "uv": [ 0.0, 0.0, 2.0, 4.0 ] },
                 "up": { "texture": "#0", "uv": [ 0.0, 0.0, 10.0, 2.0 ] },
                 "down": { "texture": "#0", "uv": [ 0.0, 0.0, 10.0, 2.0 ] }
+            }
+        },
+        {
+            "name": "stage",
+            "from": [ 3.0, 4.0, 3.0 ], 
+            "to": [ 13.0, 14.0, 13.0 ], 
+            "faces": {
+                "north": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "east": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "south": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "west": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "up": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] },
+                "down": { "texture": "#1", "uv": [ 0.0, 0.0, 16.0, 16.0 ] }
             }
         }
     ]

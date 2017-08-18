@@ -1,6 +1,6 @@
 {
     "parent": "realisticprocessing:block/morter/mix",
     "textures": {
-        "block": "realisticprocessing:blocks/mix3"
+        "block": "realisticprocessing:blocks/mix8"
     }
 }

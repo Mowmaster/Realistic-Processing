@@ -130,7 +130,7 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         
         ItemStack brick = new ItemStack(Items.BRICK);
-        ItemStack morter = new ItemStack(BlockRegistry.claymorterblock,1,5);
+        ItemStack morter = new ItemStack(BlockRegistry.claymorterblock,1,11);
 
             if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),brick))
             {

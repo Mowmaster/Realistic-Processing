@@ -5,6 +5,12 @@
     "claytype=mix3": {"model": "realisticprocessing:morter/mix3"},
     "claytype=mix4": {"model": "realisticprocessing:morter/mix4"},
     "claytype=mix5": {"model": "realisticprocessing:morter/mix5"},
-    "claytype=mix6": {"model": "realisticprocessing:morter/mix6"}
+    "claytype=mix6": {"model": "realisticprocessing:morter/mix6"},
+    "claytype=mix7": {"model": "realisticprocessing:morter/mix7"},
+    "claytype=mix8": {"model": "realisticprocessing:morter/mix8"},
+    "claytype=mix9": {"model": "realisticprocessing:morter/mix9"},
+    "claytype=mix10": {"model": "realisticprocessing:morter/mix10"},
+    "claytype=mix11": {"model": "realisticprocessing:morter/mix11"},
+    "claytype=mix12": {"model": "realisticprocessing:morter/mix12"}
   }
 }

@@ -6,10 +6,13 @@ import com.mowmaster.rprocessing.blocks.BlockUnfiredBloomery;
 import com.mowmaster.rprocessing.enums.EnumBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -19,6 +22,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
 
 
 public class PlaceHandler
@@ -34,14 +38,17 @@ public class PlaceHandler
         IBlockState state = worldIn.getBlockState(event.getPos());
         if((playerIn.getHeldItem(hand) != null))
         {
-            if (state.getBlock().equals(Blocks.SAND))
-            {
-                if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Blocks.CLAY))))
-                {
-                    worldIn.setBlockState(pos.add(0,0,0), BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX1));
-                    playerIn.getHeldItem(hand).shrink(1);
+            if (playerIn.getHeldItem(hand).getItem() instanceof ItemAxe) {
+                if (state.getBlock() instanceof BlockPlanks) {
+                    if(!worldIn.isRemote)
+                    {
+                        worldIn.setBlockState(pos.add(0, 0, 0), BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX1));
+                        worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Items.STICK, 2)));
+                        playerIn.getHeldItem(hand).damageItem(1, playerIn);
+                    }
                 }
             }
+
             else if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.BRICK))))
             {
                 if (!(state.getBlock()instanceof BlockUnfiredBloomery))

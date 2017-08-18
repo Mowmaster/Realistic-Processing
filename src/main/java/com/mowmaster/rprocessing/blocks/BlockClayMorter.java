@@ -131,17 +131,23 @@ public class BlockClayMorter extends Block implements IMetaBlockName
             worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1, meta)));
         }
     }
-/*
-    @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        Block drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX2).getBlock();
-        if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12)))
-        {
-            drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12).getBlock();
+    /*
+        @Override
+        public int damageDropped(IBlockState state) {
+            return super.damageDropped(state);
         }
-        return Item.getItemFromBlock(drop);
-    }
-*/
+
+
+            @Override
+            public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+                Block drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX2).getBlock();
+                if(state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12)))
+                {
+                    drop = BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX12).getBlock();
+                }
+                return Item.getItemFromBlock(drop);
+            }
+        */
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack bonemeal = new ItemStack(Items.DYE,1,15);

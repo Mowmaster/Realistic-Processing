@@ -10,6 +10,7 @@ public class CommonProxy {
     public void init()
     {
         PlaceHandler handler = new PlaceHandler();
+
         MinecraftForge.EVENT_BUS.register(handler);
         FMLCommonHandler.instance().bus().register(handler);
     }

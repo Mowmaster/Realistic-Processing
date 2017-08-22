@@ -5,9 +5,8 @@ import com.mowmaster.rprocessing.blocks.BlockClayMorter;
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import com.mowmaster.rprocessing.blocks.BlockUnfiredBloomery;
 import com.mowmaster.rprocessing.enums.EnumBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
-import net.minecraft.block.BlockPlanks;
+import com.mowmaster.rprocessing.items.ItemRegistry;
+import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,10 +19,16 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.oredict.OreDictionary;
+import org.lwjgl.Sys;
+
+import java.util.Iterator;
+import java.util.Random;
 
 
 public class PlaceHandler
@@ -72,6 +77,80 @@ public class PlaceHandler
 
             }
         }
+    }
+    @SubscribeEvent
+    public void onBlockHarvestedBy(PlayerInteractEvent.HarvestCheck harvestCheck)
+    {
+        EntityPlayer playerIn = harvestCheck.getEntityPlayer();
+        IBlockState state = harvestCheck.getTargetBlock();
+        Iterable holding = harvestCheck.getEntityPlayer().getHeldEquipment();
+
+        if(state.getBlock() instanceof BlockLog)
+        {
+            System.out.println(playerIn);
+            System.out.println(state);
+            System.out.println(holding);
+        }
+
+    }
+/*
+    @SubscribeEvent
+    public void onBlockHarvested(BlockEvent.BreakEvent breakEvent)
+    {
+        World worldIn = breakEvent.getWorld();
+        BlockPos pos = breakEvent.getPos();
+        IBlockState state = worldIn.getBlockState(breakEvent.getPos());
+
+
+        //leaves 0-25
+        //twigs 26-51
+        //sticks 52-80
+        //limbs 81-94
+        //logs 95+
+        if(state.getBlock() instanceof BlockLeaves)
+        {
+
+        }
+
+    }
+*/
+    @SubscribeEvent
+    public void onBlockHarvestedDrops(BlockEvent.HarvestDropsEvent getdrops) {
+        World worldIn = getdrops.getWorld();
+        BlockPos pos = getdrops.getPos();
+        IBlockState state = getdrops.getState();
+        EntityPlayer player = getdrops.getHarvester();
+        Random rn = new Random();
+        int drop = rn.nextInt(100);
+            if(state.getBlock() instanceof BlockLeaves)
+            {
+                if(drop<=25)
+                {
+                    getdrops.setDropChance(0.5F);
+                    getdrops.getDrops().add(new ItemStack(ItemRegistry.leafpile));
+                }
+                else if(drop>25 && drop<=51)
+                {
+                    getdrops.setDropChance(0.5F);
+                    getdrops.getDrops().add(new ItemStack(ItemRegistry.twig));
+                }
+                else if(drop>51 && drop<=80)
+                {
+                    getdrops.setDropChance(0.25F);
+                    getdrops.getDrops().add(new ItemStack(Items.STICK));
+                }
+                else if(drop>80 && drop<=94)
+                {
+                    getdrops.setDropChance(0.125F);
+                    getdrops.getDrops().add(new ItemStack(ItemRegistry.branch));
+                }
+                else if(drop>95)
+                {
+                    getdrops.setDropChance(0.065F);
+                    getdrops.getDrops().add(new ItemStack(ItemRegistry.limb));
+                }
+            }
+
     }
 
 

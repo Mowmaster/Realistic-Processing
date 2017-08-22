@@ -1,7 +1,20 @@
 package com.mowmaster.rprocessing.items;
 
-/**
- * Created by KingMowmaster on 4/16/2017.
- */
-public class ItemBasic {
+
+import com.mowmaster.rprocessing.reference.References;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+
+import static com.mowmaster.rprocessing.configs.RealTab.REAL_TAB;
+
+
+public class ItemBasic extends Item
+{
+        public ItemBasic(String unlocName, String registryName) {
+            this.setUnlocalizedName(unlocName);
+            this.setRegistryName(new ResourceLocation(References.MODID, registryName));
+            this.maxStackSize = 1;
+            this.setCreativeTab(REAL_TAB);
+        }
+
 }

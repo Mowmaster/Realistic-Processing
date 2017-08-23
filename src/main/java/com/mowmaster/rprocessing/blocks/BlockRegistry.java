@@ -20,8 +20,10 @@ public class BlockRegistry
 
 
 
+
     public static Block claymorterblock;
     public static Block unfiredbloomery;
+    public static Block leafpile;
 
 
     public static void init() {
@@ -31,8 +33,10 @@ public class BlockRegistry
         formedunfiredbloomery = new BlockFormedUnfiredBloomery("formedunfiredbloomery","formedunfiredbloomery");
 
 
+
         claymorterblock = new BlockClayMorter("claymorterblock");
         unfiredbloomery = new BlockUnfiredBloomery("unfiredbloomery");
+        leafpile = new BlockLeafPile("leafpile");
 
     }
 
@@ -45,6 +49,7 @@ public class BlockRegistry
 
         registerBlock(claymorterblock, new ItemBlockOre(claymorterblock));
         registerBlock(unfiredbloomery,new ItemBlockOre(unfiredbloomery));
+        registerBlock(leafpile,new ItemBlockOre(leafpile));
     }
 
     public static void registerRenders()
@@ -61,6 +66,11 @@ public class BlockRegistry
         for (int i = 0; i < EnumBlock.UnfiredBloomeryBlock.values().length; i++)
         {
             registerRender(unfiredbloomery,i, EnumBlock.UnfiredBloomeryBlock.values()[i].getName());
+        }
+
+        for (int i = 0; i < EnumBlock.LeafBlock.values().length; i++)
+        {
+            registerRender(leafpile,i, EnumBlock.LeafBlock.values()[i].getName());
         }
     }
 

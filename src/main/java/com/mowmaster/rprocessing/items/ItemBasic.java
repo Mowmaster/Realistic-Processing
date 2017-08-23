@@ -13,7 +13,6 @@ public class ItemBasic extends Item
         public ItemBasic(String unlocName, String registryName) {
             this.setUnlocalizedName(unlocName);
             this.setRegistryName(new ResourceLocation(References.MODID, registryName));
-            this.maxStackSize = 1;
             this.setCreativeTab(REAL_TAB);
         }
 

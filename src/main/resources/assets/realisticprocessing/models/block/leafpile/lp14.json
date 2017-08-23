@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
 	"parent": "block/cube",
 	"textures": {
-		"0": "realisticprocessing:blocks/leaves",
-		"particle": "realisticprocessing:blocks/leaves"
+		"0": "realisticprocessing:blocks/dryleaves",
+		"particle": "realisticprocessing:blocks/dryleaves"
 	},
 	"elements": [
 		{

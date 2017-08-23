@@ -3,6 +3,7 @@ package com.mowmaster.rprocessing;
 
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import com.mowmaster.rprocessing.configs.RealConfig;
+import com.mowmaster.rprocessing.items.ItemRegistry;
 import com.mowmaster.rprocessing.proxies.CommonProxy;
 import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileRegistry;
@@ -37,9 +38,11 @@ public class RealisticProcessing
 
         BlockRegistry.init();
         BlockRegistry.register();
-        proxy.preInit();
         TileRegistry.init();
         TileRegistry.registerTile();
+        ItemRegistry.init();
+        ItemRegistry.register();
+        proxy.preInit();
     }
 
     @Mod.EventHandler

@@ -16,9 +16,9 @@ public class ItemRegistry
 
 
     public static Item leafpile;
+    public static Item dryleafpile;
     public static Item twig;
     public static Item branch;
-    public static Item limb;
 
 
 
@@ -26,27 +26,27 @@ public class ItemRegistry
 
     public static void init()
     {
-        leafpile = new ItemBasic("leafpile","leafpile");
+        leafpile = new ItemBasic("leaf","leaf");
+        dryleafpile = new ItemBasic("dryleaf","dryleaf");
         twig = new ItemBasic("twig","twig");
         branch = new ItemBasic("branch","branch");
-        limb = new ItemBasic("limb","limb");
 
     }
 
     public static void register()
     {
         registerItem(leafpile);
+        registerItem(dryleafpile);
         registerItem(twig);
         registerItem(branch);
-        registerItem(limb);
     }
 
     public static void registerRenders()
     {
         registerRender(leafpile);
+        registerRender(dryleafpile);
         registerRender(twig);
         registerRender(branch);
-        registerRender(limb);
     }
 
     public static void registerItem(Item item)

@@ -94,4 +94,51 @@ public class EnumBlock
         }
 
     }
+
+    public static enum LeafBlock implements IStringSerializable
+    {
+        LB1("lb1",0),//leaf1
+        LB2("lb2",1),//leaf2
+        LB3("lb3",2),//leaf3
+        LB4("lb4",3),//leaf4
+        LB5("lb5",4),//leaf5
+        LB6("lb6",5),//leaf6
+        LB7("lb7",6),//leaf7
+        LB8("lb8",7),//leaf8
+        LB9("lb9",8),//dryleaf1
+        LB10("lb10",9),//dryleaf2
+        LB11("lb11",10),//dryleaf3
+        LB12("lb12",11),//dryleaf4
+        LB13("lb13",12),//dryleaf5
+        LB14("lb14",13),//dryleaf6
+        LB15("lb15",14),//dryleaf7
+        LB16("lb16",15);//dryleaf8
+
+
+        private int ID;
+        private String name;
+        private LeafBlock(String name, int ID)
+        {
+            this.ID = ID;
+            this.name = name;
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public int getID()
+        {
+            return ID;
+        }
+
+        @Override
+        public String toString()
+        {
+            return getName();
+        }
+
+    }
 }

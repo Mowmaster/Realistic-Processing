@@ -2,6 +2,7 @@ package com.mowmaster.rprocessing.proxies;
 
 
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
+import com.mowmaster.rprocessing.items.ItemRegistry;
 import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import com.mowmaster.rprocessing.tiles.render.RenderTileClayBloomery;
@@ -19,6 +20,7 @@ public class ClientProxy extends CommonProxy
     public void preInit()
     {
         BlockRegistry.registerRenders();
+        ItemRegistry.registerRenders();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileClayBloomery.class,new RenderTileClayBloomery());
     }
@@ -58,6 +60,25 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(References.MODID, "ubb14"),
                 new ResourceLocation(References.MODID, "ubb15"),
                 new ResourceLocation(References.MODID, "ubb16")
+        );
+
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.unfiredbloomery),
+                new ResourceLocation(References.MODID, "lb1"),
+                new ResourceLocation(References.MODID, "lb2"),
+                new ResourceLocation(References.MODID, "lb3"),
+                new ResourceLocation(References.MODID, "lb4"),
+                new ResourceLocation(References.MODID, "lb5"),
+                new ResourceLocation(References.MODID, "lb6"),
+                new ResourceLocation(References.MODID, "lb7"),
+                new ResourceLocation(References.MODID, "lb8"),
+                new ResourceLocation(References.MODID, "lb9"),
+                new ResourceLocation(References.MODID, "lb10"),
+                new ResourceLocation(References.MODID, "lb11"),
+                new ResourceLocation(References.MODID, "lb12"),
+                new ResourceLocation(References.MODID, "lb13"),
+                new ResourceLocation(References.MODID, "lb14"),
+                new ResourceLocation(References.MODID, "lb15"),
+                new ResourceLocation(References.MODID, "lb16")
         );
     }
 }

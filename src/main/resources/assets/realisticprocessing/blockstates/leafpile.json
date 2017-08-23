@@ -1,0 +1,20 @@
+{
+  "variants":{
+    "leafpile=lb1": {"model": "realisticprocessing:leafpile/lp1"},
+    "leafpile=lb2": {"model": "realisticprocessing:leafpile/lp2"},
+    "leafpile=lb3": {"model": "realisticprocessing:leafpile/lp3"},
+    "leafpile=lb4": {"model": "realisticprocessing:leafpile/lp4"},
+    "leafpile=lb5": {"model": "realisticprocessing:leafpile/lp5"},
+    "leafpile=lb6": {"model": "realisticprocessing:leafpile/lp6"},
+    "leafpile=lb7": {"model": "realisticprocessing:leafpile/lp7"},
+    "leafpile=lb8": {"model": "realisticprocessing:leafpile/lp8"},
+    "leafpile=lb9": {"model": "realisticprocessing:leafpile/lp9"},
+    "leafpile=lb10": {"model": "realisticprocessing:leafpile/lp10"},
+    "leafpile=lb11": {"model": "realisticprocessing:leafpile/lp11"},
+    "leafpile=lb12": {"model": "realisticprocessing:leafpile/lp12"},
+    "leafpile=lb13": {"model": "realisticprocessing:leafpile/lp13"},
+    "leafpile=lb14": {"model": "realisticprocessing:leafpile/lp14"},
+    "leafpile=lb15": {"model": "realisticprocessing:leafpile/lp15"},
+    "leafpile=lb16": {"model": "realisticprocessing:leafpile/lp16"}
+  }
+}

@@ -1,9 +1,6 @@
 package com.mowmaster.rprocessing.handlers;
 
-import com.mowmaster.rprocessing.blocks.BlockChoppingBlock;
-import com.mowmaster.rprocessing.blocks.BlockClayMorter;
-import com.mowmaster.rprocessing.blocks.BlockRegistry;
-import com.mowmaster.rprocessing.blocks.BlockUnfiredBloomery;
+import com.mowmaster.rprocessing.blocks.*;
 import com.mowmaster.rprocessing.enums.EnumBlock;
 import com.mowmaster.rprocessing.items.ItemRegistry;
 import net.minecraft.block.*;
@@ -76,44 +73,20 @@ public class PlaceHandler
 
 
             }
+
+            if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.leafpile))))
+            {
+                if (!(state.getBlock()instanceof BlockLeafPile))
+                {
+                    worldIn.setBlockState(pos.add(0,1,0), BlockRegistry.leafpile.getDefaultState().withProperty(BlockLeafPile.LEAFPILE, EnumBlock.LeafBlock.LB1));
+                    playerIn.getHeldItem(hand).shrink(1);
+                }
+
+
+            }
         }
     }
-    @SubscribeEvent
-    public void onBlockHarvestedBy(PlayerInteractEvent.HarvestCheck harvestCheck)
-    {
-        EntityPlayer playerIn = harvestCheck.getEntityPlayer();
-        IBlockState state = harvestCheck.getTargetBlock();
-        Iterable holding = harvestCheck.getEntityPlayer().getHeldEquipment();
 
-        if(state.getBlock() instanceof BlockLog)
-        {
-            System.out.println(playerIn);
-            System.out.println(state);
-            System.out.println(holding);
-        }
-
-    }
-/*
-    @SubscribeEvent
-    public void onBlockHarvested(BlockEvent.BreakEvent breakEvent)
-    {
-        World worldIn = breakEvent.getWorld();
-        BlockPos pos = breakEvent.getPos();
-        IBlockState state = worldIn.getBlockState(breakEvent.getPos());
-
-
-        //leaves 0-25
-        //twigs 26-51
-        //sticks 52-80
-        //limbs 81-94
-        //logs 95+
-        if(state.getBlock() instanceof BlockLeaves)
-        {
-
-        }
-
-    }
-*/
     @SubscribeEvent
     public void onBlockHarvestedDrops(BlockEvent.HarvestDropsEvent getdrops) {
         World worldIn = getdrops.getWorld();
@@ -139,16 +112,12 @@ public class PlaceHandler
                     getdrops.setDropChance(0.25F);
                     getdrops.getDrops().add(new ItemStack(Items.STICK));
                 }
-                else if(drop>80 && drop<=94)
+                else if(drop>80)
                 {
                     getdrops.setDropChance(0.125F);
                     getdrops.getDrops().add(new ItemStack(ItemRegistry.branch));
                 }
-                else if(drop>95)
-                {
-                    getdrops.setDropChance(0.065F);
-                    getdrops.getDrops().add(new ItemStack(ItemRegistry.limb));
-                }
+
             }
 
     }

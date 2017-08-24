@@ -141,4 +141,43 @@ public class EnumBlock
         }
 
     }
+
+    public static enum StoneBlock implements IStringSerializable
+    {
+        STONE1("stone1",0),//
+        STONE2("stone2",1),//
+        STONE3("stone3",2),//
+        STONE4("stone4",3),//
+        STONE5("stone5",4),//
+        STONE6("stone6",5),//
+        STONE7("stone7",6),//
+        STONE8("stone8",7);//
+        
+
+        private int ID;
+        private String name;
+        private StoneBlock(String name, int ID)
+        {
+            this.ID = ID;
+            this.name = name;
+        }
+
+        @Override
+        public String getName()
+        {
+            return this.name;
+        }
+
+        public int getID()
+        {
+            return ID;
+        }
+
+        @Override
+        public String toString()
+        {
+            return getName();
+        }
+
+    }
 }

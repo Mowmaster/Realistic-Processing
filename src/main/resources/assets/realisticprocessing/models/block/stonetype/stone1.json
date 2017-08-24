@@ -1,0 +1,82 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"parent": "block/cube",
+	"textures": {
+		"missing": "realisticprocessing:blocks/anvil/anvil_base",
+		"particle": "realisticprocessing:blocks/anvil/anvil_base"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [6, 0, 7],
+			"to": [10, 1, 9],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 4, 1],
+					"texture": "#missing"
+				},
+				"east": {"uv": [0, 0, 2, 1], "texture": "#missing"},
+				"south": {
+					"uv": [0, 0, 4, 1],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 2, 1], "texture": "#missing"},
+				"up": {"uv": [0, 0, 4, 2], "texture": "#missing"},
+				"down": {"uv": [0, 0, 4, 2], "texture": "#missing"}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": 22.5
+			}
+		},
+		{
+			"name": "cube",
+			"from": [5, 1, 6],
+			"to": [11, 2, 10],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 6, 1],
+					"texture": "#missing"
+				},
+				"east": {"uv": [0, 0, 4, 1], "texture": "#missing"},
+				"south": {
+					"uv": [0, 0, 6, 1],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 4, 1], "texture": "#missing"},
+				"up": {"uv": [0, 0, 6, 4], "texture": "#missing"},
+				"down": {"uv": [0, 0, 6, 4], "texture": "#missing"}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": 45
+			}
+		},
+		{
+			"name": "cube",
+			"from": [6, 2, 7],
+			"to": [10, 3, 9],
+			"faces": {
+				"north": {
+					"uv": [0, 0, 4, 1],
+					"texture": "#missing"
+				},
+				"east": {"uv": [0, 0, 2, 1], "texture": "#missing"},
+				"south": {
+					"uv": [0, 0, 4, 1],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 2, 1], "texture": "#missing"},
+				"up": {"uv": [0, 0, 4, 2], "texture": "#missing"},
+				"down": {"uv": [0, 0, 4, 2], "texture": "#missing"}
+			},
+			"rotation": {
+				"origin": [8, 8, 8],
+				"axis": "y",
+				"angle": -22.5
+			}
+		}
+	]
+}

@@ -17,6 +17,7 @@ public class BlockRegistry
     public static Block claybloomery;
     public static Block choppingblock;
     public static Block formedunfiredbloomery;
+    public static Block stonepileanvil;
 
 
 
@@ -24,6 +25,7 @@ public class BlockRegistry
     public static Block claymorterblock;
     public static Block unfiredbloomery;
     public static Block leafpile;
+    public static Block stonepile;
 
 
     public static void init() {
@@ -31,12 +33,14 @@ public class BlockRegistry
         claybloomery = new BlockClayBloomery("claybloomery", "claybloomery");
         choppingblock = new BlockChoppingBlock("choppingblock","choppingblock");
         formedunfiredbloomery = new BlockFormedUnfiredBloomery("formedunfiredbloomery","formedunfiredbloomery");
+        stonepileanvil = new BlockStonePileAnvil("stonepileanvil","stonepileanvil");
 
 
 
         claymorterblock = new BlockClayMorter("claymorterblock");
         unfiredbloomery = new BlockUnfiredBloomery("unfiredbloomery");
         leafpile = new BlockLeafPile("leafpile");
+        stonepile = new BlockStone("stonepile");
 
     }
 
@@ -46,10 +50,12 @@ public class BlockRegistry
         registerBlock(claybloomery);
         registerBlock(choppingblock);
         registerBlock(formedunfiredbloomery);
+        registerBlock(stonepileanvil);
 
         registerBlock(claymorterblock, new ItemBlockOre(claymorterblock));
         registerBlock(unfiredbloomery,new ItemBlockOre(unfiredbloomery));
         registerBlock(leafpile,new ItemBlockOre(leafpile));
+        registerBlock(stonepile,new ItemBlockOre(stonepile));
     }
 
     public static void registerRenders()
@@ -57,6 +63,7 @@ public class BlockRegistry
         registerRender(claybloomery);
         registerRender(choppingblock);
         registerRender(formedunfiredbloomery);
+        registerRender(stonepileanvil);
 
         for (int i = 0; i < EnumBlock.ClayMorterBlock.values().length; i++)
         {
@@ -71,6 +78,11 @@ public class BlockRegistry
         for (int i = 0; i < EnumBlock.LeafBlock.values().length; i++)
         {
             registerRender(leafpile,i, EnumBlock.LeafBlock.values()[i].getName());
+        }
+
+        for (int i = 0; i < EnumBlock.StoneBlock.values().length; i++)
+        {
+            registerRender(stonepile,i, EnumBlock.StoneBlock.values()[i].getName());
         }
     }
 

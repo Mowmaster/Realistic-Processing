@@ -80,5 +80,16 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(References.MODID, "lb15"),
                 new ResourceLocation(References.MODID, "lb16")
         );
+
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(BlockRegistry.stonepile),
+                new ResourceLocation(References.MODID, "stone1"),
+                new ResourceLocation(References.MODID, "stone2"),
+                new ResourceLocation(References.MODID, "stone3"),
+                new ResourceLocation(References.MODID, "stone4"),
+                new ResourceLocation(References.MODID, "stone5"),
+                new ResourceLocation(References.MODID, "stone6"),
+                new ResourceLocation(References.MODID, "stone7"),
+                new ResourceLocation(References.MODID, "stone8")
+        );
     }
 }

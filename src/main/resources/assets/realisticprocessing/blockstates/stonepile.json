@@ -1,0 +1,12 @@
+{
+  "variants":{
+    "stonetype=stone1": {"model": "realisticprocessing:stonetype/stone1"},
+    "stonetype=stone2": {"model": "realisticprocessing:stonetype/stone2"},
+    "stonetype=stone3": {"model": "realisticprocessing:stonetype/stone3"},
+    "stonetype=stone4": {"model": "realisticprocessing:stonetype/stone4"},
+    "stonetype=stone5": {"model": "realisticprocessing:stonetype/stone5"},
+    "stonetype=stone6": {"model": "realisticprocessing:stonetype/stone6"},
+    "stonetype=stone7": {"model": "realisticprocessing:stonetype/stone7"},
+    "stonetype=stone8": {"model": "realisticprocessing:stonetype/stone8"}
+  }
+}

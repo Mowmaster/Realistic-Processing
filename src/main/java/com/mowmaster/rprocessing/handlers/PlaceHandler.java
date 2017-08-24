@@ -32,7 +32,7 @@ public class PlaceHandler
 {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
-    public void onItemRightClick(PlayerInteractEvent.RightClickBlock event)
+    public void onRightClickBlock(PlayerInteractEvent.RightClickBlock event)
     {
         World worldIn = event.getWorld();
         BlockPos pos = event.getPos();
@@ -84,6 +84,27 @@ public class PlaceHandler
 
 
             }
+        }
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public void onRightClickHand(PlayerInteractEvent.RightClickItem event)
+    {
+        World worldIn = event.getWorld();
+        BlockPos pos = event.getPos();
+        EntityPlayer playerIn = event.getEntityPlayer();
+        EnumHand hand = event.getHand();
+        IBlockState state = worldIn.getBlockState(event.getPos());
+
+        Random rn = new Random();
+        int chance = rn.nextInt(10);
+        if((ItemStack.areItemsEqual(playerIn.getHeldItemMainhand(), new ItemStack(Items.STICK))) && (ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(Items.STICK))))
+        {
+                if(chance>5) {
+                    //drops embers entity which can start fires
+                    worldIn.setBlockState(pos.add(0,0,0), Blocks.FIRE.getDefaultState());
+                    playerIn.getHeldItemOffhand().shrink(1);
+                }
         }
     }
 

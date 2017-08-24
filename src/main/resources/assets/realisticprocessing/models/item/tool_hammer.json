@@ -1,9 +1,9 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "0": "blocks/anvil_head",
-        "1": "blocks/anvil_middle",
-        "2": "blocks/hammer_handle"
+        "0": "realisticprocessing:blocks/anvil/anvil_head",
+        "1": "realisticprocessing:blocks/anvil/anvil_middle",
+        "2": "realisticprocessing:blocks/anvil/hammer_handle"
     },
     "elements": [
         {

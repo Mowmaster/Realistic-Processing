@@ -19,6 +19,7 @@ public class ItemRegistry
     public static Item dryleafpile;
     public static Item twig;
     public static Item branch;
+    public static Item hammer;
 
 
 
@@ -30,6 +31,7 @@ public class ItemRegistry
         dryleafpile = new ItemBasic("dryleaf","dryleaf");
         twig = new ItemBasic("twig","twig");
         branch = new ItemBasic("branch","branch");
+        hammer = new ItemBasic("tool_hammer","tool_hammer");
 
     }
 
@@ -39,6 +41,7 @@ public class ItemRegistry
         registerItem(dryleafpile);
         registerItem(twig);
         registerItem(branch);
+        registerItem(hammer);
     }
 
     public static void registerRenders()
@@ -47,6 +50,7 @@ public class ItemRegistry
         registerRender(dryleafpile);
         registerRender(twig);
         registerRender(branch);
+        registerRender(hammer);
     }
 
     public static void registerItem(Item item)

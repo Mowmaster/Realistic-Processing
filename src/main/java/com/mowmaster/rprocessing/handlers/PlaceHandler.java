@@ -5,17 +5,24 @@ import com.mowmaster.rprocessing.enums.EnumBlock;
 import com.mowmaster.rprocessing.items.ItemRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.audio.Sound;
+import net.minecraft.client.audio.SoundList;
+import net.minecraft.client.audio.SoundRegistry;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.sound.SoundEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -100,9 +107,10 @@ public class PlaceHandler
         int chance = rn.nextInt(10);
         if((ItemStack.areItemsEqual(playerIn.getHeldItemMainhand(), new ItemStack(Items.STICK))) && (ItemStack.areItemsEqual(playerIn.getHeldItemOffhand(), new ItemStack(Items.STICK))))
         {
+            worldIn.playSound((EntityPlayer)null, playerIn.posX, playerIn.posY, playerIn.posZ, SoundEvents.ENTITY_TNT_PRIMED, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 if(chance>5) {
-                    //drops embers entity which can start fires
-                    worldIn.setBlockState(pos.add(0,0,0), Blocks.FIRE.getDefaultState());
+                    //drops embers entitys which can start fires
+                    worldIn.setBlockState(pos,Blocks.FIRE.getDefaultState());
                     playerIn.getHeldItemOffhand().shrink(1);
                 }
         }

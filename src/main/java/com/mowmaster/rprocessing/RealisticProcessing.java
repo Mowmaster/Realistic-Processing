@@ -49,6 +49,7 @@ public class RealisticProcessing
     public void init(FMLInitializationEvent event)
     {
         proxy.init();
+        proxy.registerEntityRenders();
         MinecraftForge.EVENT_BUS.register(this);
     }
 

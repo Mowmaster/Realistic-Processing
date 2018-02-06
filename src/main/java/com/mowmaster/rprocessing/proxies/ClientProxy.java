@@ -6,10 +6,12 @@ import com.mowmaster.rprocessing.items.ItemRegistry;
 import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import com.mowmaster.rprocessing.tiles.render.RenderTileClayBloomery;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -23,7 +25,9 @@ public class ClientProxy extends CommonProxy
         ItemRegistry.registerRenders();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileClayBloomery.class,new RenderTileClayBloomery());
+
     }
+
 
     @Override
     public void registerModelBakeryVarients()
@@ -92,4 +96,5 @@ public class ClientProxy extends CommonProxy
                 new ResourceLocation(References.MODID, "stone8")
         );
     }
+
 }

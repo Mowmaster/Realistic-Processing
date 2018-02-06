@@ -8,6 +8,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -83,10 +84,6 @@ public class BlockFormedUnfiredBloomery extends Block implements ITileEntityProv
 
 
             //Rub two sticks together to lite the bloomery, or flint and steel for 1 durability
-            if (playerIn.getHeldItem(EnumHand.MAIN_HAND).equals(Items.STICK) && playerIn.getHeldItem(EnumHand.OFF_HAND).equals(Items.STICK)) {
-                ubloom.start();
-                System.out.println("WHOOOOOSH!!!");
-            }
         }
         return true;
     }
@@ -94,12 +91,12 @@ public class BlockFormedUnfiredBloomery extends Block implements ITileEntityProv
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileClayBloomery();
+        return new TileUnfiredBloomery();
     }
 
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileClayBloomery();
+        return new TileUnfiredBloomery();
     }
 }

@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemAxe;
+import net.minecraft.item.ItemFlintAndSteel;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -48,6 +49,7 @@ public class PlaceHandler
         IBlockState state = worldIn.getBlockState(event.getPos());
         if((playerIn.getHeldItem(hand) != null))
         {
+
             if (playerIn.getHeldItem(hand).getItem() instanceof ItemAxe) {
                 if (state.getBlock() instanceof BlockPlanks) {
                     if(!worldIn.isRemote)
@@ -114,6 +116,7 @@ public class PlaceHandler
                     playerIn.getHeldItemOffhand().shrink(1);
                 }
         }
+
     }
 
     @SubscribeEvent

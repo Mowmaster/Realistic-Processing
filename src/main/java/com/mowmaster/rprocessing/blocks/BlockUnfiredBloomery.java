@@ -220,6 +220,7 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
                     }
                     worldIn.setBlockState(pos,BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE,EnumBlock.UnfiredBloomeryBlock.UBB9));
                 }
+
             }
 
 
@@ -248,7 +249,7 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
                         if (!playerIn.isCreative()) {
                             playerIn.getHeldItem(hand).shrink(1);
                         }
-                        worldIn.setBlockState(pos, BlockRegistry.formedunfiredbloomery.getDefaultState());
+                        worldIn.setBlockState(pos, BlockRegistry.claybloomery.getDefaultState());
                     }
                 }
 
@@ -285,6 +286,10 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
                     worldIn.setBlockState(pos, BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB14));
                 }
             }
+
+
+
+
 
         return true;
     }

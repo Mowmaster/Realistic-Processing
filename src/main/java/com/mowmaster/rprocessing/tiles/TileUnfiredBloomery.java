@@ -1,5 +1,6 @@
 package com.mowmaster.rprocessing.tiles;
 
+import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
@@ -36,6 +37,16 @@ public class TileUnfiredBloomery extends TileEntity implements ITickable
     @Override
     public void update()
     {
+        int ticker =1;
+        if(ticker==1)
+        {
+            ticker++;
+        }
+        if (ticker>=100)
+        {
+            this.world.setBlockState(getPos(),BlockRegistry.claybloomery.getDefaultState());
+            ticker=0;
+        }
 
     }
 

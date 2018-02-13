@@ -15,12 +15,14 @@ public class FuelTypes implements IFuelHandler
         else if(fuel.getItem() == ItemRegistry.twig)
         {
             return 50;
-
         }
         else if(fuel.getItem() == ItemRegistry.branch)
         {
             return 200;
-            //same as sticks???
+        }
+        else if(fuel.getItem() == ItemRegistry.charcoalChunk)
+        {
+            return 200;
         }
         return 0;
     }

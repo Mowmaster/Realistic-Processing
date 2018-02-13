@@ -20,6 +20,7 @@ public class ItemRegistry
     public static Item twig;
     public static Item branch;
     public static Item hammer;
+    public static Item charcoalChunk;
 
 
 
@@ -32,6 +33,7 @@ public class ItemRegistry
         twig = new ItemBasic("twig","twig");
         branch = new ItemBasic("branch","branch");
         hammer = new ItemBasic("tool_hammer","tool_hammer");
+        charcoalChunk = new ItemBasic("charcoalchunk","charcoalchunk");
 
     }
 
@@ -42,6 +44,7 @@ public class ItemRegistry
         registerItem(twig);
         registerItem(branch);
         registerItem(hammer);
+        registerItem(charcoalChunk);
     }
 
     public static void registerRenders()
@@ -51,6 +54,7 @@ public class ItemRegistry
         registerRender(twig);
         registerRender(branch);
         registerRender(hammer);
+        registerRender(charcoalChunk);
     }
 
     public static void registerItem(Item item)

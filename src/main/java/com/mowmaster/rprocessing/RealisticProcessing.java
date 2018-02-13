@@ -6,6 +6,8 @@ import com.mowmaster.rprocessing.configs.RealConfig;
 import com.mowmaster.rprocessing.items.ItemRegistry;
 import com.mowmaster.rprocessing.proxies.CommonProxy;
 import com.mowmaster.rprocessing.recipes.fuels.FuelTypes;
+import com.mowmaster.rprocessing.recipes.oredict.OreDict;
+import com.mowmaster.rprocessing.recipes.smelting.Smelting;
 import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileRegistry;
 import net.minecraftforge.common.MinecraftForge;
@@ -45,7 +47,9 @@ public class RealisticProcessing
         ItemRegistry.init();
         ItemRegistry.register();
         proxy.preInit();
+        OreDict.addEntries();
         GameRegistry.registerFuelHandler(new FuelTypes());
+        Smelting.init();
     }
 
     @Mod.EventHandler

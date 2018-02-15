@@ -84,7 +84,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                 if((playerIn.getHeldItem(hand) != null))
                 {
                     if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Blocks.IRON_ORE))) {
-                        if(bloom.addIron())
+                        if(bloom.addIron(playerIn.getHeldItem(hand)))
                         {
                             //playerIn.sendMessage(new TextComponentString("You are adding Iron Ore"));
                             playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are adding Iron Ore"),true);

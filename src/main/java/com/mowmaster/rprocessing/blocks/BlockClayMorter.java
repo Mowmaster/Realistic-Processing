@@ -31,6 +31,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 
+import static com.mowmaster.rprocessing.configs.RealTab.REAL_TAB;
 import static com.mowmaster.rprocessing.enums.EnumBlock.ClayMorterBlock.MIX2;
 
 
@@ -50,6 +51,7 @@ public class BlockClayMorter extends Block implements IMetaBlockName
         this.setDefaultState(this.blockState.getBaseState().withProperty(CLAYTYPE, MIX2));
         this.setHardness(0.2F);
         this.setLightOpacity(1);
+        this.setCreativeTab(REAL_TAB);
         this.setSoundType(SoundType.WOOD);
 
     }

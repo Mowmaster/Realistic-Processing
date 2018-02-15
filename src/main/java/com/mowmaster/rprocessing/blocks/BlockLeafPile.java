@@ -31,6 +31,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
+import static com.mowmaster.rprocessing.configs.RealTab.REAL_TAB;
+
 
 //Maybe try extending Block leaves sometime?
 public class BlockLeafPile extends Block implements IMetaBlockName
@@ -49,6 +51,7 @@ public class BlockLeafPile extends Block implements IMetaBlockName
         this.setHardness(0.2F);
         this.setLightOpacity(1);
         this.setSoundType(SoundType.PLANT);
+        this.setCreativeTab(REAL_TAB);
         this.setTickRandomly(true);
     }
 

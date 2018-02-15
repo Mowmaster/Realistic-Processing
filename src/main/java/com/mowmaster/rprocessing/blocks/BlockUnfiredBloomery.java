@@ -32,6 +32,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Random;
 
+import static com.mowmaster.rprocessing.configs.RealTab.REAL_TAB;
+
 
 //Maybe try extending Block leaves sometime?
 public class BlockUnfiredBloomery extends Block implements IMetaBlockName
@@ -50,6 +52,7 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
         this.setHardness(0.2F);
         this.setLightOpacity(1);
         this.setSoundType(SoundType.SAND);
+        this.setCreativeTab(REAL_TAB);
         this.setBlockUnbreakable();//maybe it has to be dug up with materials lost?
     }
 

@@ -78,6 +78,11 @@ public class TileClayBloomery extends TileEntity implements ITickable
         return progress;
     }
 
+    public ItemStack getOreItemInBlock()
+    {
+        return oreInBloomery;
+    }
+
     public String getItemInBlock()
     {
         return oreInBloomery.getDisplayName();
@@ -337,6 +342,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
     @Override
     public void update() {
+
+        /*
         if (airCount >= 750) {
             //world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
             world.spawnParticle(EnumParticleTypes.WATER_SPLASH, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 0.2, 0.2, 0.2, new int[0]);
@@ -358,6 +365,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
         if (airCount < 250) {
             world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
         }
+         */
 
 
 

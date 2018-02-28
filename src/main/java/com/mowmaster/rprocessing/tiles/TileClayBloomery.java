@@ -1,416 +1,511 @@
 package com.mowmaster.rprocessing.tiles;
 
+import com.mowmaster.rprocessing.items.ItemRegistry;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.mowmaster.rprocessing.configs.RealConfig.*;
 
 
 public class TileClayBloomery extends TileEntity implements ITickable
 {
-    public int oxygencount=0;
-    public int maxoxygen=1000; //because if 95 it can go up to 100
-    public int needsoxygen = 0;
-    public int maxneedsoxygen = 200;
-    public int carboncount=0;
-    public int maxcarbon=8;
 
-    public int maxore=8;
-
-    public int processtimer = 0;
-    public int maxprocessedtime = 300;//seconds
-    public int burntimer = 0;
-    public int tickercoal = 0;
-    public int ticker20 = 0;
-    public int tickerO2 = 0;
-
-
-    public int activated = 0;
-    public int maxactivated = 1;
-    public int processed = 0;
-    public int maxprocessed = 1;
-
-    public List<ItemStack> orelist = new ArrayList<>();
-    public int oreiron = 0;
-    public int oregold = 0;
+    private ItemStack oreInBloomery = ItemStack.EMPTY;
+    private String oreName = null;
+    private int oreCount = 0;
+    private final int oreMax = 8;
+    private int charcoalCount = 0;
+    private final int charcoalMax = 25600;
+    private int airCount = 0;
+    private final int airMax = 1000;
+    private int heat = 0;
+    private final int heatMax = 2000;
+    public boolean running = false;
+    private int progress = 0;
+    private int cold = 0;
+    private final int progressMax = 6000;
+    private int ticker = 0;
+    private int ticker2 = 0;
 
 
-    //public static boolean activated = false;
-    //public static boolean processed = false;
-
-
-
-
-
-
-    public ItemStack getOutputFromList(ItemStack input)
+    public ItemStack getSmeltingOutput(ItemStack input)
     {
         return FurnaceRecipes.instance().getSmeltingResult(input);
     }
 
-    public boolean addCarbon()
+    public String getOreName(){return oreName;}
+
+    public int getOreCount()
     {
-        if(carboncount<maxcarbon)
-        {
-            carboncount++;
-            markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos,state,state,3);
-            return true;
-        }
-        return false;
+        return oreCount;
     }
-    public boolean removeCarbon()
+
+    public int getAirCount()
     {
-        if (activated == 0)
+        return airCount;
+    }
+
+    public int getCharcoalCount()
+    {
+        return charcoalCount;
+    }
+
+    public int getHeat()
+    {
+        return heat;
+    }
+
+    public boolean getRunning(){return running;}
+
+    public int getCold()
+    {
+        return cold;
+    }
+
+    public int getProgress()
+    {
+        return progress;
+    }
+
+    public String getItemInBlock()
+    {
+        return oreInBloomery.getDisplayName();
+    }
+
+    public String getAnswer()
+    {
+        int[] oreIds = OreDictionary.getOreIDs(oreInBloomery);
+        for(int i=0;i<=oreIds.length-1;i++)
         {
-            if(orelist.isEmpty())
+            if(OreDictionary.getOreName(oreIds[i]).contains("ore"))
             {
-                if(carboncount>0)
+                oreName = OreDictionary.getOreName(oreIds[i]);
+            }
+        }
+        return oreName;
+        /*
+        int oreID = OreDictionary.getOreID(oreInBloomery.getUnlocalizedName());
+        System.out.println(OreDictionary.getOreName(oreID));
+        System.out.println(OreDictionary.getOreName(oreID).toLowerCase().contains("ore") && OreDictionary.getOreName(oreID).toLowerCase().contains("lead"));
+        System.out.println(OreDictionary.getOreName(oreID));
+         */
+    }
+
+
+
+
+    public void updateBlock()
+    {
+        markDirty();
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+    }
+
+    public void penaltySmeltingProgress()
+    {
+        if(progress<750)
+        {
+            progress=0;
+        }
+        else
+        {
+            int oldProgress = progress;
+            progress = oldProgress - 750;
+        }
+    }
+
+    public void penaltyHeat()
+    {
+        //10% penality
+        int oldHeat = heat;
+        if(heat<500)
+        {
+            heat = oldHeat-50;
+        }
+        else if(heat<=500 && heat<1000)
+        {
+            heat = oldHeat-100;
+        }
+        else if(heat<=1000 && heat<1500)
+        {
+            heat = oldHeat-150;
+        }
+        else if(heat<=1500)
+        {
+            heat = oldHeat-200;
+        }
+    }
+
+    public Boolean addOre(ItemStack input)
+    {
+        String oreInputName = "";
+        //Is Hand NOT Empty?
+        if(!input.isEmpty())
+        {
+            //Is this item in hand an "ore"
+            int[] oreIds = OreDictionary.getOreIDs(input);
+            for(int i=0;i<=oreIds.length-1;i++)
+            {
+                if(OreDictionary.getOreName(oreIds[i]).contains("ore"))
                 {
-                    world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL)));
-                    carboncount--;
-                    markDirty();
-                    IBlockState state = world.getBlockState(pos);
-                    world.notifyBlockUpdate(pos,state,state,3);
+                    oreInputName = OreDictionary.getOreName(oreIds[i]);
+                }
+            }
+            if(oreInputName.contains("ore")&& !getSmeltingOutput(input).isEmpty())
+            {
+                //Currently no ores in bloomery?
+                if(oreInBloomery.isEmpty())
+                {
+                    oreInBloomery = input;
+                    oreName = getAnswer();
+                    oreCount++;
+                    input.shrink(1);
+                    updateBlock();
                     return true;
                 }
+                //Ores In Bloomery and input item matches currently inside
+                else if(input.getItem().equals(oreInBloomery.getItem()) && oreCount<oreMax)
+                {
+                    if(running){penaltySmeltingProgress();penaltyHeat();}
+                    oreCount++;
+                    input.shrink(1);
+                    updateBlock();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
+            return false;
         }
         return false;
     }
 
-    public boolean addIron(ItemStack input){
-        System.out.println(getOutputFromList(input).getDisplayName());
-        return true;
-    }
-    public boolean removeIron(){
-        return true;
-    }
-
-    public boolean activate()
+    public ItemStack removeOre(EntityPlayer player)
     {
-        if(carboncount>0)
+        ItemStack droppedItem = ItemStack.EMPTY;
+        if(!running)
         {
-            if(activated == 0)
+            if (oreCount<=1)
             {
-                activated = 1;
-                needsoxygen = 0;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-                return true;
+                if(oreInBloomery.getMetadata()!=0)
+                {
+                    droppedItem = new ItemStack(oreInBloomery.getItem(),1,oreInBloomery.getMetadata());
+                    oreCount = 0;
+                    oreInBloomery = ItemStack.EMPTY;
+                    updateBlock();
+                }
+                else
+                {
+                    droppedItem = new ItemStack(oreInBloomery.getItem(),1);
+                    oreCount = 0;
+                    oreInBloomery = ItemStack.EMPTY;
+                    oreName = null;
+                    updateBlock();
+                }
+            }
+            else if (oreCount >1)
+            {
+                if(oreInBloomery.getMetadata()!=0)
+                {
+                    droppedItem = new ItemStack(oreInBloomery.getItem(),1,oreInBloomery.getMetadata());
+                    oreCount--;
+                    updateBlock();
+                }
+                else
+                {
+                    droppedItem = new ItemStack(oreInBloomery.getItem(),1);
+                    oreCount--;
+                    updateBlock();
+                }
+            }
+        }
+        return droppedItem;
+    }
+
+    public Boolean addCharcoal(ItemStack input)
+    {
+        if(!input.isEmpty()) {
+            //Is this item in hand an "ore"
+            int oreID = OreDictionary.getOreID(input.getUnlocalizedName());
+            if (OreDictionary.getOreName(oreID).contains("charcoal"))
+            {
+
+                //Items.Coal doesnt have a fuel value so had to set it in FuelTypes
+                int fuel = GameRegistry.getFuelValue(input);
+                if(charcoalCount + fuel <= charcoalMax)
+                {
+                    int oldCharcoalCount = charcoalCount;
+                    charcoalCount = oldCharcoalCount + fuel;
+                    input.shrink(1);
+                    cold=0;
+                    updateBlock();
+                }
+
             }
 
         }
         return false;
     }
-    public boolean deactivate()
+
+    //when player uses shovel on block
+    public ItemStack removeCharcoal()
     {
-        if(activated == 1)
+        ItemStack droppedItem = ItemStack.EMPTY;
+        if(!running)
         {
-            activated = 0;
-            oxygencount = 0;
-            markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos,state,state,3);
+            if(charcoalCount >= 1600)
+            {
+                droppedItem = new ItemStack(Items.COAL,1,1);
+                int oldCharcoalCount = charcoalCount;
+                charcoalCount = oldCharcoalCount - 1600;
+                updateBlock();
+            }
+            else if(charcoalCount < 1600 && charcoalCount >= 200)
+            {
+                droppedItem = new ItemStack(ItemRegistry.charcoalChunk,1);
+                int oldCharcoalCount = charcoalCount;
+                charcoalCount = oldCharcoalCount - 200;
+                updateBlock();
+            }
+        }
+        return droppedItem;
+
+    }
+
+    //when player uses reeds on block
+    public Boolean addAir()
+    {
+        if(airCount<airMax)
+        {
+            int oldAir = airCount;
+            airCount = oldAir + 50;
+            cold=0;
+            updateBlock();
+            world.spawnParticle(EnumParticleTypes.SWEEP_ATTACK, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 0.2, 0.2, 0.2, new int[0]);
             return true;
         }
         return false;
     }
 
-    public boolean addOxygen()
+    //while running
+    public void removeAir()
     {
-        if(activated == 1)
+        if(airCount>0)
         {
-            if(oxygencount<maxoxygen)
-            {
-                oxygencount += 200;
-                markDirty();
-                IBlockState state = world.getBlockState(pos);
-                world.notifyBlockUpdate(pos,state,state,3);
-                return true;
-            }
+            airCount--;
+            updateBlock();
         }
-
-        return false;
     }
 
-    public void resetNeedsOxygen()
+    //when struck with flint and steel
+    public boolean startProgress()
     {
-        needsoxygen = 0;
-    }
-
-    public boolean addOre(ItemStack ore)
-    {
-        if(activated != 0 || processtimer !=0)
+        if(!running)
+        {
+            running=true;
+            updateBlock();
+            world.spawnParticle(EnumParticleTypes.FIREWORKS_SPARK, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 0.2, 0.2, 0.2, new int[0]);
+            return true;
+        }
+        else
         {
             return false;
         }
-        if (orelist.size() < maxore && ore.getCount() == 1)
-        {
-            orelist.add(ore);
-            markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos,state,state,3);
-            return true;
-        }
-        return false;
     }
 
-    public boolean removeOre()
+    public void stopProgress()
     {
-        if (activated != 0 || processtimer != 0)
-        {
-            return false;
-        }
-        if (!orelist.isEmpty())
-        {
-            ItemStack ore = orelist.remove(orelist.size() - 1);
-            world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, ore));
-            markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3);
-            return true;
-        }
-        return false;
+        running=false;
+        cold=0;
+        heat=0;
+        updateBlock();
     }
 
-    public boolean finishedProcessing()
-    {
-        deactivate();
-        carboncount = 0;
-        oxygencount = 0;
-        processtimer = 0;
-        needsoxygen = 0;
-        processed = 0;
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos,state,state,3);
-        return true;
-    }
 
     @Override
-    public void update()
-    {
-        //System.out.println("Activated :" + activated);
-        if (activated == 1)
-        {
-            if (oxygencount >= 750) {
-                world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
-            }
-            if (oxygencount < 750 && oxygencount >= 400) {
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
-                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+    public void update() {
+        if (airCount >= 750) {
+            //world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+            world.spawnParticle(EnumParticleTypes.WATER_SPLASH, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 0.2, 0.2, 0.2, new int[0]);
+        }
+        if (airCount < 750 && airCount >= 500) {
+            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
 
-            }
-            if (oxygencount < 400 && oxygencount >= 100) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-            }
-            if (oxygencount < 100) {
-                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-            }
+        }
+        if (airCount < 500 && airCount >= 250) {
+            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+        }
+        // && airCount >= 50
+        if (airCount < 250) {
+            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
         }
 
 
-        if(!world.isRemote) {
 
-            if (activated == 1) {
-                //if it runs out of Carbon
-                if(carboncount == 0) {deactivate();}
 
-                if(!orelist.isEmpty())
+        if (running)
+        {
+
+            if(!world.isRemote)
+            {
+                if(cold>=200)
                 {
-                    tickerO2++;
-                    if(tickerO2 > bloomeryOxygenTR)
-                    {
-                        tickerO2 = 0;
-                        if (oxygencount > 0) {
-                            oxygencount--;
-                            IBlockState state = world.getBlockState(pos);
-                            world.notifyBlockUpdate(pos,state,state,3);
-                            //System.out.println("Oxygen Count :" + oxygencount);
-                        }
-                    }
+                    stopProgress();
+                }
 
-
-                    if (oxygencount == 0) {
-                        if (needsoxygen < maxneedsoxygen) {
-                            needsoxygen++;
-                            //System.out.println("Oxygen Timer Count :" + needsoxygen);
-                        }
-                    }
-                    // If it runs out of Oxygen
-                    if (needsoxygen == maxneedsoxygen) {deactivate();}
-                    //processing
-                    if (processtimer < maxprocessedtime)
+                if(oreCount>0)
+                {
+                    ticker++;
+                    ticker2++;
+                    if(heat==0) {cold++;}
+                    if(airCount>0) {removeAir();}//1000units lasts for 50 seconds roughly
+                    if(charcoalCount>0)
                     {
-                        ticker20++;
-                        if(ticker20 > 20)
+                        int oldCharcoal = charcoalCount;
+                        if(heat>=1500)
                         {
-                            ticker20 = 0;
-                            processtimer++;
-
-                            //uses carbon up as it works
-                            if(carboncount>0)
-                            {
-                                tickercoal++;
-                                if(!orelist.isEmpty())
-                                {
-                                    if(bloomeryCoalCR > maxprocessedtime)
-                                        throw new RuntimeException(this.getClass() + "Coal Consumption Rate Cannot be more then Processing Time");
-                                    else
-                                    {
-                                        if(tickercoal>bloomeryCoalCR)
-                                        {
-                                            tickercoal = 0;
-                                            carboncount--;
-                                        }
-                                    }
-                                }
-
-                                if(!orelist.isEmpty())
-                                {
-                                    if(tickercoal>bloomeryCoalAstheticCR)
-                                    {
-                                        tickercoal = 0;
-                                        carboncount--;
-                                    }
-                                }
-                            }
-                            //System.out.println(processtimer);
+                            charcoalCount=oldCharcoal-16;
+                        }
+                        else if(heat>=1000 && heat<1500)
+                        {
+                            charcoalCount=oldCharcoal-12;
+                        }
+                        else if(heat>=500 && heat<1000)
+                        {
+                            charcoalCount=oldCharcoal-8;
+                        }
+                        else if(heat>0 && heat<500)
+                        {
+                            charcoalCount=oldCharcoal-4;
                         }
                     }
-                    //finished processing
-                    if (processtimer == maxprocessedtime) {processed = 1;}
-                }
 
-                if (processed == 1)
-                {
-                    for (ItemStack ore : orelist)
+                    if(ticker2>=2)
                     {
-                        ItemStack result = FurnaceRecipes.instance().getSmeltingResult(ore).copy();
-                        result.setCount(2);
+                        ticker2=0;
+                        if(heat<=2000)
+                        {
+                            if(getAirCount()>0 && getCharcoalCount()>0)
+                            {
+                                heat++;
+                            }
+                            else
+                            {
+                                heat--;
+                            }
+                        }
 
-                        world.spawnEntity(new EntityItem(this.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result));
+
+
                     }
-                    orelist.clear();
-                    finishedProcessing();
+
+
+
+                    //second interval
+                    if(ticker>=20)
+                    {
+                        ticker=0;
+
+                        if(progress<progressMax)
+                        {
+                            if(oreName.contains("oreTin") && heat>250) {progress++;}
+                            else if(oreName.contains("orePlatinum") && heat>1750) {progress++;}
+
+                            else if(oreName.contains("oreUranium") && heat>1130) {progress++;}
+                            else if(oreName.contains("oreNickle") && heat>1450) {progress++;}
+                            else if(oreName.contains("oreSilver") && heat>850) {progress++;}
+                            else if(oreName.contains("oreLead") && heat>320) {progress++;}
+                            else if(oreName.contains("oreAluminum") && heat>660) {progress++;}
+                            else if(oreName.contains("oreCopper") && heat>850) {progress++;}
+
+                            else if(oreName.contains("oreGold") && heat>1050) {progress++;}
+                            else if(oreName.contains("oreIron") && heat>1250) {progress++;}
+                            else {if(heat>200){progress++;}}
+                        }
+
+
+
+
+                    }
                 }
             }
+
 
         }
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound)
+    {
         super.writeToNBT(compound);
-        this.writeUpdateTag(compound);
-        compound.setInteger("needsoxygen", needsoxygen);
-        compound.setInteger("processed",processed);
+        compound.setInteger("orecount",oreCount);
+        compound.setInteger("charcoalcount",charcoalCount);
+        compound.setInteger("aircount",airCount);
+        compound.setInteger("heat",heat);
+        compound.setInteger("progress",progress);
+        compound.setInteger("cold",cold);
+        compound.setBoolean("running",running);
+        compound.setString("name", oreName);
+        compound.setTag("item",oreInBloomery.writeToNBT(new NBTTagCompound()));
         return compound;
-
     }
+
+
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.readUpdateTag(compound);
-        this.needsoxygen = compound.getInteger("needsoxygen");
-        this.processed = compound.getInteger("processed");
+
+        this.oreCount=compound.getInteger("orecount");
+        this.charcoalCount=compound.getInteger("charcoalcount");
+        this.airCount=compound.getInteger("aircount");
+        this.heat=compound.getInteger("heat");
+        this.progress=compound.getInteger("progress");
+        this.cold=compound.getInteger("cold");
+        this.running=compound.getBoolean("running");
+        this.oreName=compound.getString("name");
+        NBTTagCompound itemTag = compound.getCompoundTag("item");
+        this.oreInBloomery = new ItemStack(itemTag);
+
     }
 
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        this.writeUpdateTag(tagCompound);
-        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
-
-    }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tagCompound = pkt.getNbtCompound();
-        this.readUpdateTag(tagCompound);
+        super.onDataPacket(net, pkt);
+        readFromNBT(pkt.getNbtCompound());
     }
 
     @Override
     public NBTTagCompound getUpdateTag() {
-        NBTTagCompound tagCompound = super.getUpdateTag();
-        writeUpdateTag(tagCompound);
-        return tagCompound;
+        return writeToNBT(new NBTTagCompound());
     }
 
-    public void writeUpdateTag(NBTTagCompound tagCompound)
-    {
-        tagCompound.setInteger("carboncount",carboncount);
-        tagCompound.setInteger("activated",activated);
-        tagCompound.setInteger("oxygencount",oxygencount);
-
-        NBTTagList itemList = new NBTTagList();
-        for (int i = 0;i<orelist.size();i++)
-        {
-            {
-                ItemStack itemstack = orelist.get(i);
-                NBTTagCompound tag = new NBTTagCompound();
-                tag.setByte("Slot", (byte) i);
-                itemstack.writeToNBT(tag);
-                itemList.appendTag(tag);
-            }
-        }
-
-        tagCompound.setInteger("timer",processtimer);
-        tagCompound.setInteger("timer20",ticker20);
-        tagCompound.setInteger("timerO2",tickerO2);
-        tagCompound.setInteger("burntimer",burntimer);
-        tagCompound.setInteger("tickercoal",tickercoal);
-
-
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
-    public void readUpdateTag(NBTTagCompound tagCompound)
-    {
-        this.carboncount = tagCompound.getInteger("carboncount");
-        this.activated = tagCompound.getInteger("activated");
-        this.oxygencount = tagCompound.getInteger("oxygencount");
 
-        this.orelist.clear();
-        NBTTagList taglist = tagCompound.getTagList("orelist", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < taglist.tagCount(); i++)
-        {
-            NBTTagCompound tag = (NBTTagCompound)taglist.get(i);
-            byte slot = tag.getByte("Slot");
-            if (slot >= 0 && slot < maxore)
-            {
-                this.orelist.add(slot, new ItemStack(tag));
-            }
-        }
-
-
-        this.processtimer = tagCompound.getInteger("timer");
-        this.ticker20 = tagCompound.getInteger("timer20");
-        this.tickerO2 = tagCompound.getInteger("timerO2");
-        this.burntimer = tagCompound.getInteger("burntimer");
-        this.tickercoal = tagCompound.getInteger("tickercoal");
-    }
 
 
 }

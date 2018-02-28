@@ -1,6 +1,7 @@
 package com.mowmaster.rprocessing.recipes.fuels;
 
 import com.mowmaster.rprocessing.items.ItemRegistry;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 
@@ -23,6 +24,10 @@ public class FuelTypes implements IFuelHandler
         else if(fuel.getItem() == ItemRegistry.charcoalChunk)
         {
             return 200;
+        }
+        else if(fuel.getItem() == Items.COAL)
+        {
+            return 1600;
         }
         return 0;
     }

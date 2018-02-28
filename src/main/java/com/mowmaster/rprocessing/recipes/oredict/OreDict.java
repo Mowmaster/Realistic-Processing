@@ -10,6 +10,6 @@ public class OreDict
     {
         OreDictionary.registerOre("twigWood", ItemRegistry.twig);
         OreDictionary.registerOre("branchWood", ItemRegistry.branch);
-        OreDictionary.registerOre("nuggetCharcoal", ItemRegistry.charcoalChunk);
+        OreDictionary.registerOre("charcoalChunk", ItemRegistry.charcoalChunk);
     }
 }

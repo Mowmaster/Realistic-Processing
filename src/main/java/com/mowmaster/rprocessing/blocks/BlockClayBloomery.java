@@ -1,5 +1,6 @@
 package com.mowmaster.rprocessing.blocks;
 
+import com.mowmaster.rprocessing.items.ItemRegistry;
 import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import net.minecraft.block.*;
@@ -9,9 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemRecord;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
@@ -61,82 +60,84 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
             if(tileEntity instanceof TileClayBloomery) {
                 TileClayBloomery bloom = (TileClayBloomery) tileEntity;
 
-                if((playerIn.getHeldItem(hand) != null))
-                {
-                    if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.COAL))) {
-                        if(bloom.addCarbon())
-                        {
-                            //playerIn.sendMessage(new TextComponentString("You are adding Carbon"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"You are adding Carbon"),true);
-                            playerIn.getHeldItem(hand).shrink(1);
-                        }
-                    }
-                }
+
                 if(playerIn.isSneaking())
                 {
-                    if(bloom.removeCarbon())
+
+                    if (!playerIn.getHeldItem(hand).isEmpty())
                     {
-                        //playerIn.sendMessage(new TextComponentString("You are removing Carbon"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"You are removing Carbon"),true);
+                        playerIn.inventory.addItemStackToInventory(bloom.removeOre(playerIn));
+                        return true;
+                    }
+                    else if (!playerIn.inventory.addItemStackToInventory(bloom.removeOre(playerIn)))
+                    {
+                        playerIn.dropItem(bloom.removeOre(playerIn), false);
+                        return true;
                     }
                 }
-
-                if((playerIn.getHeldItem(hand) != null))
+                else
                 {
-                    if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Blocks.IRON_ORE))) {
-                        if(bloom.addIron(playerIn.getHeldItem(hand)))
+                    if(playerIn.getHeldItem(hand).getItem() instanceof ItemSpade)
+                    {
+                        if (!playerIn.getHeldItem(hand).isEmpty())
                         {
-                            //playerIn.sendMessage(new TextComponentString("You are adding Iron Ore"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are adding Iron Ore"),true);
-                            playerIn.getHeldItem(hand).shrink(1);
+                            playerIn.inventory.addItemStackToInventory(bloom.removeCharcoal());
+                            return true;
+                        }
+                        else if (!playerIn.inventory.addItemStackToInventory(bloom.removeCharcoal()))
+                        {
+                            playerIn.dropItem(bloom.removeOre(playerIn), false);
+                            return true;
                         }
                     }
-                }
-                if(playerIn.isSneaking())
-                {
-                    if(bloom.removeIron())
+                    else
                     {
-                        //playerIn.sendMessage(new TextComponentString("You are removing Iron Ore"));
-                        playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GRAY +"You are removing Iron Ore"),true);
+
+                        if(bloom.addOre(playerIn.getHeldItem(hand)))
+                        {
+                            return true;
+                        }
+
+                        if(bloom.addCharcoal(playerIn.getHeldItem(hand)))
+                        {
+                            //playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"You are adding Carbon"),true);
+                            return true;
+                        }
+
+                        if (playerIn.getHeldItem(hand).getItem().equals(Items.REEDS))
+                        {
+                            bloom.addAir();
+                            return true;
+                        }
+
+                        if (playerIn.getHeldItem(hand).getItem().equals(Items.FLINT_AND_STEEL))
+                        {
+                            if(bloom.startProgress())
+                            {
+                                worldIn.playSound(playerIn,pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 0.8F);
+                            }
+                            return true;
+                        }
+
+                        if (playerIn.getHeldItem(hand).getItem().equals(ItemRegistry.debugItem))
+                        {
+                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Bloomery Temp: " + bloom.getHeat()),true);
+                            System.out.println("Ore In Bloomery: " + bloom.getItemInBlock());
+                            System.out.println("Ore Count In Bloomery: " + bloom.getOreCount());
+                            System.out.println("Air In Bloomery: " + bloom.getAirCount());
+                            System.out.println("Fuel In Bloomery: " + bloom.getCharcoalCount());
+                            //System.out.println("Bloomery Temp: " + bloom.getHeat());
+                            System.out.println("Bloomery On: " + bloom.getRunning());
+                            System.out.println("Bloomery Ticks without fuel/air: " + bloom.getCold());
+                            System.out.println("Smelting Progress: " + bloom.getProgress());
+                            System.out.println("Ore Name: " + bloom.getOreName());
+                            return true;
+                        }
+                        return false;
                     }
+
                 }
 
-                if((playerIn.getHeldItem(hand) != null))
-                {
-                    if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.FLINT_AND_STEEL)))
-                    {
-                        //ItemStack itemstack = playerIn.getHeldItem(hand);
-                        if(bloom.activate())
-                        {
-                            //playerIn.sendMessage(new TextComponentString("You have Lit the Bloomery"));
-                            //itemstack.damageItem(1, playerIn);
-                            playerIn.sendStatusMessage(new TextComponentSelector(TextFormatting.YELLOW + "You have Lit the Bloomery"),true);
-                            worldIn.playSound(playerIn,pos, SoundEvents.ITEM_FLINTANDSTEEL_USE, SoundCategory.PLAYERS, 1.0F, 0.8F);
-                        }
-                    }
-
-                    if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.WATER_BUCKET)))
-                    {
-                        if(bloom.deactivate())
-                        {
-                            //playerIn.sendMessage(new TextComponentString("You have put out the Bloomery"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.BLUE + "You have put out the Bloomery"),true);
-                        }
-                    }
-                }
-
-                if((playerIn.getHeldItem(hand) != null))
-                {
-                    if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.REEDS)))
-                    {
-                        if(bloom.addOxygen())
-                        {
-                            bloom.resetNeedsOxygen();
-                            //playerIn.sendMessage(new TextComponentString("You have added Oxygen to the Bloomery"));
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.AQUA + "You have added Oxygen to the Bloomery"),true);
-                        }
-                    }
-                }
             }
         }
         return true;

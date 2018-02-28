@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemMapBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
@@ -22,6 +23,7 @@ public class ItemRegistry
     public static Item branch;
     public static Item hammer;
     public static Item charcoalChunk;
+    public static Item debugItem;
 
 
 
@@ -35,6 +37,7 @@ public class ItemRegistry
         branch = new ItemBasic("branch","branch");
         hammer = new ItemBasic("tool_hammer","tool_hammer");
         charcoalChunk = new ItemBasic("charcoalchunk","charcoalchunk");
+        debugItem = new ItemBasic("debug","debug");
 
     }
 
@@ -46,6 +49,7 @@ public class ItemRegistry
         registerItem(branch);
         registerItem(hammer);
         registerItem(charcoalChunk);
+        registerItem(debugItem);
     }
 
     public static void registerRenders()
@@ -56,6 +60,7 @@ public class ItemRegistry
         registerRender(branch);
         registerRender(hammer);
         registerRender(charcoalChunk);
+        registerRender(debugItem);
     }
 
     public static void registerItem(Item item)

@@ -2,6 +2,7 @@ package com.mowmaster.rprocessing.tiles;
 
 import com.mowmaster.rprocessing.items.ItemRegistry;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -10,19 +11,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.tileentity.TileEntityNote;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
-
+import java.util.Random;
 
 
 public class TileClayBloomery extends TileEntity implements ITickable
 {
 
     private ItemStack oreInBloomery = ItemStack.EMPTY;
-    private String oreName = null;
+    private String oreName = "";
     private int oreCount = 0;
     private final int oreMax = 8;
     private int charcoalCount = 0;
@@ -34,14 +37,54 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public boolean running = false;
     private int progress = 0;
     private int cold = 0;
-    private final int progressMax = 6000;
+    private final int progressMax = 300;
     private int ticker = 0;
     private int ticker2 = 0;
+    private int itemsOutputCount = 0;
+    private int oreOutputCount = 0;
 
+
+    public void resetTile()
+    {
+        oreInBloomery = ItemStack.EMPTY;
+        oreName = "";
+        charcoalCount = 0;
+        airCount=0;
+        heat=0;
+        running=false;
+        progress=0;
+        cold=0;
+        itemsOutputCount=0;
+        oreOutputCount=0;
+    }
 
     public ItemStack getSmeltingOutput(ItemStack input)
     {
         return FurnaceRecipes.instance().getSmeltingResult(input);
+    }
+
+    public int getSmeltedOut() {return itemsOutputCount;}
+
+    public int getOreReturned() {return oreOutputCount;}
+
+    public int getCharcoalReturned(){return Math.round(charcoalCount/1600);}
+
+    public int getCharcoalBitsReturned()
+    {
+        int leftover=charcoalCount;
+        int drop=0;
+
+        while(leftover>=1600)
+        {
+            int oldleftover = leftover;
+            leftover = oldleftover - 1600;
+        }
+
+        if (leftover>=200)
+        {
+            drop = Math.round(leftover/200);
+        }
+        return drop;
     }
 
     public String getOreName(){return oreName;}
@@ -106,9 +149,6 @@ public class TileClayBloomery extends TileEntity implements ITickable
         System.out.println(OreDictionary.getOreName(oreID));
          */
     }
-
-
-
 
     public void updateBlock()
     {
@@ -339,39 +379,124 @@ public class TileClayBloomery extends TileEntity implements ITickable
         updateBlock();
     }
 
+    public void getOutputAmount()
+    {
+        Random rn = new Random();
+        int drop =0;
+        int addedCount=0;
+        int oreOut = 0;
+
+
+        if(progress>0 && progress<=75)
+        {
+            oreOut = Math.round(oreCount* (float)0.25);
+            for(int i=1;i<oreOut;i++)
+            {
+                drop = rn.nextInt(100);
+                if(drop<=1)
+                {
+                    addedCount++;
+                }
+            }
+        }
+        else if(progress>75 && progress<=150)
+        {
+            oreOut = Math.round(oreCount* (float)0.5);
+            for(int i=1;i<oreOut;i++)
+            {
+                drop = rn.nextInt(100);
+                if(drop<=5)
+                {
+                    addedCount++;
+                }
+            }
+        }
+        else if(progress>150 && progress<=225)
+        {
+            oreOut = Math.round(oreCount* (float)0.75);
+            for(int i=1;i<oreOut;i++)
+            {
+                drop = rn.nextInt(100);
+                if(drop<=25)
+                {
+                    addedCount++;
+                }
+            }
+        }
+        else if(progress>225 && progress<=299)
+        {
+            oreOut = oreCount;
+            for(int i=1;i<oreOut;i++)
+            {
+                drop = rn.nextInt(100);
+                if(drop<=50)
+                {
+                    addedCount++;
+                }
+            }
+        }
+        else if(progress>=300)
+        {
+            oreOut = oreCount;
+            for(int i=1;i<oreOut;i++)
+            {
+                drop = rn.nextInt(100);
+                if(drop<=75)
+                {
+                    addedCount++;
+                }
+            }
+        }
+
+        itemsOutputCount = oreCount+addedCount;
+        oreOutputCount = oreCount-oreOut;
+
+    }
+
+
 
     @Override
     public void update() {
 
-        /*
-        if (airCount >= 750) {
-            //world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
-            world.spawnParticle(EnumParticleTypes.WATER_SPLASH, pos.getX() + 0.5, pos.getY() + 0.9, pos.getZ() + 0.5, 0.2, 0.2, 0.2, new int[0]);
-        }
-        if (airCount < 750 && airCount >= 500) {
-            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
-            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
-            world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
-
-        }
-        if (airCount < 500 && airCount >= 250) {
-            world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-        }
-        // && airCount >= 50
-        if (airCount < 250) {
-            world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
-        }
-         */
 
 
 
 
         if (running)
         {
+
+
+            if (charcoalCount <=0 && oreCount>0) {
+                world.spawnParticle(EnumParticleTypes.CRIT, pos.getX() + 0.125, pos.getY() + 1.25, pos.getZ() + 0.125, 0.0, 0.0, 0.0, new int[0]);
+            }
+            else if (charcoalCount <=1600 && charcoalCount>0 && oreCount>0) {
+                world.spawnParticle(EnumParticleTypes.CRIT_MAGIC, pos.getX() + 0.125, pos.getY() + 1.25, pos.getZ() + 0.125, 0.0, 0.0, 0.0, new int[0]);
+            }
+
+            if (airCount >= 750) {
+                world.spawnParticle(EnumParticleTypes.LAVA, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.0, 0.0, 0.0, new int[0]);
+
+            }
+            else if (airCount < 750 && airCount >= 500) {
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.1, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.4, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+                world.spawnParticle(EnumParticleTypes.FLAME, pos.getX() + 0.6, pos.getY() + 1.1, pos.getZ() + 0.6, 0.001, 0.001, 0.001, new int[0]);
+
+            }
+            else if (airCount < 500 && airCount >= 250) {
+                world.spawnParticle(EnumParticleTypes.SMOKE_LARGE, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+            }
+
+            else if (airCount < 250 && airCount >= 25) {
+                world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 0.001, 0.001, 0.001, new int[0]);
+            }
+
+
+
 
             if(!world.isRemote)
             {
@@ -382,6 +507,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
                 if(oreCount>0)
                 {
+
+
                     ticker++;
                     ticker2++;
                     if(heat==0) {cold++;}
@@ -389,21 +516,10 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     if(charcoalCount>0)
                     {
                         int oldCharcoal = charcoalCount;
-                        if(heat>=1500)
+                        int charcoalBurned = Math.round(heat * (float) 0.003);
+                        if(heat>0)
                         {
-                            charcoalCount=oldCharcoal-16;
-                        }
-                        else if(heat>=1000 && heat<1500)
-                        {
-                            charcoalCount=oldCharcoal-12;
-                        }
-                        else if(heat>=500 && heat<1000)
-                        {
-                            charcoalCount=oldCharcoal-8;
-                        }
-                        else if(heat>0 && heat<500)
-                        {
-                            charcoalCount=oldCharcoal-4;
+                            charcoalCount=oldCharcoal-charcoalBurned;
                         }
                     }
 
@@ -416,13 +532,16 @@ public class TileClayBloomery extends TileEntity implements ITickable
                             {
                                 heat++;
                             }
-                            else
+                        }
+                        if(getAirCount()<=0 || getCharcoalCount()<=0)
+                        {
+                            if(getHeat()>0)
                             {
                                 heat--;
+                                updateBlock();
                             }
+
                         }
-
-
 
                     }
 
@@ -435,24 +554,25 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
                         if(progress<progressMax)
                         {
-                            if(oreName.contains("oreTin") && heat>250) {progress++;}
-                            else if(oreName.contains("orePlatinum") && heat>1750) {progress++;}
+                            if(oreName.contains("oreTin") && heat>200) {progress++;}
+                            else if(oreName.contains("orePlatinum") && heat>1800) {progress++;}
 
-                            else if(oreName.contains("oreUranium") && heat>1130) {progress++;}
-                            else if(oreName.contains("oreNickle") && heat>1450) {progress++;}
-                            else if(oreName.contains("oreSilver") && heat>850) {progress++;}
-                            else if(oreName.contains("oreLead") && heat>320) {progress++;}
-                            else if(oreName.contains("oreAluminum") && heat>660) {progress++;}
-                            else if(oreName.contains("oreCopper") && heat>850) {progress++;}
+                            else if(oreName.contains("oreUranium") && heat>1400) {progress++;}
+                            else if(oreName.contains("oreNickle") && heat>1400) {progress++;}
+                            else if(oreName.contains("oreSilver") && heat>800) {progress++;}
+                            else if(oreName.contains("oreLead") && heat>400) {progress++;}
+                            else if(oreName.contains("oreAluminum") && heat>600) {progress++;}
+                            else if(oreName.contains("oreCopper") && heat>800) {progress++;}
 
-                            else if(oreName.contains("oreGold") && heat>1050) {progress++;}
-                            else if(oreName.contains("oreIron") && heat>1250) {progress++;}
-                            else {if(heat>200){progress++;}}
+                            else if(oreName.contains("oreGold") && heat>1000) {progress++;}
+                            else if(oreName.contains("oreIron") && heat>1200) {progress++;}
+                            /*
+                            else if ( !oreName.contains("oreIron") || !oreName.contains("oreGold") || !oreName.contains("oreCopper") || !oreName.contains("oreAluminum")
+                            || !oreName.contains("oreLead") || !oreName.contains("oreSilver") || !oreName.contains("oreNickle") || !oreName.contains("oreUranium")
+                            || !oreName.contains("orePlatinum") || !oreName.contains("oreTin"))
+                            {if(heat>200){progress++;}}
+                             */
                         }
-
-
-
-
                     }
                 }
             }
@@ -471,6 +591,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
         compound.setInteger("heat",heat);
         compound.setInteger("progress",progress);
         compound.setInteger("cold",cold);
+        compound.setInteger("itemsout",itemsOutputCount);
+        compound.setInteger("oreitemsout",oreOutputCount);
         compound.setBoolean("running",running);
         compound.setString("name", oreName);
         compound.setTag("item",oreInBloomery.writeToNBT(new NBTTagCompound()));
@@ -489,6 +611,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
         this.heat=compound.getInteger("heat");
         this.progress=compound.getInteger("progress");
         this.cold=compound.getInteger("cold");
+        this.itemsOutputCount=compound.getInteger("itemsout");
+        this.oreOutputCount=compound.getInteger("oreitemsout");
         this.running=compound.getBoolean("running");
         this.oreName=compound.getString("name");
         NBTTagCompound itemTag = compound.getCompoundTag("item");

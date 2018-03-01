@@ -6,10 +6,13 @@ import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -52,9 +55,12 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
         tooltip.add("Blow air into it with a sugarcane after ignition");
     }
 
+
+
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
+
         if(!worldIn.isRemote) {
             TileEntity tileEntity = worldIn.getTileEntity(pos);
             if(tileEntity instanceof TileClayBloomery) {
@@ -143,9 +149,66 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
         return true;
     }
 
+    private int getRedstoneLevel(World worldIn, BlockPos pos)
+    {
+        int heatToRedstone=0;
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if(tileEntity instanceof TileClayBloomery) {
+            TileClayBloomery bloom = (TileClayBloomery) tileEntity;
+             heatToRedstone =  Math.round(bloom.getHeat()/125);
+        }
+        return heatToRedstone;
+    }
+
+
+
+
+    public boolean hasComparatorInputOverride(IBlockState state)
+    {
+        return true;
+    }
+
+
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos)
+    {
+        return getRedstoneLevel(worldIn,pos);
+    }
+
     @Override
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return Item.getItemFromBlock(this);
+    public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
+        //super.onBlockHarvested(worldIn, pos, state, player);
+        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        if(tileEntity instanceof TileClayBloomery)
+        {
+            if(!worldIn.isRemote)
+            {
+                TileClayBloomery bloom = (TileClayBloomery) tileEntity;
+                if(bloom.getProgress()<=0)
+                {
+                    bloom.getOutputAmount();
+                    //worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(BlockRegistry.claybloomery,1)));
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(bloom.getOreItemInBlock().getItem(),bloom.getOreCount(),bloom.getOreItemInBlock().getMetadata())));
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL,bloom.getCharcoalReturned(),1)));
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.charcoalChunk,bloom.getCharcoalBitsReturned())));
+                    bloom.resetTile();
+                }
+                else if (bloom.getProgress()>0)
+                {
+                    bloom.getOutputAmount();
+                    if(bloom.getOreReturned()>0)
+                    {
+                        worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(bloom.getOreItemInBlock().getItem(),bloom.getOreReturned(),bloom.getOreItemInBlock().getMetadata())));
+                    }
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(bloom.getSmeltingOutput(bloom.getOreItemInBlock()).getItem(),bloom.getSmeltedOut(),bloom.getSmeltingOutput(bloom.getOreItemInBlock()).getMetadata())));
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL,bloom.getCharcoalReturned(),1)));
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.charcoalChunk,bloom.getCharcoalBitsReturned())));
+                    bloom.resetTile();
+                }
+            }
+
+        }
+
+
     }
 
     @SideOnly(Side.CLIENT)

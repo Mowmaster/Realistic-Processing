@@ -10,10 +10,11 @@ import static com.mowmaster.rprocessing.configs.RealTab.REAL_TAB;
 
 public class ItemBasic extends Item
 {
-        public ItemBasic(String unlocName, String registryName) {
+        public ItemBasic(String unlocName, String registryName, int stackSize) {
             this.setUnlocalizedName(unlocName);
             this.setRegistryName(new ResourceLocation(References.MODID, registryName));
             this.setCreativeTab(REAL_TAB);
+            this.setMaxStackSize(stackSize);
         }
 
 }

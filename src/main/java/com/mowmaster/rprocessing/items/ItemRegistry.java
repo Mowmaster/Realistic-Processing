@@ -24,6 +24,9 @@ public class ItemRegistry
     public static Item hammer;
     public static Item charcoalChunk;
     public static Item debugItem;
+    public static Item tempChecker;
+    public static Item bloomeryClay;
+    public static Item bloomeryBrick;
 
 
 
@@ -31,13 +34,16 @@ public class ItemRegistry
 
     public static void init()
     {
-        leafpile = new ItemBasic("leaf","leaf");
-        dryleafpile = new ItemBasic("dryleaf","dryleaf");
-        twig = new ItemBasic("twig","twig");
-        branch = new ItemBasic("branch","branch");
-        hammer = new ItemBasic("tool_hammer","tool_hammer");
-        charcoalChunk = new ItemBasic("charcoalchunk","charcoalchunk");
-        debugItem = new ItemBasic("debug","debug");
+        leafpile = new ItemBasic("leaf","leaf",64);
+        dryleafpile = new ItemBasic("dryleaf","dryleaf",64);
+        twig = new ItemBasic("twig","twig",64);
+        branch = new ItemBasic("branch","branch",64);
+        hammer = new ItemBasic("tool_hammer","tool_hammer",1);
+        charcoalChunk = new ItemBasic("charcoalchunk","charcoalchunk",64);
+        debugItem = new ItemBasic("debug","debug",1);
+        tempChecker = new ItemBasic("temp","temp",1);
+        bloomeryBrick= new ItemBasic("bloomerybrick","bloomerybrick",64);
+        bloomeryClay = new ItemBasic("bloomeryclay","bloomeryclay",64);
 
     }
 
@@ -50,6 +56,9 @@ public class ItemRegistry
         registerItem(hammer);
         registerItem(charcoalChunk);
         registerItem(debugItem);
+        registerItem(tempChecker);
+        registerItem(bloomeryBrick);
+        registerItem(bloomeryClay);
     }
 
     public static void registerRenders()
@@ -61,6 +70,9 @@ public class ItemRegistry
         registerRender(hammer);
         registerRender(charcoalChunk);
         registerRender(debugItem);
+        registerRender(tempChecker);
+        registerRender(bloomeryBrick);
+        registerRender(bloomeryClay);
     }
 
     public static void registerItem(Item item)

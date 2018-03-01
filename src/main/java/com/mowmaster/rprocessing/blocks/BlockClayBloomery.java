@@ -6,6 +6,7 @@ import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -46,16 +47,13 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
 
     }
 
-
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
-        tooltip.add("Smelts Iron or Gold, fuel with Coal");
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+        tooltip.add("Smelts Ores With Charcoal");
         tooltip.add("Ignite with Flint and Steel");
         tooltip.add("Blow air into it with a sugarcane after ignition");
     }
-
-
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
@@ -127,18 +125,39 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
 
                         if (playerIn.getHeldItem(hand).getItem().equals(ItemRegistry.debugItem))
                         {
-                            playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Bloomery Temp: " + bloom.getHeat()),true);
-                            System.out.println("Ore In Bloomery: " + bloom.getItemInBlock());
-                            System.out.println("Ore Count In Bloomery: " + bloom.getOreCount());
-                            System.out.println("Air In Bloomery: " + bloom.getAirCount());
-                            System.out.println("Fuel In Bloomery: " + bloom.getCharcoalCount());
-                            //System.out.println("Bloomery Temp: " + bloom.getHeat());
-                            System.out.println("Bloomery On: " + bloom.getRunning());
-                            System.out.println("Bloomery Ticks without fuel/air: " + bloom.getCold());
-                            System.out.println("Smelting Progress: " + bloom.getProgress());
-                            System.out.println("Ore Name: " + bloom.getOreName());
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.GOLD +"Ore In Bloomery: " + bloom.getItemInBlock()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.GRAY +"Ore Count In Bloomery: " + bloom.getOreCount()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.BLUE +"Air In Bloomery: " + bloom.getAirCount()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.WHITE +"Fuel In Bloomery: " + bloom.getCharcoalCount()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.AQUA +"Bloomery Temp: " + bloom.getHeat()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.RED +"Bloomery On: " + bloom.getRunning()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.DARK_AQUA +"Bloomery Ticks without fuel/air: " + bloom.getCold()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.GREEN +"Smelting Progress: " + bloom.getProgress()));
+                            playerIn.sendMessage(new TextComponentString(TextFormatting.LIGHT_PURPLE +"Ore Name: " + bloom.getOreName()));
                             return true;
                         }
+                        if (playerIn.getHeldItem(hand).getItem().equals(ItemRegistry.tempChecker))
+                        {
+                            if(bloom.getHeat()<=500)
+                            {
+                                playerIn.sendStatusMessage(new TextComponentString(TextFormatting.RED +"Bloomery Temp: " + bloom.getHeat()),true);
+                            }
+                            else if(bloom.getHeat()<=1000 && bloom.getHeat()>500)
+                            {
+                                playerIn.sendStatusMessage(new TextComponentString(TextFormatting.GOLD +"Bloomery Temp: " + bloom.getHeat()),true);
+                            }
+                            else if(bloom.getHeat()<=1500 && bloom.getHeat()>1000)
+                            {
+                                playerIn.sendStatusMessage(new TextComponentString(TextFormatting.AQUA +"Bloomery Temp: " + bloom.getHeat()),true);
+                            }
+                            else if(bloom.getHeat()<=2000 && bloom.getHeat()>1500)
+                            {
+                                playerIn.sendStatusMessage(new TextComponentString(TextFormatting.WHITE +"Bloomery Temp: " + bloom.getHeat()),true);
+                            }
+                            //playerIn.sendMessage(new TextComponentString(TextFormatting.AQUA +"Bloomery Temp: " + bloom.getHeat()));
+                            return true;
+                        }
+
                         return false;
                     }
 
@@ -175,6 +194,11 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
     }
 
     @Override
+    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+        return null;
+    }
+
+    @Override
     public void onBlockHarvested(World worldIn, BlockPos pos, IBlockState state, EntityPlayer player) {
         //super.onBlockHarvested(worldIn, pos, state, player);
         TileEntity tileEntity = worldIn.getTileEntity(pos);
@@ -186,7 +210,7 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
                 if(bloom.getProgress()<=0)
                 {
                     bloom.getOutputAmount();
-                    //worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(BlockRegistry.claybloomery,1)));
+                    worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(BlockRegistry.claybloomery,1)));
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(bloom.getOreItemInBlock().getItem(),bloom.getOreCount(),bloom.getOreItemInBlock().getMetadata())));
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(Items.COAL,bloom.getCharcoalReturned(),1)));
                     worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.5,pos.getY() + 1.0,pos.getZ() + 0.5,new ItemStack(ItemRegistry.charcoalChunk,bloom.getCharcoalBitsReturned())));

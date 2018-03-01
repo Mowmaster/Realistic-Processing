@@ -68,3 +68,6 @@ item.twig.name=Wood Twig
 item.branch.name=Wood Branch
 item.tool_hammer.name=Smiths Hammer
 item.charcoalchunk.name=Chunk of Charcoal
+item.bloomeryclay.name=Bloomery Clay
+item.bloomerybrick.name=Bloomery Brick
+item.temp.name=Bloomery Thermometer

@@ -1,6 +1,7 @@
 package com.mowmaster.rprocessing.tiles;
 
 import com.mowmaster.rprocessing.items.ItemRegistry;
+import com.sun.istack.internal.NotNull;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityFireworkRocket;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +26,9 @@ public class TileClayBloomery extends TileEntity implements ITickable
 {
 
     private ItemStack oreInBloomery = ItemStack.EMPTY;
+    @NotNull
     private String oreName = "";
+
     private int oreCount = 0;
     private final int oreMax = 8;
     private int charcoalCount = 0;
@@ -257,7 +260,7 @@ public class TileClayBloomery extends TileEntity implements ITickable
                     droppedItem = new ItemStack(oreInBloomery.getItem(),1);
                     oreCount = 0;
                     oreInBloomery = ItemStack.EMPTY;
-                    oreName = null;
+                    oreName = "";
                     updateBlock();
                 }
             }

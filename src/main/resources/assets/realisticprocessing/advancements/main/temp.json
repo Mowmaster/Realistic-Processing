@@ -1,0 +1,20 @@
+{
+  "parent": "realisticprocessing:recipes/root",
+  "rewards": {
+    "recipes": [
+      "realisticprocessing:temp"
+    ]
+  },
+  "criteria": {
+    "has_iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:iron_ingot"
+          }
+        ]
+      }
+    }
+  }
+}

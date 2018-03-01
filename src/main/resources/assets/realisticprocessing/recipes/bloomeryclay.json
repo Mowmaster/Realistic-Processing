@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {"item": "realisticprocessing:claymorterblock",
+      "data":10}
+  ],
+  "result": {
+    "item": "realisticprocessing:bloomeryclay",
+    "count":4
+  }
+}

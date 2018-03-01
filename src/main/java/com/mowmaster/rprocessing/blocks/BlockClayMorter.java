@@ -9,6 +9,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -29,6 +30,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
 
 import static com.mowmaster.rprocessing.configs.RealTab.REAL_TAB;
@@ -54,6 +57,12 @@ public class BlockClayMorter extends Block implements IMetaBlockName
         this.setCreativeTab(REAL_TAB);
         this.setSoundType(SoundType.WOOD);
 
+    }
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
+        super.addInformation(stack, player, tooltip, advanced);
+        tooltip.add("Mix: Sand, Clay, Bonemeal, Wheat, and Water to make Bloomery Clay Blocks");
     }
 
     @Override

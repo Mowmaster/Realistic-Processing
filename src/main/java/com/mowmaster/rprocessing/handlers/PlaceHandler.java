@@ -63,12 +63,15 @@ public class PlaceHandler
                 }
             }
 
-            if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(Items.BRICK))))
+            if((ItemStack.areItemsEqual(playerIn.getHeldItem(hand), new ItemStack(ItemRegistry.bloomeryBrick))))
             {
                 if (!(state.getBlock()instanceof BlockUnfiredBloomery))
                 {
                     worldIn.setBlockState(pos.add(0,1,0), BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB1));
-                    playerIn.getHeldItem(hand).shrink(1);
+                    if(!playerIn.isCreative())
+                    {
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
                 }
 
 

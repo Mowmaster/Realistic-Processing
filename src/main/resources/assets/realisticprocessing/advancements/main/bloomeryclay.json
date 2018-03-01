@@ -1,0 +1,21 @@
+{
+  "parent": "realisticprocessing:recipes/root",
+  "rewards": {
+    "recipes": [
+      "realisticprocessing:bloomeryclay"
+    ]
+  },
+  "criteria": {
+    "has_iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "realisticprocessing:claymorterblock",
+            "data":10
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package com.mowmaster.rprocessing.tiles.render;
 
+import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
@@ -104,7 +105,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
         float scale = (bloom.getProgress() * 0.0025f);
 
         if (scale > 0) {
-            ResourceLocation block = FluidRegistry.LAVA.getStill();
+            ResourceLocation block = new ResourceLocation(References.MODID,"blocks/bloomery/progress");
             bindTexture(block);
             GlStateManager.enableBlend();
             GlStateManager.enableAlpha();

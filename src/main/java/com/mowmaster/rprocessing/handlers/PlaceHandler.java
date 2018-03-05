@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -22,6 +23,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 
 import java.util.Random;
@@ -35,6 +37,7 @@ public class PlaceHandler
     {
         World worldIn = event.getWorld();
         BlockPos pos = event.getPos();
+        BlockPos posAbove = pos.add(0,1,0);
         EntityPlayer playerIn = event.getEntityPlayer();
         EnumHand hand = event.getHand();
         IBlockState state = worldIn.getBlockState(event.getPos());
@@ -81,8 +84,11 @@ public class PlaceHandler
             {
                 if (!(state.getBlock()instanceof BlockLeafPile))
                 {
-                    worldIn.setBlockState(pos.add(0,1,0), BlockRegistry.leafpile.getDefaultState().withProperty(BlockLeafPile.LEAFPILE, EnumBlock.LeafBlock.LB1));
-                    playerIn.getHeldItem(hand).shrink(1);
+                    if(worldIn.getBlockState(posAbove).getBlock() instanceof BlockAir)
+                    {
+                        worldIn.setBlockState(pos.add(0,1,0), BlockRegistry.leafpile.getDefaultState().withProperty(BlockLeafPile.LEAFPILE, EnumBlock.LeafBlock.LB1));
+                        playerIn.getHeldItem(hand).shrink(1);
+                    }
                 }
 
 
@@ -114,6 +120,7 @@ public class PlaceHandler
 
     }
 
+
     @SubscribeEvent
     public void onBlockHarvestedDrops(BlockEvent.HarvestDropsEvent getdrops) {
         World worldIn = getdrops.getWorld();
@@ -129,21 +136,48 @@ public class PlaceHandler
                     getdrops.setDropChance(0.5F);
                     getdrops.getDrops().add(new ItemStack(ItemRegistry.leafpile));
                 }
+                else if(drop>25)
+                {
+                    getdrops.setDropChance(0.5F);
+                    getdrops.getDrops().add(new ItemStack(ItemRegistry.twig));
+                }
+                else if(drop>50)
+                {
+                    getdrops.setDropChance(0.25F);
+                    getdrops.getDrops().add(new ItemStack(Items.STICK));
+                }
+                else if(drop>50)
+                {
+                    getdrops.setDropChance(0.25F);
+                    getdrops.getDrops().add(new ItemStack(ItemRegistry.branch));
+                }
+                /*
+                if(drop<=25)
+                {
+                    getdrops.setDropChance(0.5F);
+                    getdrops.getDrops().add(new ItemStack(ItemRegistry.leafpile));
+                }
                 else if(drop>25 && drop<=51)
                 {
                     getdrops.setDropChance(0.5F);
                     getdrops.getDrops().add(new ItemStack(ItemRegistry.twig));
                 }
-                else if(drop>51 && drop<=80)
+                else if(drop>50 && drop<=80)
                 {
                     getdrops.setDropChance(0.25F);
                     getdrops.getDrops().add(new ItemStack(Items.STICK));
                 }
-                else if(drop>80)
+                else if(drop>50)
                 {
                     getdrops.setDropChance(0.125F);
                     getdrops.getDrops().add(new ItemStack(ItemRegistry.branch));
                 }
+                else if(drop>80)
+                {
+                    getdrops.setDropChance(0.75F);
+                    getdrops.getDrops();
+                }
+                 */
 
             }
 

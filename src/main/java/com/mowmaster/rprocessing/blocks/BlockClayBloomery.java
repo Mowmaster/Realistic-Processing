@@ -42,9 +42,6 @@ public class BlockClayBloomery extends Block implements ITileEntityProvider
         this.setCreativeTab(REAL_TAB);
         this.setHardness(0.5f);
         this.setResistance(5);
-
-
-
     }
 
     @Override

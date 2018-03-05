@@ -1,0 +1,166 @@
+{
+	"credit": "Made with Blockbench, a free, modern block model editor by JannisX11",
+	"textures": {
+		"0": "blocks/bellow/leather",
+		"1": "blocks/bellow/stickblock",
+		"particle": "blocks/bellow/leather"
+	},
+	"elements": [
+		{
+			"name": "bottom",
+			"from": [1.5, 0, 1.5],
+			"to": [14.5, 1, 14.5],
+			"faces": {
+				"north": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"east": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"south": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"west": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"up": {"uv": [0, 0, 13, 13], "texture": "#1"},
+				"down": {"uv": [0, 0, 13, 13], "texture": "#1"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "top",
+			"from": [1.5, 9, 1.5],
+			"to": [14.5, 10, 14.5],
+			"faces": {
+				"north": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"east": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"south": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"west": {"uv": [0, 0, 13, 1], "texture": "#1"},
+				"up": {"uv": [0, 0, 13, 13], "texture": "#1"},
+				"down": {"uv": [0, 0, 13, 13], "texture": "#1"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "middle",
+			"from": [2, 4.5, 2],
+			"to": [14, 5.5, 14],
+			"faces": {
+				"north": {"uv": [0, 0, 12, 1], "texture": "#1"},
+				"east": {"uv": [0, 0, 12, 1], "texture": "#1"},
+				"south": {"uv": [0, 0, 12, 1], "texture": "#1"},
+				"west": {"uv": [0, 0, 12, 1], "texture": "#1"},
+				"up": {"uv": [0, 0, 12, 12], "texture": "#1"},
+				"down": {"uv": [0, 0, 12, 12], "texture": "#1"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "bellow1",
+			"from": [2.5, 1, 2.5],
+			"to": [13.5, 5, 13.5],
+			"faces": {
+				"north": {"uv": [5, 8, 16, 12], "texture": "#0"},
+				"east": {"uv": [2, 8, 13, 12], "texture": "#0"},
+				"south": {"uv": [4, 8, 15, 12], "texture": "#0"},
+				"west": {"uv": [2, 12, 13, 16], "texture": "#0"},
+				"up": {"uv": [0, 0, 11, 11], "texture": "#missing"},
+				"down": {
+					"uv": [0, 0, 11, 11],
+					"texture": "#missing"
+				}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "bellow2",
+			"from": [2.5, 5, 2.5],
+			"to": [13.5, 9, 13.5],
+			"faces": {
+				"north": {"uv": [0, 0, 11, 4], "texture": "#0"},
+				"east": {"uv": [0, 9, 11, 13], "texture": "#0"},
+				"south": {"uv": [0, 9, 11, 13], "texture": "#0"},
+				"west": {"uv": [5, 4, 16, 8], "texture": "#0"},
+				"up": {"uv": [0, 0, 11, 11], "texture": "#missing"},
+				"down": {
+					"uv": [0, 0, 11, 11],
+					"texture": "#missing"
+				}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [8.5, 1, 0],
+			"to": [9, 2.5, 2.5],
+			"faces": {
+				"north": {"uv": [0, 0, 0.5, 1.5], "texture": "#1"},
+				"east": {"uv": [0, 0, 2.5, 1.5], "texture": "#1"},
+				"south": {
+					"uv": [0, 0, 0.5, 1.5],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 2.5, 1.5], "texture": "#1"},
+				"up": {
+					"uv": [0, 0, 0.5, 2.5],
+					"texture": "#missing"
+				},
+				"down": {
+					"uv": [0, 0, 0.5, 2.5],
+					"texture": "#missing"
+				}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [7, 1, 0],
+			"to": [7.5, 2.5, 2.5],
+			"faces": {
+				"north": {"uv": [0, 0, 0.5, 1.5], "texture": "#1"},
+				"east": {"uv": [0, 0, 2.5, 1.5], "texture": "#1"},
+				"south": {
+					"uv": [0, 0, 0.5, 1.5],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 2.5, 1.5], "texture": "#1"},
+				"up": {
+					"uv": [0, 0, 0.5, 2.5],
+					"texture": "#missing"
+				},
+				"down": {
+					"uv": [0, 0, 0.5, 2.5],
+					"texture": "#missing"
+				}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [7, 2.5, 0],
+			"to": [9, 3, 2.5],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 0.5], "texture": "#1"},
+				"east": {"uv": [0, 0, 2.5, 0.5], "texture": "#1"},
+				"south": {
+					"uv": [0, 0, 2, 0.5],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 2.5, 0.5], "texture": "#1"},
+				"up": {"uv": [0, 0, 2, 2.5], "texture": "#1"},
+				"down": {"uv": [0, 0, 2, 2.5], "texture": "#1"}
+			},
+			"type": "cube"
+		},
+		{
+			"name": "cube",
+			"from": [7, 0, 0],
+			"to": [9, 1, 1.5],
+			"faces": {
+				"north": {"uv": [0, 0, 2, 1], "texture": "#1"},
+				"east": {"uv": [0, 0, 1.5, 1], "texture": "#1"},
+				"south": {
+					"uv": [0, 0, 2, 1],
+					"texture": "#missing"
+				},
+				"west": {"uv": [0, 0, 1.5, 1], "texture": "#1"},
+				"up": {"uv": [0, 0, 2, 1.5], "texture": "#1"},
+				"down": {"uv": [0, 0, 2, 1.5], "texture": "#1"}
+			},
+			"type": "cube"
+		}
+	]
+}

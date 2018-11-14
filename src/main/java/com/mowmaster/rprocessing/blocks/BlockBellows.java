@@ -120,8 +120,6 @@ public class BlockBellows extends BlockHorizontal
         return new BlockStateContainer(this, new IProperty[] {FACING});
     }
 
-
-
     public IBlockState getStateFromMeta(int meta)
     {
         EnumFacing enumfacing = EnumFacing.getFront(meta);

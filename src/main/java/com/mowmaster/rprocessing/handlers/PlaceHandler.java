@@ -136,19 +136,19 @@ public class PlaceHandler
                     getdrops.setDropChance(0.5F);
                     getdrops.getDrops().add(new ItemStack(ItemRegistry.leafpile));
                 }
-                else if(drop>25)
+                if(drop>25)
                 {
                     getdrops.setDropChance(0.5F);
                     getdrops.getDrops().add(new ItemStack(ItemRegistry.twig));
                 }
-                else if(drop>50)
+                if(drop>30)
                 {
-                    getdrops.setDropChance(0.25F);
+                    getdrops.setDropChance(0.10F);
                     getdrops.getDrops().add(new ItemStack(Items.STICK));
                 }
-                else if(drop>50)
+                if(drop>35)
                 {
-                    getdrops.setDropChance(0.25F);
+                    getdrops.setDropChance(0.10F);
                     getdrops.getDrops().add(new ItemStack(ItemRegistry.branch));
                 }
                 /*

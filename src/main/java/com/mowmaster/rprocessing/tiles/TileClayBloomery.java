@@ -607,13 +607,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
 
                             else if(oreName.contains("oreGold") && heat>1000) {progress++;}
                             else if(oreName.contains("oreIron") && heat>1200) {progress++;}
+                            else if(heat>1500){progress++;}
 
-                            else if(oreName.contains("oreCoal") && heat>200) {progress++;}
-                            else if(oreName.contains("oreQuartz") && heat>1200) {progress++;}
-                            else if(oreName.contains("oreRedstone") && heat>200) {progress++;}
-                            else if(oreName.contains("oreLapis") && heat>200) {progress++;}
-                            else if(oreName.contains("oreDiamond") && heat>200) {progress++;}
-                            else if(oreName.contains("oreEmerald") && heat>200) {progress++;}
                         }
                     }
                 }

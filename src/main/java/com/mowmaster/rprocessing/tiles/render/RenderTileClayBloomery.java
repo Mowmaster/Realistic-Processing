@@ -8,15 +8,11 @@ import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
@@ -122,21 +118,36 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             float u2 = sprite.getMaxU();
             float v2 = sprite.getMaxV();
 
-            // Top
-            float colorg = 1f;
-            float colorr = 1f;
-            float colorb = 1f;
-            float alpha = 1f;
+            int colorg = 0;
+            int colorr = 250;
+            int colorb = 0;
+            int alpha = 250;
+
+            if(bloom.getOreName().contains("oreTin")) {colorr=136;colorg=221;colorb=216;alpha=250;}
+            else if(bloom.getOreName().contains("orePlatinum")) {colorr=0;colorg=148;colorb=255;alpha=250;}
+
+            else if(bloom.getOreName().contains("oreUranium")) {colorr=0;colorg=183;colorb=21;alpha=250;}
+            else if(bloom.getOreName().contains("oreNickle")) {colorr=227;colorg=239;colorb=179;alpha=250;}
+            else if(bloom.getOreName().contains("oreSilver")) {colorr=196;colorg=196;colorb=196;alpha=250;}
+            else if(bloom.getOreName().contains("oreLead")) {colorr=145;colorg=145;colorb=145;alpha=250;}
+            else if(bloom.getOreName().contains("oreAluminum")) {colorr=211;colorg=211;colorb=211;alpha=250;}
+            else if(bloom.getOreName().contains("oreCopper")) {colorr=224;colorg=143;colorb=58;alpha=250;}
+
+            else if(bloom.getOreName().contains("oreGold")) {colorr=226;colorg=193;colorb=27;alpha=250;}
+            else if(bloom.getOreName().contains("oreIron")) {colorr=179;colorg=0;colorb=0;alpha=250;}
+            else{colorr=255;colorg=0;colorb=0;alpha=250;}
+
 
             //float zero = 0.1875f;
             //float one = 0.8125f;
             float zero = 0.125f;
             float one = 0.875f;
             float yvalue = 0.175f;
-            renderer.pos(zero, scale+yvalue, zero).tex(u1, v1).color(255,0,0,250).endVertex();
-            renderer.pos(zero, scale+yvalue, one).tex(u1, v2).color(255,0,0,250).endVertex();
-            renderer.pos(one, scale+yvalue, one).tex(u2, v2).color(255,0,0,250).endVertex();
-            renderer.pos(one, scale+yvalue, zero).tex(u2, v1).color(255,0,0,250).endVertex();
+            renderer.pos(zero, scale+yvalue, zero).tex(u1, v1).color(colorr,colorg,colorb,alpha).endVertex();
+            renderer.pos(zero, scale+yvalue, one).tex(u1, v2).color(colorr,colorg,colorb,alpha).endVertex();
+            renderer.pos(one, scale+yvalue, one).tex(u2, v2).color(colorr,colorg,colorb,alpha).endVertex();
+            renderer.pos(one, scale+yvalue, zero).tex(u2, v1).color(colorr,colorg,colorb,alpha).endVertex();
+
 
 
 
@@ -145,6 +156,28 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
         }
     }
+
+    /*
+    private static int getRed(TileClayBloomery bloom)
+    {
+        int red = 0;
+        if(bloom.getOreName().contains("oreTin")) {colorr=136;colorg=221;colorb=216;alpha=250;}
+        else if(bloom.getOreName().contains("orePlatinum")) {colorr=0;colorg=148;colorb=255;alpha=250;}
+
+        else if(bloom.getOreName().contains("oreUranium")) {colorr=0;colorg=183;colorb=21;alpha=250;}
+        else if(bloom.getOreName().contains("oreNickle")) {colorr=227;colorg=239;colorb=179;alpha=250;}
+        else if(bloom.getOreName().contains("oreSilver")) {colorr=196;colorg=196;colorb=196;alpha=250;}
+        else if(bloom.getOreName().contains("oreLead")) {colorr=145;colorg=145;colorb=145;alpha=250;}
+        else if(bloom.getOreName().contains("oreAluminum")) {colorr=211;colorg=211;colorb=211;alpha=250;}
+        else if(bloom.getOreName().contains("oreCopper")) {colorr=224;colorg=143;colorb=58;alpha=250;}
+
+        else if(bloom.getOreName().contains("oreGold")) {colorr=226;colorg=193;colorb=27;alpha=250;}
+        else if(bloom.getOreName().contains("oreIron")) {colorr=179;colorg=0;colorb=0;alpha=250;}
+        else{colorr=255;colorg=0;colorb=0;alpha=250;}
+
+        return red;
+    }
+     */
 
 
     public static void renderItem(RenderItem itemRenderer, ItemStack itemStack, float x, float y, float z) {

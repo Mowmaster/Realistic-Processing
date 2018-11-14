@@ -166,7 +166,7 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         
         ItemStack brick = new ItemStack(ItemRegistry.bloomeryBrick);
-        ItemStack morter = new ItemStack(BlockRegistry.claymorterblock,1,10);
+        ItemStack morter = new ItemStack(ItemRegistry.bloomeryClay);
 
             if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),brick))
             {
@@ -228,42 +228,36 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
             }
 
 
-
             else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),morter))
                 {
                     if (state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB4))) {
-                        if (!playerIn.isCreative()) {
-                        playerIn.getHeldItem(hand).shrink(1);
+                        if (!playerIn.isCreative()&& playerIn.getHeldItem(hand).getCount()>=4) {
+                        playerIn.getHeldItem(hand).shrink(4);
                         }
                         worldIn.setBlockState(pos, BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB5));
                     }
                     else if (state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB9))) {
-                        if (!playerIn.isCreative()) {
-                            playerIn.getHeldItem(hand).shrink(1);
+                        if (!playerIn.isCreative()&& playerIn.getHeldItem(hand).getCount()>=4) {
+                            playerIn.getHeldItem(hand).shrink(4);
                         }
                         worldIn.setBlockState(pos, BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB10));
                     }
                     else if (state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB14))) {
-                        if (!playerIn.isCreative()) {
-                            playerIn.getHeldItem(hand).shrink(1);
+                        if (!playerIn.isCreative()&& playerIn.getHeldItem(hand).getCount()>=4) {
+                            playerIn.getHeldItem(hand).shrink(4);
                         }
                         worldIn.setBlockState(pos, BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB15));
                     }
                     else if (state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB15))) {
-                        if (!playerIn.isCreative()) {
-                            playerIn.getHeldItem(hand).shrink(1);
+                        if (!playerIn.isCreative() && playerIn.getHeldItem(hand).getCount()>=4) {
+                            playerIn.getHeldItem(hand).shrink(4);
                         }
                         worldIn.setBlockState(pos, BlockRegistry.claybloomery.getDefaultState());
                     }
                 }
 
 
-            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.ACACIA_FENCE)) ||
-                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.BIRCH_FENCE)) ||
-                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.DARK_OAK_FENCE)) ||
-                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.JUNGLE_FENCE)) ||
-                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.OAK_FENCE)) ||
-                    ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.SPRUCE_FENCE)))
+            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(ItemRegistry.branch)))
             {
                 if (state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(BlockUnfiredBloomery.STAGE, EnumBlock.UnfiredBloomeryBlock.UBB10))) {
                     if (!playerIn.isCreative()) {
@@ -291,10 +285,6 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
                 }
             }
 
-
-
-
-
         return true;
     }
 
@@ -321,68 +311,68 @@ public class BlockUnfiredBloomery extends Block implements IMetaBlockName
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB5)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 4)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1,10)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay, 4)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB6)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 5)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1,10)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,4)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB7)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 6)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1,10)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,4)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB8)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 7)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1,10)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,4)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB9)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 1,10)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,4)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB10)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 2,10)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,8)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB11)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 2,10)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Blocks.OAK_FENCE, 1)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,8)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.branch, 1)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB12)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 2,10)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Blocks.OAK_FENCE, 2)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,8)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.branch, 2)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB13)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 2,10)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Blocks.OAK_FENCE, 3)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,8)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.branch, 3)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB14)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 2,10)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Blocks.OAK_FENCE, 4)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,8)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.branch, 4)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB15)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 3,10)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Blocks.OAK_FENCE, 4)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,12)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.branch, 4)));
             }
             else if(state.equals(BlockRegistry.unfiredbloomery.getDefaultState().withProperty(STAGE, EnumBlock.UnfiredBloomeryBlock.UBB16)))
             {
                 worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryBrick, 8)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(BlockRegistry.claymorterblock, 4,10)));
-                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(Blocks.OAK_FENCE, 4)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.bloomeryClay,16)));
+                worldIn.spawnEntity(new EntityItem(worldIn, pos.getX() + 0.4, pos.getY() + 1.0, pos.getZ() + 0.4, new ItemStack(ItemRegistry.branch, 4)));
             }
         }
     }

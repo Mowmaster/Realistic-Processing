@@ -2,6 +2,7 @@ package com.mowmaster.rprocessing.blocks;
 
 import com.mowmaster.rprocessing.blocks.item.IMetaBlockName;
 import com.mowmaster.rprocessing.enums.EnumBlock;
+import com.mowmaster.rprocessing.items.ItemRegistry;
 import com.mowmaster.rprocessing.reference.References;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -62,7 +63,7 @@ public class BlockClayMorter extends Block implements IMetaBlockName
     @Override
     public void addInformation(ItemStack stack, @Nullable World player, List<String> tooltip, ITooltipFlag advanced) {
         super.addInformation(stack, player, tooltip, advanced);
-        tooltip.add("Mix: Sand, Clay, Bonemeal, Wheat, and Water to make Bloomery Clay Blocks");
+        tooltip.add("Mix: Sand, Clay, Bonemeal, Dried Leaves, and Water to make Bloomery Clay Blocks");
     }
 
     @Override
@@ -224,7 +225,7 @@ public class BlockClayMorter extends Block implements IMetaBlockName
                     worldIn.setBlockState(pos,BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE,EnumBlock.ClayMorterBlock.MIX9));
                 }
             }
-            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Items.WHEAT)) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.VINE)) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.REEDS)))
+            else if(ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(ItemRegistry.dryleafpile)) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Items.WHEAT)) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.VINE)) || ItemStack.areItemsEqual(playerIn.getHeldItem(hand),new ItemStack(Blocks.REEDS)))
             {
                 if (state.equals(BlockRegistry.claymorterblock.getDefaultState().withProperty(BlockClayMorter.CLAYTYPE, EnumBlock.ClayMorterBlock.MIX9))) {
                     if (!playerIn.isCreative()) {

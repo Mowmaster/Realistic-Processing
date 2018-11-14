@@ -4,17 +4,22 @@ import com.mowmaster.rprocessing.items.ItemRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 
@@ -58,6 +63,30 @@ public class TileClayBloomery extends TileEntity implements ITickable
     public ItemStack getSmeltingOutput(ItemStack input)
     {
         return FurnaceRecipes.instance().getSmeltingResult(input);
+    }
+
+
+    public ItemStack getNuggetsIfAvailable(ItemStack input)
+    {
+        InventoryCrafting craft = new InventoryCrafting(new Container()
+        {
+            @Override
+            public boolean canInteractWith(@Nonnull EntityPlayer player) {
+                return false;
+            }
+        }, 1, 1);
+
+        craft.setInventorySlotContents(0, input);
+
+        for(IRecipe recipe : ForgeRegistries.RECIPES)
+        {
+            if(recipe.matches(craft, world)) {
+
+                return recipe.getCraftingResult(craft);
+            }
+        }
+
+        return ItemStack.EMPTY;
     }
 
     public int getSmeltedOut() {return itemsOutputCount;}
@@ -139,12 +168,33 @@ public class TileClayBloomery extends TileEntity implements ITickable
             }
         }
         return oreName;
-        /*
-        int oreID = OreDictionary.getOreID(oreInBloomery.getUnlocalizedName());
-        System.out.println(OreDictionary.getOreName(oreID));
-        System.out.println(OreDictionary.getOreName(oreID).toLowerCase().contains("ore") && OreDictionary.getOreName(oreID).toLowerCase().contains("lead"));
-        System.out.println(OreDictionary.getOreName(oreID));
-         */
+    }
+
+    public boolean isOre(ItemStack input)
+    {
+        int[] oreIds = OreDictionary.getOreIDs(input);
+        for(int i=0;i<=oreIds.length-1;i++)
+        {
+            if(OreDictionary.getOreName(oreIds[i]).contains("ore"))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isIngot(ItemStack input)
+    {
+        ItemStack getIngot = FurnaceRecipes.instance().getSmeltingResult(input);
+        int[] oreIds = OreDictionary.getOreIDs(getIngot);
+        for(int i=0;i<=oreIds.length-1;i++)
+        {
+            if(OreDictionary.getOreName(oreIds[i]).contains("ingot"))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void updateBlock()
@@ -195,39 +245,33 @@ public class TileClayBloomery extends TileEntity implements ITickable
         //Is Hand NOT Empty?
         if(!input.isEmpty())
         {
-            //Is this item in hand an "ore"
-            int[] oreIds = OreDictionary.getOreIDs(input);
-            for(int i=0;i<=oreIds.length-1;i++)
+            if(isOre(input))
             {
-                if(OreDictionary.getOreName(oreIds[i]).contains("ore"))
+                if(isIngot(input))
                 {
-                    oreInputName = OreDictionary.getOreName(oreIds[i]);
-                }
-            }
-            if(oreInputName.contains("ore")&& !getSmeltingOutput(input).isEmpty())
-            {
-                //Currently no ores in bloomery?
-                if(oreInBloomery.isEmpty())
-                {
-                    oreInBloomery = input;
-                    oreName = getAnswer();
-                    oreCount++;
-                    input.shrink(1);
-                    updateBlock();
-                    return true;
-                }
-                //Ores In Bloomery and input item matches currently inside
-                else if(input.getItem().equals(oreInBloomery.getItem()) && oreCount<oreMax)
-                {
-                    if(running){penaltySmeltingProgress();penaltyHeat();}
-                    oreCount++;
-                    input.shrink(1);
-                    updateBlock();
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    //Currently no ores in bloomery?
+                    if(oreInBloomery.isEmpty())
+                    {
+                        oreInBloomery = input;
+                        oreName = getAnswer();
+                        oreCount++;
+                        input.shrink(1);
+                        updateBlock();
+                        return true;
+                    }
+                    //Ores In Bloomery and input item matches currently inside
+                    else if(input.getItem().equals(oreInBloomery.getItem()) && oreCount<oreMax)
+                    {
+                        if(running){penaltySmeltingProgress();penaltyHeat();}
+                        oreCount++;
+                        input.shrink(1);
+                        updateBlock();
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             return false;

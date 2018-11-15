@@ -118,12 +118,12 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             float u2 = sprite.getMaxU();
             float v2 = sprite.getMaxV();
 
-            int colorg = 0;
-            int colorr = 250;
-            int colorb = 0;
-            int alpha = 250;
+            float colorg = 0f;
+            float colorr = 1f;
+            float colorb = 0f;
+            float alpha = 0.99f;
 
-            if(bloom.getOreName().contains("oreTin")) {colorr=136;colorg=221;colorb=216;alpha=250;}
+            if(bloom.getOreName().contains("oreTin")) {colorr=136f;colorg=221f;colorb=216;alpha=250;}
             else if(bloom.getOreName().contains("orePlatinum")) {colorr=0;colorg=148;colorb=255;alpha=250;}
 
             else if(bloom.getOreName().contains("oreUranium")) {colorr=0;colorg=183;colorb=21;alpha=250;}
@@ -133,8 +133,8 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             else if(bloom.getOreName().contains("oreAluminum")) {colorr=211;colorg=211;colorb=211;alpha=250;}
             else if(bloom.getOreName().contains("oreCopper")) {colorr=224;colorg=143;colorb=58;alpha=250;}
 
-            else if(bloom.getOreName().contains("oreGold")) {colorr=226;colorg=193;colorb=27;alpha=250;}
-            else if(bloom.getOreName().contains("oreIron")) {colorr=179;colorg=0;colorb=0;alpha=250;}
+            else if(bloom.getOreName().contains("oreGold")) {colorr=1.0f;colorg=1.0f;colorb=0f;alpha=0.95f;}
+            else if(bloom.getOreName().contains("oreIron")) {colorr=0.75f;colorg=0f;colorb=0f;alpha=0.98f;}
             else{colorr=255;colorg=0;colorb=0;alpha=250;}
 
 

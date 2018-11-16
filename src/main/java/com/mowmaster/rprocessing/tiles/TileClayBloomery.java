@@ -499,14 +499,8 @@ public class TileClayBloomery extends TileEntity implements ITickable
     @Override
     public void update() {
 
-
-
-
-
         if (running)
         {
-
-
             if (charcoalCount <=0 && oreCount>0) {
                 world.spawnParticle(EnumParticleTypes.CRIT, pos.getX() + 0.125, pos.getY() + 1.25, pos.getZ() + 0.125, 0.0, 0.0, 0.0, new int[0]);
             }

@@ -118,25 +118,26 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             float u2 = sprite.getMaxU();
             float v2 = sprite.getMaxV();
 
-            float colorg = 0f;
-            float colorr = 1f;
-            float colorb = 0f;
-            float alpha = 0.99f;
+            float colorg = 0.75f;
+            float colorr = 0.5f;
+            float colorb = 0.0f;
+            float alpha = 0.98f;
 
-            if(bloom.getOreName().contains("oreTin")) {colorr=136f;colorg=221f;colorb=216;alpha=250;}
-            else if(bloom.getOreName().contains("orePlatinum")) {colorr=0;colorg=148;colorb=255;alpha=250;}
+            /*
+            if(bloom.getOreName().contains("oreTin")) {colorr=0f;colorg=0.125f;colorb=0.75f;alpha=0.98f;}
+            else if(bloom.getOreName().contains("orePlatinum")) {colorr=0f;colorg=0f;colorb=0.75f;alpha=0.98f;}
 
-            else if(bloom.getOreName().contains("oreUranium")) {colorr=0;colorg=183;colorb=21;alpha=250;}
-            else if(bloom.getOreName().contains("oreNickle")) {colorr=227;colorg=239;colorb=179;alpha=250;}
-            else if(bloom.getOreName().contains("oreSilver")) {colorr=196;colorg=196;colorb=196;alpha=250;}
-            else if(bloom.getOreName().contains("oreLead")) {colorr=145;colorg=145;colorb=145;alpha=250;}
-            else if(bloom.getOreName().contains("oreAluminum")) {colorr=211;colorg=211;colorb=211;alpha=250;}
-            else if(bloom.getOreName().contains("oreCopper")) {colorr=224;colorg=143;colorb=58;alpha=250;}
+            else if(bloom.getOreName().contains("oreUranium")) {colorr=0f;colorg=0.5f;colorb=0f;alpha=0.98f;}//is black
+            else if(bloom.getOreName().contains("oreNickle")) {colorr=0.5f;colorg=0.5f;colorb=0f;alpha=0.98f;}
+            else if(bloom.getOreName().contains("oreSilver")) {colorr=0.75f;colorg=0.75f;colorb=0.75f;alpha=0.98f;}
+            else if(bloom.getOreName().contains("oreLead")) {colorr=0f;colorg=0f;colorb=0f;alpha=0.98f;}//black
+            else if(bloom.getOreName().contains("oreAluminum")) {colorr=0f;colorg=0.75f;colorb=0.75f;alpha=0.98f;}//blue
+            else if(bloom.getOreName().contains("oreCopper")) {colorr=0.125f;colorg=0.5f;colorb=0.5f;alpha=0.98f;}
 
-            else if(bloom.getOreName().contains("oreGold")) {colorr=1.0f;colorg=1.0f;colorb=0f;alpha=0.95f;}
+            else if(bloom.getOreName().contains("oreGold")) {colorr=1.0f;colorg=1.0f;colorb=1.0f;alpha=0.95f;}
             else if(bloom.getOreName().contains("oreIron")) {colorr=0.75f;colorg=0f;colorb=0f;alpha=0.98f;}
-            else{colorr=255;colorg=0;colorb=0;alpha=250;}
-
+            else{colorr=1.0f;colorg=0f;colorb=0f;alpha=0.98f;}
+             */
 
             //float zero = 0.1875f;
             //float one = 0.8125f;
@@ -156,28 +157,6 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
             net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
         }
     }
-
-    /*
-    private static int getRed(TileClayBloomery bloom)
-    {
-        int red = 0;
-        if(bloom.getOreName().contains("oreTin")) {colorr=136;colorg=221;colorb=216;alpha=250;}
-        else if(bloom.getOreName().contains("orePlatinum")) {colorr=0;colorg=148;colorb=255;alpha=250;}
-
-        else if(bloom.getOreName().contains("oreUranium")) {colorr=0;colorg=183;colorb=21;alpha=250;}
-        else if(bloom.getOreName().contains("oreNickle")) {colorr=227;colorg=239;colorb=179;alpha=250;}
-        else if(bloom.getOreName().contains("oreSilver")) {colorr=196;colorg=196;colorb=196;alpha=250;}
-        else if(bloom.getOreName().contains("oreLead")) {colorr=145;colorg=145;colorb=145;alpha=250;}
-        else if(bloom.getOreName().contains("oreAluminum")) {colorr=211;colorg=211;colorb=211;alpha=250;}
-        else if(bloom.getOreName().contains("oreCopper")) {colorr=224;colorg=143;colorb=58;alpha=250;}
-
-        else if(bloom.getOreName().contains("oreGold")) {colorr=226;colorg=193;colorb=27;alpha=250;}
-        else if(bloom.getOreName().contains("oreIron")) {colorr=179;colorg=0;colorb=0;alpha=250;}
-        else{colorr=255;colorg=0;colorb=0;alpha=250;}
-
-        return red;
-    }
-     */
 
 
     public static void renderItem(RenderItem itemRenderer, ItemStack itemStack, float x, float y, float z) {

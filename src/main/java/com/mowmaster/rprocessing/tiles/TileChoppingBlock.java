@@ -24,7 +24,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 
 
-public class TileChoppingBlock extends TileEntity
+public class TileChoppingBlock extends TileEntity implements ITickable
 {
     ItemStackHandler itemOnCB;
     private double chopProgress = 0.0;
@@ -32,12 +32,20 @@ public class TileChoppingBlock extends TileEntity
     public TileChoppingBlock()
     {
         this.itemOnCB = new ItemStackHandler();
-        this.itemOnCB.setSize(1);
     }
 
     public ItemStack getBlockOnCB()
     {
         return itemOnCB.getStackInSlot(0);
+    }
+
+    public boolean hasBlockOnCB()
+    {
+        if(itemOnCB.getStackInSlot(0).isEmpty())
+        {
+            return false;
+        }
+        else return true;
     }
 
     private void updateBlock()
@@ -51,31 +59,67 @@ public class TileChoppingBlock extends TileEntity
 
     public boolean addItemToCB(ItemStack input)
     {
+        if(canBeAdded(input))
+        {
+            ItemStack itemToAdd = new ItemStack(input.getItem(),1,input.getMetadata());
+            chopProgress=0.0;
+            itemOnCB.insertItem(0,itemToAdd,false);
+            updateBlock();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean canBeAdded(ItemStack input)
+    {
         IBlockState block = Block.getBlockFromItem(input.getItem()).getDefaultState();
         if(hasCraftingOutput(input) || hasCraftingOutput2(input) && block.getMaterial().equals(Material.WOOD))
         {
             if(Block.getBlockFromItem(input.getItem())!= Blocks.AIR)
             {
-                chopProgress=0.0;
-                itemOnCB.insertItem(0,input,false);
-                updateBlock();
-                return true;
+                if(!hasBlockOnCB())
+                {
+                    return true;
+                }
             }
         }
 
         return false;
     }
 
+    int ticker=0;
+    @Override
+    public void update() {
+        ticker++;
+        if(ticker>=20)
+        {
+            updateBlock();
+            ticker=0;
+        }
+    }
+
     public ItemStack removeBlockFromCB()
     {
+        ItemStack returned = ItemStack.EMPTY;
         if(getBlockOnCB().isEmpty())
         {
             chopProgress=0.0;
+            returned = ItemStack.EMPTY;
             updateBlock();
-            return ItemStack.EMPTY;
         }
-        else {updateBlock(); return getBlockOnCB();}
+        else
+        {
+            chopProgress=0.0;
+            returned = getBlockOnCB().copy();
+            itemOnCB.setStackInSlot(0,ItemStack.EMPTY);
+            updateBlock();
+        }
+
+        return returned;
     }
+
+
 
     public boolean hasCraftingOutput(ItemStack input)
     {
@@ -111,7 +155,9 @@ public class TileChoppingBlock extends TileEntity
         {
             if(recipe.matches(craft, world)) {
 
-                return recipe.getCraftingResult(craft);
+                ItemStack crafted = recipe.getCraftingResult(craft);
+                crafted.setCount(Math.abs(crafted.getCount())+1);
+                return crafted;
             }
         }
 
@@ -135,7 +181,7 @@ public class TileChoppingBlock extends TileEntity
         {
             if(recipe.matches(craft, world)) {
                 ItemStack crafted = recipe.getCraftingResult(craft);
-                crafted.setCount(Math.abs(crafted.getCount()/2));
+                crafted.setCount(Math.abs(crafted.getCount()/2)+1);
 
                 return crafted;
             }

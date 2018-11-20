@@ -4,7 +4,9 @@ package com.mowmaster.rprocessing.proxies;
 import com.mowmaster.rprocessing.blocks.BlockRegistry;
 import com.mowmaster.rprocessing.items.ItemRegistry;
 import com.mowmaster.rprocessing.reference.References;
+import com.mowmaster.rprocessing.tiles.TileChoppingBlock;
 import com.mowmaster.rprocessing.tiles.TileClayBloomery;
+import com.mowmaster.rprocessing.tiles.render.RenderTileChoppingBlock;
 import com.mowmaster.rprocessing.tiles.render.RenderTileClayBloomery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -25,6 +27,8 @@ public class ClientProxy extends CommonProxy
         ItemRegistry.registerRenders();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileClayBloomery.class,new RenderTileClayBloomery());
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileChoppingBlock.class,new RenderTileChoppingBlock());
 
     }
 

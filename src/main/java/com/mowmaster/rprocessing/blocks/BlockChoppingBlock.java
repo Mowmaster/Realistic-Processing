@@ -1,16 +1,19 @@
 package com.mowmaster.rprocessing.blocks;
 
 import com.mowmaster.rprocessing.reference.References;
+import com.mowmaster.rprocessing.tiles.TileChoppingBlock;
 import com.mowmaster.rprocessing.tiles.TileClayBloomery;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -39,7 +42,7 @@ public class BlockChoppingBlock extends Block implements ITileEntityProvider
         this.setUnlocalizedName(unlocalizedName);
         this.setRegistryName(new ResourceLocation(References.MODID, registryName));
         this.setCreativeTab(REAL_TAB);
-        this.setHardness(0.5f);
+        this.setHardness(2.0f);
         this.setResistance(5);
     }
 
@@ -54,7 +57,72 @@ public class BlockChoppingBlock extends Block implements ITileEntityProvider
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
     {
 
-        return true;
+        if(!worldIn.isRemote) {
+            TileEntity tileEntity = worldIn.getTileEntity(pos);
+            if (tileEntity instanceof TileChoppingBlock) {
+                TileChoppingBlock tileChoppingBlock = (TileChoppingBlock) tileEntity;
+
+                if(tileChoppingBlock.getBlockOnCB().isEmpty())
+                {
+                    tileChoppingBlock.addItemToCB(playerIn.getHeldItem(EnumHand.MAIN_HAND));
+                    playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                    return true;
+                }
+                else
+                {
+
+                    ItemStack itemToSummon = tileChoppingBlock.removeBlockFromCB().copy();
+                    EntityItem itemEntity = new EntityItem(worldIn,pos.getX() + 0.5,pos.getY(),pos.getZ() + 0.5,itemToSummon);
+                    itemEntity.motionX = 0;
+                    itemEntity.motionY = 0;
+                    itemEntity.motionZ = 0;
+                    worldIn.spawnEntity(itemEntity);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
+        if(playerIn.getHeldItemMainhand().getItem() instanceof ItemAxe)
+        {
+            if(!worldIn.isRemote) {
+                TileEntity tileEntity = worldIn.getTileEntity(pos);
+                if (tileEntity instanceof TileChoppingBlock) {
+                    TileChoppingBlock tileChoppingBlock = (TileChoppingBlock) tileEntity;
+
+                    if(playerIn.getHeldItemMainhand().getItem().equals(Items.WOODEN_AXE))
+                    {
+                        tileChoppingBlock.addChopProgress(2.0);
+                        playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                    }
+                    else if(playerIn.getHeldItemMainhand().getItem().equals(Items.STONE_AXE))
+                    {
+                        tileChoppingBlock.addChopProgress(3.0);
+                        playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                    }
+                    else if(playerIn.getHeldItemMainhand().getItem().equals(Items.IRON_AXE))
+                    {
+                        tileChoppingBlock.addChopProgress(4.0);
+                        playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                    }
+                    else if(playerIn.getHeldItemMainhand().getItem().equals(Items.GOLDEN_AXE))
+                    {
+                        tileChoppingBlock.addChopProgress(4.0);
+                        playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                    }
+                    else if(playerIn.getHeldItemMainhand().getItem().equals(Items.DIAMOND_AXE))
+                    {
+                        tileChoppingBlock.addChopProgress(6.0);
+                        playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                    }
+                }
+            }
+
+        }
     }
 
     @Override
@@ -86,12 +154,12 @@ public class BlockChoppingBlock extends Block implements ITileEntityProvider
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World worldIn, int meta) {
-        return new TileClayBloomery();
+        return new TileChoppingBlock();
     }
 
     @Nullable
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileClayBloomery();
+        return new TileChoppingBlock();
     }
 }

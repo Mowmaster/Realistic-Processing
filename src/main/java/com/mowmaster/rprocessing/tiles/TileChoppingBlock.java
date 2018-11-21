@@ -74,16 +74,20 @@ public class TileChoppingBlock extends TileEntity implements ITickable
     public boolean canBeAdded(ItemStack input)
     {
         IBlockState block = Block.getBlockFromItem(input.getItem()).getDefaultState();
-        if(hasCraftingOutput(input) || hasCraftingOutput2(input) && block.getMaterial().equals(Material.WOOD))
+        if(block.getMaterial().equals(Material.WOOD))
         {
-            if(Block.getBlockFromItem(input.getItem())!= Blocks.AIR)
+            if(hasCraftingOutput(input) || hasCraftingOutput2(input))
             {
-                if(!hasBlockOnCB())
+                if(Block.getBlockFromItem(input.getItem())!= Blocks.AIR)
                 {
-                    return true;
+                    if(!hasBlockOnCB())
+                    {
+                        return true;
+                    }
                 }
             }
         }
+
 
         return false;
     }
@@ -226,7 +230,7 @@ public class TileChoppingBlock extends TileEntity implements ITickable
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         super.writeToNBT(compound);
-        this.writeUpdateTag(compound);
+        //this.writeUpdateTag(compound);
         //compound.setInteger("needsoxygen", needsoxygen);
         compound.setTag("blockOnCB", this.itemOnCB.serializeNBT());
         compound.setDouble("chopProgress",this.chopProgress);
@@ -238,42 +242,26 @@ public class TileChoppingBlock extends TileEntity implements ITickable
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        this.readUpdateTag(compound);
-        //this.needsoxygen = compound.getInteger("needsoxygen");
+
         this.itemOnCB.deserializeNBT(compound.getCompoundTag("blockOnCB"));
         this.chopProgress=compound.getDouble("chopProgress");
 
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tagCompound = new NBTTagCompound();
-        this.writeUpdateTag(tagCompound);
-        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), tagCompound);
-
-    }
-
-    @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        NBTTagCompound tagCompound = pkt.getNbtCompound();
-        this.readUpdateTag(tagCompound);
+        super.onDataPacket(net, pkt);
+        readFromNBT(pkt.getNbtCompound());
     }
 
     @Override
     public NBTTagCompound getUpdateTag() {
-        NBTTagCompound tagCompound = super.getUpdateTag();
-        writeUpdateTag(tagCompound);
-        return tagCompound;
+        return writeToNBT(new NBTTagCompound());
     }
 
-    public void writeUpdateTag(NBTTagCompound tagCompound)
-    {
-        //tagCompound.setInteger("carboncount",carboncount);
-    }
-
-    public void readUpdateTag(NBTTagCompound tagCompound)
-    {
-        //this.carboncount = tagCompound.getInteger("carboncount");
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
 

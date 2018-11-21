@@ -27,7 +27,6 @@ public class ClientProxy extends CommonProxy
         ItemRegistry.registerRenders();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileClayBloomery.class,new RenderTileClayBloomery());
-
         ClientRegistry.bindTileEntitySpecialRenderer(TileChoppingBlock.class,new RenderTileChoppingBlock());
 
     }

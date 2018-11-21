@@ -42,7 +42,7 @@ public class BlockChoppingBlock extends Block implements ITileEntityProvider
         this.setUnlocalizedName(unlocalizedName);
         this.setRegistryName(new ResourceLocation(References.MODID, registryName));
         this.setCreativeTab(REAL_TAB);
-        this.setHardness(2.0f);
+        this.setHardness(3.0f);
         this.setResistance(5);
     }
 
@@ -62,25 +62,28 @@ public class BlockChoppingBlock extends Block implements ITileEntityProvider
             if (tileEntity instanceof TileChoppingBlock) {
                 TileChoppingBlock tileChoppingBlock = (TileChoppingBlock) tileEntity;
 
-                if(tileChoppingBlock.canBeAdded(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
-                {
-                    tileChoppingBlock.addItemToCB(playerIn.getHeldItem(EnumHand.MAIN_HAND));
-                    playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
-                    return true;
-                }
-                else
+                if (playerIn.getHeldItem(EnumHand.MAIN_HAND).isEmpty())
                 {
                     if(tileChoppingBlock.hasBlockOnCB())
                     {
                         ItemStack itemToSummon = tileChoppingBlock.removeBlockFromCB().copy();
-                        EntityItem itemEntity = new EntityItem(worldIn,pos.getX() + 0.5,pos.getY(),pos.getZ() + 0.5,itemToSummon);
+                        EntityItem itemEntity = new EntityItem(worldIn,pos.getX() + 0.5,pos.getY()+ 0.5,pos.getZ() + 0.5,itemToSummon);
                         itemEntity.motionX = 0;
                         itemEntity.motionY = 0;
                         itemEntity.motionZ = 0;
                         worldIn.spawnEntity(itemEntity);
                         return true;
                     }
-
+                    else return false;
+                }
+                else
+                {
+                    if(tileChoppingBlock.canBeAdded(playerIn.getHeldItem(EnumHand.MAIN_HAND)))
+                    {
+                        tileChoppingBlock.addItemToCB(playerIn.getHeldItem(EnumHand.MAIN_HAND));
+                        playerIn.getHeldItem(EnumHand.MAIN_HAND).shrink(1);
+                        return true;
+                    }
                 }
             }
         }
@@ -96,42 +99,45 @@ public class BlockChoppingBlock extends Block implements ITileEntityProvider
                 if (tileEntity instanceof TileChoppingBlock) {
                     TileChoppingBlock tileChoppingBlock = (TileChoppingBlock) tileEntity;
 
-                    if(playerIn.getHeldItemMainhand().isEmpty())
+                    if(tileChoppingBlock.hasBlockOnCB())
                     {
-                        tileChoppingBlock.addChopProgress(1.0);
-                        playerIn.addExhaustion(0.1f);
-                    }
-                    if(playerIn.getHeldItemMainhand().getItem() instanceof ItemAxe)
-                    {
-                        if(playerIn.getHeldItemMainhand().getItem().equals(Items.WOODEN_AXE))
+                        if(playerIn.getHeldItemMainhand().isEmpty())
                         {
-                            tileChoppingBlock.addChopProgress(2.0);
+                            tileChoppingBlock.addChopProgress(1.0);
                             playerIn.addExhaustion(0.1f);
-                            playerIn.getHeldItemMainhand().damageItem(1,playerIn);
                         }
-                        else if(playerIn.getHeldItemMainhand().getItem().equals(Items.STONE_AXE))
+                        if(playerIn.getHeldItemMainhand().getItem() instanceof ItemAxe)
                         {
-                            tileChoppingBlock.addChopProgress(3.0);
-                            playerIn.addExhaustion(0.1f);
-                            playerIn.getHeldItemMainhand().damageItem(1,playerIn);
-                        }
-                        else if(playerIn.getHeldItemMainhand().getItem().equals(Items.IRON_AXE))
-                        {
-                            tileChoppingBlock.addChopProgress(4.0);
-                            playerIn.addExhaustion(0.1f);
-                            playerIn.getHeldItemMainhand().damageItem(1,playerIn);
-                        }
-                        else if(playerIn.getHeldItemMainhand().getItem().equals(Items.GOLDEN_AXE))
-                        {
-                            tileChoppingBlock.addChopProgress(4.0);
-                            playerIn.addExhaustion(0.1f);
-                            playerIn.getHeldItemMainhand().damageItem(1,playerIn);
-                        }
-                        else if(playerIn.getHeldItemMainhand().getItem().equals(Items.DIAMOND_AXE))
-                        {
-                            tileChoppingBlock.addChopProgress(6.0);
-                            playerIn.addExhaustion(0.1f);
-                            playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                            if(playerIn.getHeldItemMainhand().getItem().equals(Items.WOODEN_AXE))
+                            {
+                                tileChoppingBlock.addChopProgress(2.0);
+                                playerIn.addExhaustion(0.1f);
+                                playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                            }
+                            else if(playerIn.getHeldItemMainhand().getItem().equals(Items.STONE_AXE))
+                            {
+                                tileChoppingBlock.addChopProgress(3.0);
+                                playerIn.addExhaustion(0.1f);
+                                playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                            }
+                            else if(playerIn.getHeldItemMainhand().getItem().equals(Items.IRON_AXE))
+                            {
+                                tileChoppingBlock.addChopProgress(4.0);
+                                playerIn.addExhaustion(0.1f);
+                                playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                            }
+                            else if(playerIn.getHeldItemMainhand().getItem().equals(Items.GOLDEN_AXE))
+                            {
+                                tileChoppingBlock.addChopProgress(4.0);
+                                playerIn.addExhaustion(0.1f);
+                                playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                            }
+                            else if(playerIn.getHeldItemMainhand().getItem().equals(Items.DIAMOND_AXE))
+                            {
+                                tileChoppingBlock.addChopProgress(6.0);
+                                playerIn.addExhaustion(0.1f);
+                                playerIn.getHeldItemMainhand().damageItem(1,playerIn);
+                            }
                         }
                     }
                 }

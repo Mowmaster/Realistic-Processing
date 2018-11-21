@@ -1,13 +1,22 @@
 package com.mowmaster.rprocessing.tiles.render;
 
+import com.mowmaster.rprocessing.blocks.BlockBasic;
+import com.mowmaster.rprocessing.reference.References;
 import com.mowmaster.rprocessing.tiles.TileChoppingBlock;
+import com.mowmaster.rprocessing.tiles.TileClayBloomery;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class RenderTileChoppingBlock extends TileEntitySpecialRenderer<TileChoppingBlock>
@@ -27,6 +36,8 @@ public class RenderTileChoppingBlock extends TileEntitySpecialRenderer<TileChopp
             renderOreItem(itemRenderer,new ItemStack(te.getBlockOnCB().getItem(),1,te.getBlockOnCB().getMetadata()),value,0.81f,value);
         }
 
+        //renderChoppingProgress(te);
+
         GlStateManager.popMatrix();
     }
 
@@ -42,4 +53,60 @@ public class RenderTileChoppingBlock extends TileEntitySpecialRenderer<TileChopp
         GlStateManager.popAttrib();
         GlStateManager.popMatrix();
     }
+
+
+    public void renderChoppingProgress(TileChoppingBlock te)
+    {
+        Tessellator tessellator = Tessellator.getInstance();
+
+        double progress = te.getChopProgress();
+
+
+
+        if (te == null) {
+            return;
+        }
+
+
+        if (progress==0.0) {
+            return;
+        }
+
+
+        if (progress > 0.0) {
+            ResourceLocation block = new ResourceLocation(References.MODID,"textures/blocks/bloomery/progress");
+            bindTexture(block);
+            GlStateManager.enableBlend();
+            GlStateManager.enableAlpha();
+            BufferBuilder renderer = tessellator.getBuffer();
+
+            TextureAtlasSprite sprite = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(block.toString());
+
+            net.minecraft.client.renderer.RenderHelper.disableStandardItemLighting();
+
+            renderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
+
+            float u1 = sprite.getMinU();
+            float v1 = sprite.getMinV();
+            float u2 = sprite.getMaxU();
+            float v2 = sprite.getMaxV();
+
+            float zero = 0.125f;
+            float one = 0.875f;
+            float yvalue = 1.0f;
+            renderer.pos(zero, yvalue, zero).tex(u1, v1).endVertex();
+            renderer.pos(zero, yvalue, one).tex(u1, v2).endVertex();
+            renderer.pos(one, yvalue, one).tex(u2, v2).endVertex();
+            renderer.pos(one, yvalue, zero).tex(u2, v1).endVertex();
+
+
+
+
+            tessellator.draw();
+
+            net.minecraft.client.renderer.RenderHelper.enableStandardItemLighting();
+        }
+
+    }
+
 }

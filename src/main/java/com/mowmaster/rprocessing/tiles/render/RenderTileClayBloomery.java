@@ -101,7 +101,7 @@ public class RenderTileClayBloomery extends TileEntitySpecialRenderer<TileClayBl
         float scale = (bloom.getProgress() * 0.0025f);
 
         if (scale > 0) {
-            ResourceLocation block = new ResourceLocation(References.MODID,"blocks/bloomery/progress");
+            ResourceLocation block = new ResourceLocation(References.MODID,"textures/blocks/bloomery/progress");
             bindTexture(block);
             GlStateManager.enableBlend();
             GlStateManager.enableAlpha();

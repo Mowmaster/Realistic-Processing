@@ -6,6 +6,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.items.IItemHandler;
@@ -37,6 +39,11 @@ public class TileChoppingBlock extends TileEntity implements ITickable
     public ItemStack getBlockOnCB()
     {
         return itemOnCB.getStackInSlot(0);
+    }
+
+    public double getChopProgress()
+    {
+        return chopProgress;
     }
 
     public boolean hasBlockOnCB()
@@ -210,10 +217,11 @@ public class TileChoppingBlock extends TileEntity implements ITickable
                     itemToSummon = getCraftingOutput(getBlockOnCB()).copy();
                 }
 
-                EntityItem itemEntity = new EntityItem(world,pos.getX() + 0.5,pos.getY(),pos.getZ() + 0.5,itemToSummon);
+                EntityItem itemEntity = new EntityItem(world,pos.getX() + 0.5,pos.getY()+1,pos.getZ() + 0.5,itemToSummon);
                 itemEntity.motionX = 0;
                 itemEntity.motionY = 0;
                 itemEntity.motionZ = 0;
+                world.playSound((EntityPlayer)null, getPos().getX(), getPos().getY(), getPos().getZ(), SoundEvents.BLOCK_WOOD_BREAK, SoundCategory.BLOCKS, 1.0F, 1.0F);
                 removeBlockFromCB();
                 world.spawnEntity(itemEntity);
             }

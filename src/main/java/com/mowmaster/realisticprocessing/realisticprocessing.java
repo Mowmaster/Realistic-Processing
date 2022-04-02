@@ -1,13 +1,23 @@
 package com.mowmaster.realisticprocessing;
 
 import com.mojang.logging.LogUtils;
+import com.mowmaster.realisticprocessing.Capabilities.AirCapability;
+import com.mowmaster.realisticprocessing.Registry.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
@@ -16,6 +26,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
 import java.util.stream.Collectors;
+
+import static com.mowmaster.realisticprocessing.Utilities.References.MODNAME;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("realisticprocessing")
@@ -35,18 +47,45 @@ public class realisticprocessing
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> eventBus.register(new ClientRegistry()));
+        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, PedestalConfig.commonSpec);
+        //eventBus.register(PedestalConfig.class);
+
+        DeferredRegisterItems.ITEMS.register(eventBus);
+        DeferredRegisterBlocks.BLOCKS.register(eventBus);
+        DeferredRegisterTileBlocks.BLOCKS.register(eventBus);
+        DeferredBlockEntityTypes.BLOCK_ENTITIES.register(eventBus);
+        addRecipes(eventBus);
+
+    }
+
+    public void addRecipes(IEventBus event)
+    {
+        DeferredRecipeSerializers.RECIPES.register(event);
     }
 
     private void setup(final FMLCommonSetupEvent event)
     {
         // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
+        //LOGGER.info("HELLO FROM PREINIT");
+        //DustPacketHandler.registerMessages();
+    }
+
+    private void setupClient(final FMLClientSetupEvent event)
+    {
+        LOGGER.info("Initialize "+MODNAME+" Block Entity Renders");
+        ClientRegistry.registerBlockEntityRenderers();
+
+        //LOGGER.info("Initialize "+MODNAME+" Tooltip Renders");
+        //MinecraftForgeClient.registerTooltipComponentFactory(ItemTooltipComponent.class, ClientItemTooltipComponent::new);
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
         // Some example code to dispatch IMC to another mod
-        InterModComms.sendTo("realisticprocessing", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+        //InterModComms.sendTo("realisticprocessing", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
     }
 
     private void processIMC(final InterModProcessEvent event)
@@ -71,10 +110,8 @@ public class realisticprocessing
     public static class RegistryEvents
     {
         @SubscribeEvent
-        public static void onBlocksRegistry(final RegistryEvent.Register<Block> blockRegistryEvent)
-        {
-            // Register a new block here
-            LOGGER.info("HELLO from Register Block");
+        public static void attachCapabilities(final RegisterCapabilitiesEvent event) {
+            AirCapability.register(event);
         }
     }
 }

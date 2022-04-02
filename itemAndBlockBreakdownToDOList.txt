@@ -1,0 +1,88 @@
+Realistic Processing Item/Block/BlockEntity/Render/ Interactions Breakdowns
+
+[I]Straw - Need to add to loottable for block drops of wheat and grass/tall grass when broken with a hammer type tool.
+[I]Wooden Mallet - custom tool item
+Hammer Interactions, Handle on hammer side, maybe item in offhand can use a recipe handler???
+	{
+		[ ],[L]
+		[S],[ ]
+		S = Stick
+		L = Log
+		Result = Wooden Mallet
+	}
+	(Maxe other hammer types and bindings if time is available)
+[I]Bloomery Clay
+[I]Bloomery Clay Dust
+[I]Bloomery Brick - Have a wet, dry, and hardened types for this.
+	(If Time Allows [I]Clay Dust/Brick - Have a Wet,Dry, and Hardened types for this, will drop as actual clay bricks after final drying stage)
+	(If Time Allows [I]Nether Clay/Dust/Brick - Have a Wet,Dry, and Hardened types for this, will drop as actual nether bricks after final drying stage)
+[I]Bloom - the result of the bloomery, will contain NBT data for ingots/nuggets(secondary outputs) and their drop rates. As well as hammer work value currently in bloom
+[I]Slag - used in the place of gravel to make concrete, a byproduct of bloomery smelting.
+
+
+
+[B][BE]Mixing Basin 
+Fluid Handler - 1 bucket of storage, or 4 water bottles (custom handler for this), and 1 bucket for output fluid
+Item Handler - allow for up to 9 slots will consist of both input and outputs??? Maybe fully craft recipe on initial right click but dont show all the outputs till after mixing is done???
+Block right click with any HOE tool will increase the 'mixing' variable (if any fluid exists in the output then no input fluid can be added???) both input and output items will spin when mixed, and fluids will render based on volume.
+
+[B][BE]Brick Molds
+Item Handler - 4 slots each able to hold 1 item, drying/undrying will just change the items type up or down 1
+Handle random tick drying on the block side, and have it trigger the tile to dry / undry 1 brick each time.
+{Redstone comparator will output based on how many dry bricks there are}
+
+[B][BE]Bricks Drying
+Item Handler - 4 slots each able to hold 1 item, drying/undrying will just change the items type up or down 1
+Handle random tick drying on the block side, and have it trigger the tile to dry / undry 1 brick each time.
+{Redstone comparator will output based on how many dry bricks there are}
+
+(If Time Allows)
+	[B][BE]Brick Pile
+	Item Handler - 32 slots each able to hold 1 item, only allows bricks to be inserted.
+	Crouch Right click on ground to start a brick pile, right click to add, left click to remove bricks, crouch left click to pickup all bricks.
+	{Redstone comparator will output based on how many stored bricks there are}
+(If Time Allows)
+
+[B]Bloomery Base
+Since this is just a block being built in world, and i dont plan to make it any other way right now...
+Make this a block with 20 states, 4 states for brick laying and 1 state for clay, repeated 4 times.
+On final clay placement, set block as the Bloomery.
+
+[B][BE]Bloomery
+Item Handler - 9 slots for input and 9 for fuel. Output will always be a bloom and maybe some slag, but that will all be calculated and created on block break.
+Air Handler - Some counter for air in the device
+NBT - fuel ticks
+NBT - metal melting point
+NBT - metal vapor point
+NBT - smelted ticks
+NBT - smelted max ticks (counts up when bloomery is over the melting point of the metal)
+NBT - burn ticks (when metal is heated too hot and vaporizes basically)
+NBT - Current temp
+NBT - min temp (lowest temp of worst fuel)
+NBT[] - max temps (based on formula calculated at the start)
+NBT - ticks of max temp left
+NBT[] - max temps tick times (based on fuel ratios on initial start)
+{Redstone comparator will output based on how far along the smelt is}
+(If time allows){custom comparator will output based on how much air is present}
+
+[B][BE]Smithing Anvil
+- Crouch right click hammer on a Log to make this (looks like a smaller version of a stripped log???)
+	(If Time Allows - Add other Types of anvils, Stone/Iron/Gold/Diamond/Netherite)
+Item handler - holds 1 item stack size of 1. Right click to add item, left click to remove it.
+Hammer Work Handler - Some counter for hammer work currently applied to current item, check inserted bloom on insert for a starting value, and update blooms value on extract.
+NBT - Additional Drops chance(setup when placing anvil)
+NBT - Additional secondary drops chance(setup when placing anvil)
+NBT - Hammer work needed to forge stage (setup by bloom on insert, based on metal)
+
+
+
+
+
+
+
+
+
+
+
+
+

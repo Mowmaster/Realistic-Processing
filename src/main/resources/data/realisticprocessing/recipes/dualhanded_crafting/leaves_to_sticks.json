@@ -1,0 +1,16 @@
+{
+  "type": "realisticprocessing:realisticprocessing_dualhandedcrafting",
+  "blockTarget": {
+    "tag": "minecraft:leaves"
+  },
+  "mainhandTool": {
+    "tag": "realisticprocessing:hammers"
+  },
+  "offhandTool": {
+    "tag": "realisticprocessing:axes"
+  },
+  "result": {
+    "item": "minecraft:stick",
+    "count": 1
+  }
+}

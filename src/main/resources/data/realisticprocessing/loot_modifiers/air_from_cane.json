@@ -1,0 +1,16 @@
+{
+  "type": "realisticprocessing:add_item",
+  "conditions": [
+    {
+      "condition": "minecraft:match_tool",
+      "predicate": {
+        "tag": "realisticprocessing:hammer"
+      }
+    },
+    {
+      "condition": "block_state_property",
+      "block": "minecraft:sugar_cane"
+    }
+  ],
+  "item": "realisticprocessing:air_pipe"
+}

@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "entries": [
+    "realisticprocessing:straw_from_grass",
+    "realisticprocessing:straw_from_tall_grass",
+    "realisticprocessing:straw_from_wheat",
+    "realisticprocessing:air_from_cane"
+  ]
+}

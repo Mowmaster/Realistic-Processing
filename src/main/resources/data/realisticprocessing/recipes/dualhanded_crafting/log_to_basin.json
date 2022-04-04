@@ -1,0 +1,15 @@
+{
+  "type": "realisticprocessing:realisticprocessing_dualhandedcrafting",
+  "blockTarget": {
+    "tag": "minecraft:logs"
+  },
+  "mainhandTool": {
+    "tag": "realisticprocessing:hammers"
+  },
+  "offhandTool": {
+    "tag": "realisticprocessing:axes"
+  },
+  "result": {
+    "item": "realisticprocessing:wood_basin"
+  }
+}

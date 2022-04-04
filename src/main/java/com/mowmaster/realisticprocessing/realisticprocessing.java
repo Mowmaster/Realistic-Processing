@@ -3,20 +3,13 @@ package com.mowmaster.realisticprocessing;
 import com.mojang.logging.LogUtils;
 import com.mowmaster.realisticprocessing.Capabilities.AirCapability;
 import com.mowmaster.realisticprocessing.Registry.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -24,8 +17,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-
-import java.util.stream.Collectors;
 
 import static com.mowmaster.realisticprocessing.Utilities.References.MODNAME;
 
@@ -57,13 +48,7 @@ public class realisticprocessing
         DeferredRegisterBlocks.BLOCKS.register(eventBus);
         DeferredRegisterTileBlocks.BLOCKS.register(eventBus);
         DeferredBlockEntityTypes.BLOCK_ENTITIES.register(eventBus);
-        addRecipes(eventBus);
-
-    }
-
-    public void addRecipes(IEventBus event)
-    {
-        DeferredRecipeSerializers.RECIPES.register(event);
+        DeferredRecipeSerializers.RECIPES.register(eventBus);
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -91,9 +76,9 @@ public class realisticprocessing
     private void processIMC(final InterModProcessEvent event)
     {
         // Some example code to receive and process InterModComms from other mods
-        LOGGER.info("Got IMC {}", event.getIMCStream().
+        /*LOGGER.info("Got IMC {}", event.getIMCStream().
                 map(m->m.messageSupplier().get()).
-                collect(Collectors.toList()));
+                collect(Collectors.toList()));*/
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -101,7 +86,7 @@ public class realisticprocessing
     public void onServerStarting(ServerStartingEvent event)
     {
         // Do something when the server starts
-        LOGGER.info("HELLO from server starting");
+        //LOGGER.info("HELLO from server starting");
     }
 
     // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD

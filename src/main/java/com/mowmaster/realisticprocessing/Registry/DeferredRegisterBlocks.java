@@ -2,7 +2,7 @@ package com.mowmaster.realisticprocessing.Registry;
 
 import com.mojang.serialization.Codec;
 import com.mowmaster.realisticprocessing.Blocks.BrickMold.BaseMoldBlock;
-import com.mowmaster.realisticprocessing.Blocks.WoodBasin.BaseBasinBlock;
+import com.mowmaster.realisticprocessing.Blocks.Basins.BaseBasinBlock;
 import com.mowmaster.realisticprocessing.ModTab.RPTab;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;

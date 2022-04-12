@@ -1,7 +1,7 @@
 {
   "type": "realisticprocessing:realisticprocessing_dualhandedcrafting",
   "blockTarget": {
-    "tag": "minecraft:logs"
+    "item": "minecraft:barrel"
   },
   "mainhandTool": {
     "tag": "realisticprocessing:hammers"

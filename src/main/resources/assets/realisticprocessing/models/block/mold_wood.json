@@ -1,8 +1,8 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "realisticprocessing:blocks/basin_wood",
-		"particle": "realisticprocessing:blocks/basin_wood"
+		"0": "realisticprocessing:blocks/mold_wood",
+		"particle": "realisticprocessing:blocks/mold_wood"
 	},
 	"elements": [
 		{

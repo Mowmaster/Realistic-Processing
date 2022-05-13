@@ -13,7 +13,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class BaseBasinBlock extends Block  implements EntityBlock {
+public class BaseBasinBlock extends Block implements EntityBlock {
 
     private static final VoxelShape INSIDE = box(2.0D, 4.0D, 2.0D, 14.0D, 14.0D, 14.0D);
     protected static final VoxelShape SHAPE = Shapes.join(

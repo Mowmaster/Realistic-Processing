@@ -1,6 +1,7 @@
 package com.mowmaster.realisticprocessing.Blocks.Basins.Wood;
 
 import com.mowmaster.realisticprocessing.Blocks.Basins.BaseBasinBlockEntity;
+import com.mowmaster.realisticprocessing.Registry.DeferredBlockEntityTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
@@ -30,8 +31,8 @@ public class BasinWoodBlockEntity extends BaseBasinBlockEntity
 
     public BlockPos getPos() { return this.worldPosition; }
 
-    public BasinWoodBlockEntity(BlockEntityType<?> p_155228_, BlockPos p_155229_, BlockState p_155230_) {
-        super(p_155228_, p_155229_, p_155230_);
+    public BasinWoodBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
+        super(DeferredBlockEntityTypes.BASIN_WOOD.get(), p_155229_, p_155230_);
     }
 
 
@@ -534,6 +535,8 @@ public class BasinWoodBlockEntity extends BaseBasinBlockEntity
     ===========================     ITEM  END        =============================
     ==============================================================================
     ============================================================================*/
+
+
 
 
 

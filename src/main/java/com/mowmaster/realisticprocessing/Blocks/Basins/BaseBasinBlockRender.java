@@ -14,27 +14,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
-public class BaseBasinBlockRender implements BlockEntityRenderer<BaseBasinBlockEntity>
+public class BaseBasinBlockRender
 {
 
-    @Override
+
     public void render(BaseBasinBlockEntity p_112307_, float p_112308_, PoseStack p_112309_, MultiBufferSource p_112310_, int p_112311_, int p_112312_) {
-
-    }
-
-    @Override
-    public boolean shouldRenderOffScreen(BaseBasinBlockEntity p_112306_) {
-        return BlockEntityRenderer.super.shouldRenderOffScreen(p_112306_);
-    }
-
-    @Override
-    public int getViewDistance() {
-        return BlockEntityRenderer.super.getViewDistance();
-    }
-
-    @Override
-    public boolean shouldRender(BaseBasinBlockEntity p_173568_, Vec3 p_173569_) {
-        return BlockEntityRenderer.super.shouldRender(p_173568_, p_173569_);
     }
 
     public static void renderItemRotating(Level worldIn, PoseStack p_112309_, MultiBufferSource p_112310_, ItemStack itemStack, int p_112311_, int p_112312_)

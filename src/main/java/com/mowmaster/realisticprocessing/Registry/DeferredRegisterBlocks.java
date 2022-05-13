@@ -1,6 +1,7 @@
 package com.mowmaster.realisticprocessing.Registry;
 
 import com.mojang.serialization.Codec;
+import com.mowmaster.realisticprocessing.Blocks.Basins.Wood.BasinWoodBlock;
 import com.mowmaster.realisticprocessing.Blocks.BrickMold.BaseMoldBlock;
 import com.mowmaster.realisticprocessing.Blocks.Basins.BaseBasinBlock;
 import com.mowmaster.realisticprocessing.ModTab.RPTab;
@@ -27,9 +28,9 @@ public class DeferredRegisterBlocks
 
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,MODID);
 
-    public static final RegistryObject<Block> BASIN_WOOD = registerBlock("basin_wood",
-            () -> new BaseBasinBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0F).sound(SoundType.WOOD)));
-
+    /*public static final RegistryObject<Block> BASIN_WOOD = registerBlock("basin_wood",
+            () -> new BasinWoodBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0F).sound(SoundType.WOOD)));
+*/
     public static final RegistryObject<Block> MOLD_WOOD = registerBlock("mold_wood",
             () -> new BaseMoldBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(2.0F).sound(SoundType.WOOD)));
 

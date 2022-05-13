@@ -19,6 +19,8 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BasinWoodBlockEntity extends BaseBasinBlockEntity
 {
@@ -53,34 +55,6 @@ public class BasinWoodBlockEntity extends BaseBasinBlockEntity
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
                 return true;
             }
-
-            @Override
-            public int getSlots() {
-                return 18;
-            }
-
-            @Override
-            public int getSlotLimit(int slot) {
-                return super.getSlotLimit(slot);
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack getStackInSlot(int slot) {
-                return super.getStackInSlot(slot);
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                return super.insertItem(slot, stack, simulate);
-            }
-
-            @Nonnull
-            @Override
-            public ItemStack extractItem(int slot, int amount, boolean simulate) {
-                return super.extractItem(slot, amount, simulate);
-            }
         };
     }
 
@@ -100,7 +74,7 @@ public class BasinWoodBlockEntity extends BaseBasinBlockEntity
 
             @Override
             public int getTankCapacity(int tank) {
-                return 4000;
+                return 1000;
             }
 
             @Override
@@ -241,7 +215,7 @@ public class BasinWoodBlockEntity extends BaseBasinBlockEntity
 
             @Override
             public int getTankCapacity(int tank) {
-                return 4000;
+                return 1000;
             }
 
             @Override
@@ -499,6 +473,7 @@ public class BasinWoodBlockEntity extends BaseBasinBlockEntity
         for (int i = 0; i < 9; i++)
         {
             incomingStack = h.insertItem(i, incomingStack, simulate);
+            if(!simulate)System.out.println("Added Stack" + incomingStack);
             if (incomingStack.isEmpty())
             {
                 return ItemStack.EMPTY;
@@ -529,12 +504,54 @@ public class BasinWoodBlockEntity extends BaseBasinBlockEntity
         return stackToExtract;
     }
 
+    public ItemStack removeItemFromBasin( boolean simulate)
+    {
+        IItemHandler h = handler.orElse(null);
+        ItemStack stackToExtract = ItemStack.EMPTY;
+
+        if (h == null)
+            return ItemStack.EMPTY;
+
+        //Pull from output slots first, then inputs, in reverse order.
+        for (int i = h.getSlots()-1; i >= 0; i--)
+        {
+            stackToExtract = h.extractItem(i,h.getStackInSlot(i).getCount(),simulate);
+            if (stackToExtract.isEmpty())
+            {
+                return ItemStack.EMPTY;
+            }
+        }
+
+        return stackToExtract;
+    }
+
+    public List<ItemStack> getStoredItems()
+    {
+        IItemHandler h = handler.orElse(null);
+        List<ItemStack> stacksList = new ArrayList<>();
+        for(int i=0; i<h.getSlots();i++)
+        {
+            if(!h.getStackInSlot(i).isEmpty()) stacksList.add(h.getStackInSlot(i));
+        }
+
+        return stacksList;
+    }
+
 
     /*============================================================================
     ==============================================================================
     ===========================     ITEM  END        =============================
     ==============================================================================
     ============================================================================*/
+
+
+
+    public void tick()
+    {
+
+
+
+    }
 
 
 

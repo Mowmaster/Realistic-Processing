@@ -1,6 +1,7 @@
 package com.mowmaster.realisticprocessing.Registry;
 
 import com.mowmaster.realisticprocessing.Blocks.Basins.BaseBasinBlock;
+import com.mowmaster.realisticprocessing.Blocks.Basins.Wood.BasinWoodBlock;
 import com.mowmaster.realisticprocessing.ModTab.RPTab;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -22,7 +23,7 @@ public class DeferredRegisterTileBlocks
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS,MODID);
 
     public static final RegistryObject<Block> BLOCK_BASIN_WOOD = registerBlock("block_basin_wood",
-            () -> new BaseBasinBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(1.0F).sound(SoundType.WOOD)));
+            () -> new BasinWoodBlock(BlockBehaviour.Properties.of(Material.WOOD).strength(1.0F).sound(SoundType.WOOD)));
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

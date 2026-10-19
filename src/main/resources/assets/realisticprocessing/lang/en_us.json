@@ -1,0 +1,13 @@
+{
+  "itemGroup.realisticprocessing": "Example Mod Tab",
+  "block.realisticprocessing.example_block": "Example Block",
+  "item.realisticprocessing.example_item": "Example Item",
+
+  "realisticprocessing.configuration.title": "realisticprocessing Configs",
+  "realisticprocessing.configuration.section.realisticprocessing.common.toml": "realisticprocessing Configs",
+  "realisticprocessing.configuration.section.realisticprocessing.common.toml.title": "realisticprocessing Configs",
+  "realisticprocessing.configuration.items": "Item List",
+  "realisticprocessing.configuration.logDirtBlock": "Log Dirt Block",
+  "realisticprocessing.configuration.magicNumberIntroduction": "Magic Number Text",
+  "realisticprocessing.configuration.magicNumber": "Magic Number"
+}
